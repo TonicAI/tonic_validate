@@ -1,0 +1,93 @@
+{
+  "chunk_size": 16,
+  "similarity_top_k": 1,
+  "llm_evaluator": "gpt-4",
+  "mean_answer_similarity": 2.8,
+  "mean_retrieval_precision": 0.2,
+  "mean_augmentation_precision": 0.2,
+  "mean_augmentation_accuracy": 0.4,
+  "mean_answer_consistency": 0.26,
+  "mean_overall_score": 0.32399999999999995,
+  "response_dict_list": [
+    {
+      "question": "What makes Sam Altman a good founder?",
+      "reference_answer": "He has a great force of will.",
+      "llm_answer": "Sam Altman's qualities and actions as a founder contribute to his reputation as being good.",
+      "retrieved_context": [
+        "Thanks to Sam Altman,"
+      ]
+    },
+    {
+      "question": "When was the essay \"Five Founders\" written?",
+      "reference_answer": "April 2009",
+      "llm_answer": "The essay \"Five Founders\" was written at an unspecified time.",
+      "retrieved_context": [
+        "Five Founders\n\nApril"
+      ]
+    },
+    {
+      "question": "When does the most dramatic growth happen for a startup?",
+      "reference_answer": "When the startup only has three or four people.",
+      "llm_answer": "The most dramatic growth for a startup happens when it only has three or four people.",
+      "retrieved_context": [
+        "The really dramatic growth happens when a startup only has three or four people,"
+      ]
+    },
+    {
+      "question": "What is the problem with business culture versus start up culture with respect to productivity?",
+      "reference_answer": "In business culture, energy is expended on outward appearance to the detriment of productivity, while in startup culture there is no value of appearance it's all about productivity.",
+      "llm_answer": "The problem with business culture versus start-up culture with respect to productivity is that business culture tends to be more traditional and hierarchical, which can lead to slower decision-making processes and less flexibility in adapting to changes. On the other hand, start-up culture is often characterized by a more innovative and agile approach, allowing for quicker decision-making and greater adaptability to market demands. This can result in higher productivity levels in start-ups compared to more established businesses.",
+      "retrieved_context": [
+        "could ask.A lot of startup culture is Apple culture."
+      ]
+    },
+    {
+      "question": "What's the single biggest thing the government could do to increase the number of startups in this country?",
+      "reference_answer": "Establish a new class of visa for startup founders.",
+      "llm_answer": "The government could simplify the process of determining who qualifies as a startup investor.",
+      "retrieved_context": [
+        "a real startup.How would the government decide who's a startup investor?"
+      ]
+    },
+    {
+      "question": "How could one create a rigorous government definition of what a startup is to categorize whether a business is a startup?",
+      "reference_answer": "One could define a startup as a company that has received investment by recognized startup investors. An accreditation procedure would be determined to establish recognized startup investors.",
+      "llm_answer": "The government could create a rigorous definition of what constitutes a startup by considering various factors. These factors could include the age of the business, the level of innovation or disruption it brings to the market, the scalability of its business model, the potential for high growth, and the level of risk involved. By carefully evaluating these criteria, the government can establish a clear and comprehensive definition of a startup, which can then be used to categorize businesses accordingly.",
+      "retrieved_context": [
+        "a real startup.How would the government decide who's a startup investor?"
+      ]
+    },
+    {
+      "question": "Why is frienship a good quality of founders?",
+      "reference_answer": "Friendship is a good quality of founders because building a startup is tough and without a strong friendship building the startup will tear the founders apart.",
+      "llm_answer": "Friendship is a good quality of founders because it helps to create a positive and harmonious working environment. When founders are friends, they are more likely to trust and support each other, which can lead to better collaboration and decision-making. Additionally, friendship among founders can contribute to a strong sense of camaraderie and loyalty, which can be beneficial for the long-term success and stability of the company.",
+      "retrieved_context": [
+        "founders to be nice"
+      ]
+    },
+    {
+      "question": "Why is determination the most important quality in startup founders?",
+      "reference_answer": "Because when building a startup you're going to hit a lot of obstacles, and determination will prevent one from getting demoralized by the constant obstacles.",
+      "llm_answer": "Determination is considered the most important quality in startup founders because it helps them stay focused and committed to their goals, even in the face of challenges and setbacks. This quality enables founders to persevere through difficult times, make tough decisions, and keep pushing forward to achieve success.",
+      "retrieved_context": [
+        "DeterminationThis has turned out to be the most important quality in startup founders."
+      ]
+    },
+    {
+      "question": "For startups, what does board control mean in practice?",
+      "reference_answer": "During board meetings, matters are decided in the discussion preceding the vote, not in the vote itself, which is usually unanimous. If opinion is divided in such discussions, the side that knows it would lose in a vote tends to be less insistent. This is what board control means in practice.",
+      "llm_answer": "For startups, board control in practice refers to the ability to have a significant influence or power over the decisions and direction of the company's board of directors. It means having the ability to shape the strategic decisions, appoint key executives, and have a say in important matters that impact the company's future.",
+      "retrieved_context": [
+        "insistent.That's what board control means in practice."
+      ]
+    },
+    {
+      "question": "What's in the way of founders keeping board control after a series A?",
+      "reference_answer": "The perception that founders keeping board control after a series A being a concession a VC has made when negotiating with startups. VCs do not want to look like they've lost a negotiation. If founders keeping control after a series A is the norm, then it happening will not look like the VCs lost the negotiation.",
+      "llm_answer": "Investors typically seek board control after a series A round in order to protect their investment and have a say in the company's strategic decisions. This is a common practice in the startup ecosystem, as investors want to ensure that their interests are represented and that the company is being managed in a way that maximizes its potential for growth and profitability. However, founders can negotiate certain provisions in the investment agreement to maintain some level of control, such as board composition or veto rights on key decisions. Ultimately, the ability of founders to retain board control after a series A round depends on the specific terms of the investment agreement and the negotiating power of the founders.",
+      "retrieved_context": [
+        "How common is it for founders to keep control after an A round?"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+import logging
+from typing import List
+
+logger = logging.getLogger()
+
+
+def parse_boolean_response(response: str) -> bool:
+    """Parse boolean response from LLM evaluator.
+
+    Attempts to parse response as true or false.
+
+    Parameters
+    ----------
+    response: str
+        Response from LLM evaluator.
+
+    Returns
+    -------
+    bool
+        Whether response should be interpreted as true or false.
+    """
+    response_lower = response.lower()
+    if response_lower == "true":
+        return True
+    if response_lower == "false":
+        return False
+    logger.debug(f"Relevance response {response_lower} is not true or false")
+    if "true" in response_lower and "false" not in response_lower:
+        return True
+    if "false" in response_lower and "true" not in response_lower:
+        return False
+    log_message = (
+        f"Could not determine true or false from response {response_lower}"
+        ", returning False"
+    )
+    logger.debug(log_message)
+    return False
+
+
+def parse_bullet_list_response(response: str) -> List[str]:
+    """Parse bullet list response from LLM evaluator.
+
+    Attempts to parse repsonse as a bullet list, returning a list of strings that
+    correspond to the bullet points. The response is assumed to be a bullet list in
+    markdown format with the bullet points denoted by asterisks.
+
+    Parameters
+    ----------
+    response: str
+        Response from LLM evaluator.
+
+    Returns
+    -------
+    List[str]
+        List of strings that correspond to the bullet points in the response.
+    """
+    if "*" not in response:
+        log_message = (
+            f"Response {response} does not contain bullet list. Returning all of "
+            "response as main point."
+        )
+        logger.debug(log_message)
+        return [response]
+    if not response.startswith("*"):
+        log_message = (
+            f"Response {response} does not start with bullet, when it should be a "
+            "bulleted list. Content before the first bullet will be removed."
+        )
+        logger.debug(log_message)
+    bullet_list = response.split("*")[1:]
+    bullet_list = [bullet.strip() for bullet in bullet_list]
+    return bullet_list

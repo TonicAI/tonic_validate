@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tval"
-version = "0.0.1.3"
+version = "0.0.1"
 description = "RAG evaluation metrics."
 authors = ["Joe Ferrara <joeferrara@tonic.ai>"]
 readme = "pypi_readme.md"

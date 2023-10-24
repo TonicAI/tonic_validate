@@ -1,11 +1,14 @@
 from dataclasses import dataclass
 from typing import List
 
-from tval.llm_calls import (
+from tvalmetrics.llm_calls import (
     ask_for_main_points,
     ask_whether_statement_derived_from_context,
 )
-from tval.scorers.scorers_util import parse_boolean_response, parse_bullet_list_response
+from tvalmetrics.scorers.scorers_util import (
+    parse_boolean_response,
+    parse_bullet_list_response,
+)
 
 
 @dataclass

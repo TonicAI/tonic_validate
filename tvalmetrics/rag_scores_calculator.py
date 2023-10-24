@@ -3,8 +3,7 @@ from statistics import mean
 from typing import Dict, List, Optional
 
 import pandas as pd
-
-from tval.scorers import (  # type: ignore
+from tvalmetrics.scorers import (  # type: ignore
     AnswerConsistencyBinaryScorer,
     AnswerConsistencyScorer,
     AnswerSimilarityScorer,

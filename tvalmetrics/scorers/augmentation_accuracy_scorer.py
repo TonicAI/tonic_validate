@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import List
 
-from tval.llm_calls import ask_whether_answer_contains_context
-from tval.scorers.scorers_util import parse_boolean_response
+from tvalmetrics.llm_calls import ask_whether_answer_contains_context
+from tvalmetrics.scorers.scorers_util import parse_boolean_response
 
 
 @dataclass

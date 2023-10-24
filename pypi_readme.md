@@ -3,12 +3,12 @@
 
 This is **Tonic Validate Metrics**, the retrieval augmented generation (RAG) metrics part of Tonic Validate. Tonic Validate Metrics provides fundamental RAG metrics and an evaluation framework for experimenting with RAG systems.
 
-* [Documentation](https://docs.tonic.ai/validate/tonic-validate-metrics-tval-python-package/tval-package-about).
+* [Tonic Validate Documentation](https://docs.tonic.ai/validate/).
 * Tonic Validate is a platform for RAG development and experiment tracking. To use Tonic Validate Metrics in Tonic Validate, sign up for a [free Tonic Validate account](https://validate.tonic.ai/signup).
 
 Install Tonic Validate Metrics via
 ```
-pip install tval
+pip install tvalmetrics
 ```
 
 ## Metrics
@@ -46,7 +46,7 @@ It is common when building and evaluating a RAG system to not have a benchmark d
 
 Install Tonic Validate Metrics with pip:
 ```
-pip install tval
+pip install tvalmetrics
 ```
 
 Tonic Validate Metrics uses LLM-assisted evaluation to calculate RAG metrics. The LLM evaluator currently supports the Open AI gpt-4 and gpt-3.5 family of [models](https://platform.openai.com/docs/models/overview).
@@ -67,7 +67,7 @@ For a quickstart example using a simple [LlamaIndex](https://github.com/run-llam
 You can use Tonic Validate Metrics score to calculate RAG metrics with just a few lines of code.
 
 ```python
-from tval import RagScoresCaclulator
+from tvalmetrics import RagScoresCaclulator
 
 question: str # the question asked
 reference_answer: str # ground truth answer
@@ -94,7 +94,7 @@ scores = score_calculator.score(
 You can also specify which metrics to calculate when instantiating `RagScoresCalculator`. For example, if you do not have a reference answer or top k context, you only specify the the following scores.
 
 ```python
-from tval import RagScoresCaclulator
+from tvalmetrics import RagScoresCaclulator
 
 question: str # the question asked
 reference_answer: str # ground truth answer
@@ -121,7 +121,7 @@ scores = score_calculator.score(
 If you have a batch of questions and answers, you can score them all simultaneously and then store the scores in a pandas DataFrame.
 
 ```python
-from tval import RagScoresCaclulator
+from tvalmetrics import RagScoresCaclulator
 
 question_list: List[str] # list of questions
 reference_answer_list: List[str] # list of reference answers

@@ -1,7 +1,7 @@
 import logging
 from typing import List
 
-from tval.openai_api_util import get_single_message
+from tvalmetrics.openai_api_util import get_single_message
 
 logger = logging.getLogger()
 

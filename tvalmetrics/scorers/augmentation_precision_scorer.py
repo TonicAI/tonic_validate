@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import List
 
-from tval.scorers.augmentation_accuracy_scorer import AugmentationAccuracyScorer
-from tval.scorers.retrieval_precision_scorer import RetrievalPrecisionScorer
+from tvalmetrics.scorers.augmentation_accuracy_scorer import AugmentationAccuracyScorer
+from tvalmetrics.scorers.retrieval_precision_scorer import RetrievalPrecisionScorer
 
 
 @dataclass

@@ -69,7 +69,7 @@ For a quickstart example using a simple [LlamaIndex](https://github.com/run-llam
 You can use Tonic Validate Metrics score to calculate RAG metrics with just a few lines of code.
 
 ```python
-from tvalmetrics import RagScoresCaclulator
+from tvalmetrics import RagScoresCalculator
 
 question: str # the question asked
 reference_answer: str # ground truth answer
@@ -96,7 +96,7 @@ scores = score_calculator.score(
 You can also specify which metrics to calculate when instantiating `RagScoresCalculator`. For example, if you do not have a reference answer or top k context, you only specify the the following scores.
 
 ```python
-from tvalmetrics import RagScoresCaclulator
+from tvalmetrics import RagScoresCalculator
 
 question: str # the question asked
 reference_answer: str # ground truth answer
@@ -123,7 +123,7 @@ scores = score_calculator.score(
 If you have a batch of questions and answers, you can score them all simultaneously and then store the scores in a pandas DataFrame.
 
 ```python
-from tvalmetrics import RagScoresCaclulator
+from tvalmetrics import RagScoresCalculator
 
 question_list: List[str] # list of questions
 reference_answer_list: List[str] # list of reference answers

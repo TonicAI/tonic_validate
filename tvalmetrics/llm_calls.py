@@ -108,9 +108,9 @@ def ask_whether_context_is_relevant(question: str, context: str, model: str) -> 
     main_message = """
     Considering the following question and context, determine whether the context
     is relevant for answering the question. If the context is relevant for answering
-    the question, responsd with true. If the context is not relevant for answering
+    the question, respond with true. If the context is not relevant for answering
     the question, respond with false. Respond with either true or false and no
-    additinal text.
+    additional text.
     """.replace(
         NEWLINE_INDENT_STRING, " "
     ).strip()

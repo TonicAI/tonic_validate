@@ -2,6 +2,7 @@
 
 This is **Tonic Validate Metrics**, the retrieval augmented generation (RAG) metrics part of Tonic Validate. Tonic Validate Metrics provides fundamental RAG metrics and an evaluation framework for experimenting with RAG applications.
 
+* [Github](https://github.com/TonicAI/tvalmetrics).
 * [Documentation](https://docs.tonic.ai/validate/tonic-validate-metrics-tvalmetrics-python-package/tval-package-about).
 * Tonic Validate is a platform for RAG development and experiment tracking. To use Tonic Validate Metrics in Tonic Validate, sign up for a [free Tonic Validate account](https://validate.tonic.ai/signup).
 
@@ -28,7 +29,7 @@ The metrics in Tonic Validate Metrics use these objects and LLM-assisted evaluat
 * **Answer consistency (binary)**: Does the answer contain any information that does not come from the retrieved context?
 * **Retrieval k-recall**: For the top k context vectors, where the retrieved context is a subset of the top k context vectors, is the retrieved context all of the relevant context among the top k context vectors for answering the question?
  
-For the complete definitions of these metrics, see the [RAG metrics reference](https://docs.tonic.ai/validate/rag-metrics/tonic-validate-rag-metrics-reference) section of our documentation or the [RAG metrics reference table](#metrics-reference-table) below. To see how these metrics vary with chunk size and number of retrieved context chunks for a simple RAG application, check out this [RAG metrics analysis jupyter notebook](examples/rag_metrics_sweep_analysis.ipynb).
+For the complete definitions of these metrics, see the [RAG metrics reference](https://docs.tonic.ai/validate/rag-metrics/tonic-validate-rag-metrics-reference) section of our documentation or the RAG metrics reference table below.
 
 The different metrics in Tonic Validate Metrics require different inputs to calculate (see reference table below).
 
@@ -60,8 +61,6 @@ os.environ["OPENAI_API_KEY"] = "put-your-openai-api-key-here"
 ```
 
 # Quickstart
-
-For a quickstart example using [LlamaIndex](https://github.com/run-llama/llama_index) for RAG, chech out this [quickstart jupyter notebook](examples/quickstart_example_paul_graham_essays.ipynb).
 
 You can use Tonic Validate Metrics score to calculate RAG metrics with just a few lines of code.
 
@@ -140,8 +139,6 @@ mean_scores = batch_scores.mean_scores
 # dataframe that has the input data and the scores for each question
 scores_df = batch_scores.to_dataframe()
 ```
-
-The [examples folder](examples) contains more extensive examples of using Tonic Validate Metrics with a RAG application. The example system is built using [LlamaIndex](https://github.com/run-llama/llama_index) to answer questions about Paul Graham essays on founders.
 
 # Metrics reference
 

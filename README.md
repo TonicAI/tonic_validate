@@ -1,7 +1,7 @@
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./README_images/TonicValidate-Horizontal-Dark-Icon.svg">
-  <source media="(prefers-color-scheme: light)" srcset="./README_images/TonicValidate-Horizontal-White-Icon.svg">
-  <img src="./README_images/TonicValidate-Horizontal-White-Icon.svg">
+  <source media="(prefers-color-scheme: light)" srcset="./README_images/TonicValidate-Horizontal-Dark-Icon.svg">
+  <source media="(prefers-color-scheme: dark)" srcset="./README_images/TonicValidate-Horizontal-White-Icon.svg">
+  <img src="./README_images/TonicValidate-Horizontal-Dark-Icon.svg">
 </picture>
 
 This is **Tonic Validate Metrics**, the retrieval augmented generation (RAG) metrics part of Tonic Validate. Tonic Validate Metrics provides fundamental RAG metrics and an evaluation framework for experimenting with RAG applications.

@@ -1,26 +1,28 @@
 import logging
 import time
-from typing import Dict, List, Optional, Tuple, Union
+from typing import Dict, List, Optional, Tuple
 
-import openai
-from openai.error import RateLimitError
+from openai import OpenAI, RateLimitError
+from openai.types.chat import ChatCompletion, ChatCompletionMessageParam
+from openai.types.completion_usage import CompletionUsage
 
 logger = logging.getLogger()
+client = OpenAI()
 
 
 def make_request_with_retry(
-    messages: List[Dict[str, str]],
+    messages: List[ChatCompletionMessageParam],
     model: str,
     temperature: float,
     wait_time: float = 0.1,
     max_retries: int = 12,
     exp_delay_base: int = 2,
-) -> Optional[Dict[str, Union[List[Dict[str, Dict[str, str]]], Dict[str, int]]]]:
+) -> Optional[ChatCompletion]:
     """Makes request to OpenAI API with exponential back off retry logic.
 
     Parameters
     ----------
-    messages: List[Dict[str, str]]
+    messages: List[ChatCompletionMessageParam]
         List of messages to send to OpenAI API.
     model: str
         Name of the LLM model to use. Must be an Open AI chat completion model.
@@ -35,13 +37,13 @@ def make_request_with_retry(
 
     Returns
     -------
-    Optional[Dict[str, Union[List[Dict[str, Dict[str, str]]], Dict[str, int]]]]
+    Optional[ChatCompletion]
         Response from OpenAI API.
     """
     num_retries = 0
     while num_retries < max_retries:  # if it can't make the request - this is to retry
         try:
-            completion = openai.ChatCompletion.create(
+            completion = client.chat.completions.create(
                 model=model, messages=messages, temperature=temperature
             )
             return completion
@@ -71,8 +73,8 @@ def make_request_with_retry(
 
 
 def get_message_response(
-    open_ai_message_list: List[Dict[str, str]], model: str, temperature: float = 1.0
-) -> Tuple[str, Dict[str, int]]:
+    open_ai_message_list: List[ChatCompletionMessageParam], model: str, temperature: float = 1.0
+) -> Tuple[str, CompletionUsage]:
     """Sends message list to Open AI API, parses response, and returns response message.
 
     Parameters
@@ -86,15 +88,17 @@ def get_message_response(
 
     Returns
     -------
-    Tuple[str, Dict[str, int]]
-        Tuple of response message and usage dictionary.
+    Tuple[str, CompletionUsage]
+        Tuple of response message and usage.
     """
     completion = make_request_with_retry(open_ai_message_list, model, temperature)
     if completion is None:
-        raise Exception(f"Failed to get message response from {model}, max retires hit")
+        raise Exception(f"Failed to get completion response from {model}, max retires hit")
 
-    message_response = completion["choices"][0]["message"]["content"]  # type: ignore
-    usage = completion["usage"]
+    message_response = completion.choices[0].message.content
+    usage = completion.usage
+    if message_response is None:
+        raise Exception(f"Failed to get message response from {model}, message does not exist")
 
     return message_response, usage  # type: ignore
 
@@ -121,7 +125,7 @@ def get_single_message(
     str
         Response from OpenAI API.
     """
-    message_list = [
+    message_list: List[ChatCompletionMessageParam] = [
         {"role": "system", "content": system_message},
         {"role": "user", "content": message},
     ]

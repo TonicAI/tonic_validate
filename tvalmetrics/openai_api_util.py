@@ -1,6 +1,6 @@
 import logging
 import time
-from typing import Dict, List, Optional, Tuple
+from typing import List, Optional, Tuple
 
 from openai import OpenAI, RateLimitError
 from openai.types.chat import ChatCompletion, ChatCompletionMessageParam

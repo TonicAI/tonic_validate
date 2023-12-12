@@ -1,7 +1,7 @@
 from typing import List, Optional
 
 from tvallogging.chat_objects import QuestionWithAnswer
-from tvallogging.classes.http_client import HttpClient
+from tvalmetrics.utils.http_client import HttpClient
 
 
 class Run(object):

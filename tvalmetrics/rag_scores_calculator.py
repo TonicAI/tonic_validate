@@ -3,6 +3,7 @@ from statistics import mean
 from typing import Dict, List, Optional
 
 import pandas as pd
+from tvalmetrics.classes.chat_objects import QuestionWithAnswer
 from tvalmetrics.scorers import (  # type: ignore
     AnswerConsistencyBinaryScorer,
     AnswerConsistencyScorer,
@@ -51,6 +52,7 @@ class Scores:
     llm_answer_list: List[Optional[str]]
     retrieved_context_list_list: List[Optional[List[str]]]
     top_k_context_list_list: List[Optional[List[str]]]
+    question_with_answer_id_list: List[Optional[str]]
 
     def to_dataframe(self) -> pd.DataFrame:
         """Convert Scores to a pandas DataFrame."""
@@ -330,10 +332,11 @@ class TonicValidateCalculator(object):
             score_count += 1
         return score_sum / score_count
 
-    def score(
+    def __score(
         self,
         question: Optional[str] = None,
         reference_answer: Optional[str] = None,
+        question_with_answer_id: Optional[str] = None,
         llm_answer: Optional[str] = None,
         retrieved_context_list: Optional[List[str]] = None,
         top_k_context_list: Optional[List[str]] = None,
@@ -425,7 +428,6 @@ class TonicValidateCalculator(object):
             annswer_consistency,
             retrieval_k_recall,
         )
-
         return Scores(
             answer_similarity_score_list=[answer_similarity_score],
             retrieval_precision_list=[retrieval_precision],
@@ -437,11 +439,44 @@ class TonicValidateCalculator(object):
             overall_score_list=[overall_score],
             question_list=[question],
             reference_answer_list=[reference_answer],
+            question_with_answer_id_list=[question_with_answer_id],
             llm_answer_list=[llm_answer],
             retrieved_context_list_list=[retrieved_context_list],
             top_k_context_list_list=[top_k_context_list],
         )
+    
+    def score(
+        self,
+        question: Optional[str] = None,
+        reference_answer: Optional[str] = None,
+        llm_answer: Optional[str] = None,
+        retrieved_context_list: Optional[List[str]] = None,
+        top_k_context_list: Optional[List[str]] = None,
+    ) -> Scores:
+        return self.__score(
+            question=question,
+            reference_answer=reference_answer,
+            llm_answer=llm_answer,
+            retrieved_context_list=retrieved_context_list,
+            top_k_context_list=top_k_context_list,
+        )
 
+    def score_question_with_answer(
+        self,
+        question_with_answer: QuestionWithAnswer,
+        llm_answer: Optional[str] = None,
+        retrieved_context_list: Optional[List[str]] = None,
+        top_k_context_list: Optional[List[str]] = None,
+    ) -> Scores:
+        return self.__score(
+            question=question_with_answer.question,
+            reference_answer=question_with_answer.answer,
+            question_with_answer_id=question_with_answer.id,
+            llm_answer=llm_answer,
+            retrieved_context_list=retrieved_context_list,
+            top_k_context_list=top_k_context_list,
+        )
+    
     def get_n_samples(
         self,
         question_list: Optional[List[Optional[str]]],
@@ -459,10 +494,11 @@ class TonicValidateCalculator(object):
             raise ValueError(error_message)
         return n_samples
 
-    def score_batch(
+    def __score_batch(
         self,
         question_list: Optional[List[Optional[str]]] = None,
         reference_answer_list: Optional[List[Optional[str]]] = None,
+        question_with_answer_id_list: Optional[List[Optional[str]]] = None,
         llm_answer_list: Optional[List[Optional[str]]] = None,
         retrieved_context_list_list: Optional[List[Optional[List[str]]]] = None,
         top_k_context_list_list: Optional[List[Optional[List[str]]]] = None,
@@ -506,27 +542,33 @@ class TonicValidateCalculator(object):
             retrieved_context_list_list = [None for _ in range(n_samples)]
         if top_k_context_list_list is None:
             top_k_context_list_list = [None for _ in range(n_samples)]
+        if question_with_answer_id_list is None:
+            question_with_answer_id_list = [None for _ in range(n_samples)]
+
 
         score_list = []
         for (
             question,
             reference_answer,
+            question_with_answer_id,
             llm_answer,
             retrieved_context_list,
             top_k_context_list,
         ) in zip(
             question_list,
             reference_answer_list,
+            question_with_answer_id_list,
             llm_answer_list,
             retrieved_context_list_list,
             top_k_context_list_list,
         ):
-            score = self.score(
-                question,
-                reference_answer,
-                llm_answer,
-                retrieved_context_list,
-                top_k_context_list,
+            score = self.__score(
+                question=question,
+                reference_answer=reference_answer,
+                question_with_answer_id=question_with_answer_id,
+                llm_answer=llm_answer,
+                retrieved_context_list=retrieved_context_list,
+                top_k_context_list=top_k_context_list,
             )
             score_list.append(score)
 
@@ -551,6 +593,7 @@ class TonicValidateCalculator(object):
             overall_score_list=[x.overall_score_list[0] for x in score_list],
             question_list=question_list,
             reference_answer_list=reference_answer_list,
+            question_with_answer_id_list=[x.question_with_answer_id_list[0] for x in score_list],
             llm_answer_list=llm_answer_list,
             retrieved_context_list_list=retrieved_context_list_list,
             top_k_context_list_list=top_k_context_list_list,

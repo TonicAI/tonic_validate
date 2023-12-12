@@ -1,6 +1,8 @@
+import enum
 from typing import List, Optional
 
 from tvalmetrics.classes.chat_objects import Benchmark, QuestionWithAnswer
+from tvalmetrics.rag_scores_calculator import Scores
 from tvalmetrics.utils.http_client import HttpClient
 from tvalmetrics.services.run_service import RunService
 
@@ -31,33 +33,37 @@ class Run(object):
     
     def log(
         self,
-        question_with_answer: QuestionWithAnswer,
-        llm_answer: str,
-        retrieved_context_list: Optional[List[str]] = None,
-        top_k_context_list: Optional[List[str]] = None,
-        answer_similarity: Optional[float] = None,
-        retrieval_precision: Optional[float] = None,
-        augmentation_precision: Optional[float] = None,
-        augmentation_accuracy: Optional[float] = None,
-        answer_consistency: Optional[float] = None,
-        overall_score: Optional[float] = None,
+        scores: Scores,
     ) -> None:
-        if question_with_answer.id is None:
+        # Filter out none values from scores.question_with_answer_id_list
+        question_with_answer_id_list = [
+            question_with_answer_id
+            for question_with_answer_id in scores.question_with_answer_id_list
+            if question_with_answer_id is not None
+        ]
+        
+        if len(question_with_answer_id_list) != len(scores.llm_answer_list):
             raise ValueError(
-                "question id is None, and we need question id to log the answer"
+                "Some or none of the provided scores have a question_with_answer associated with them"
             )
-
-        self.run_service.log(
-            self.id,
-            question_with_answer.id,
-            llm_answer,
-            retrieved_context_list,
-            top_k_context_list,
-            answer_similarity,
-            retrieval_precision,
-            augmentation_precision,
-            augmentation_accuracy,
-            answer_consistency,
-            overall_score,
-        )
+        
+        for index, question_with_answer_id in enumerate(question_with_answer_id_list):
+            llm_answer = scores.llm_answer_list[index]
+            if llm_answer is None:
+                raise ValueError(
+                    "No LLM answer provided"
+                )
+            self.run_service.log(
+                self.id,
+                question_with_answer_id,
+                llm_answer,
+                scores.retrieved_context_list_list[index],
+                scores.top_k_context_list_list[index],
+                scores.answer_similarity_score_list[index],
+                scores.retrieval_precision_list[index],
+                scores.augmentation_precision_list[index],
+                scores.augmentation_accuracy_list[index],
+                scores.answer_consistency_list[index],
+                scores.overall_score_list[index],
+            )
         return

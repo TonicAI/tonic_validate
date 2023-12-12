@@ -10,7 +10,7 @@ from tvalmetrics.classes.project import Project
 from tvalmetrics.services.project_service import ProjectService
 
 
-class TonicValidateLogger:
+class TonicValidateApi:
     """Wrapper class for invoking the Tonic Validate UI.
 
     Parameters

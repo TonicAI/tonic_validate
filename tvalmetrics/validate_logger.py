@@ -11,12 +11,12 @@ from tvalmetrics.services.project_service import ProjectService
 
 
 class TonicValidateLogger:
-    """Wrapper class for invoking the Tonic Validate API.
+    """Wrapper class for invoking the Tonic Validate UI.
 
     Parameters
     ----------
     api_key : str
-        The access token for the Tonic Validate API. The access token is obtained from
+        The access token for the Tonic Validate UI. The access token is obtained from
         the Tonic Validate UI.
     """
 

@@ -1,6 +1,6 @@
 from typing import Optional
 
-from tvallogging.classes.http_client import HttpClient
+from tvalmetrics.utils.http_client import HttpClient
 
 
 class BenchmarkService(object):

@@ -1,15 +1,15 @@
 import os
 from typing import Optional
 
-from tvallogging.chat_objects import Benchmark
-from tvallogging.classes.http_client import HttpClient
-from tvallogging.classes.project import Project
-from tvallogging.logging_util import convert_benchmark_response_to_benchmark
-from tvallogging.services.benchmark_service import BenchmarkService
-from tvallogging.services.project_service import ProjectService
+from tvalmetrics.classes.chat_objects import Benchmark
+from tvalmetrics.utils.http_client import HttpClient
+from tvalmetrics.services.project_service import ProjectService
+from tvalmetrics.utils.logging_util import convert_benchmark_response_to_benchmark
+from tvalmetrics.services.benchmark_service import BenchmarkService
+from tvalmetrics.services.project_service import ProjectService
 
 
-class TonicValidateApi:
+class TonicValidateLogger:
     """Wrapper class for invoking the Tonic Validate API.
 
     Parameters

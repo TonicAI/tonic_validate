@@ -1,6 +1,6 @@
 from typing import Any, Dict
 
-from tvallogging.chat_objects import Benchmark, QuestionWithAnswer
+from tvalmetrics.classes.chat_objects import Benchmark, QuestionWithAnswer
 
 
 def convert_benchmark_response_to_benchmark(

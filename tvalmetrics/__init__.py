@@ -1,1 +1,1 @@
-from tvalmetrics.rag_scores_calculator import RagScoresCalculator  # noqa: F401
+from tvalmetrics.rag_scores_calculator import TonicValidateCalculator  # noqa: F401

@@ -1,20 +1,16 @@
 from typing import List, Optional
 
-from tvallogging.chat_objects import QuestionWithAnswer
+from tvalmetrics.classes.chat_objects import QuestionWithAnswer
 from tvalmetrics.utils.http_client import HttpClient
 
 
-class Run(object):
+class RunService(object):
     """Object representing a Tonic Validate run.
 
     Parameters
     ----------
     id : str
         The ID of the run.
-    benchmark : Benchmark
-        The benchmark associated with the run.
-    scores_calculator : RagScoresCalculator
-        The scores calculator used to calculate scores for the run.
     client : HttpClient
         The HTTP client used to make requests to the Tonic Validate API.
     """

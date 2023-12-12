@@ -1,34 +1,25 @@
 from typing import Any
 
-from tvallogging.chat_objects import Benchmark
+from tvalmetrics.classes.chat_objects import Benchmark
 from tvalmetrics.utils.http_client import HttpClient
-from tvalmetrics.classes.run import Run
+from tvalmetrics.services.run_service import RunService
 
 
-class Project(object):
+class ProjectService(object):
     """Object representing a Tonic Validate project.
 
     Parameters
     ----------
-    id : str
-        The ID of the project.
-    benchmark : Benchmark
-        The benchmark associated with the project.
-    name : str
-        The name of the project.
     client : HttpClient
         The HTTP client used to make requests to the Tonic Validate API.
     """
 
-    def __init__(self, id: str, benchmark: Benchmark, name: str, client: HttpClient):
-        self.id = id
-        self.benchmark = benchmark
-        self.name = name
+    def __init__(self, client: HttpClient):
         self.client = client
 
     def new_run(
         self,
-        llm_evaluator: str,
+        project_id: str,
         answer_similarity_score: bool = False,
         retrieval_precision: bool = False,
         augmentation_precision: bool = False,
@@ -36,7 +27,7 @@ class Project(object):
         answer_consistency: bool = False,
         answer_consistency_binary: bool = False,
         retrieval_k_recall: bool = False,
-    ) -> Run:
+    ) -> RunService:
         """Create a new Tonic Validate run.
 
         If called with just the llm_evaluator parameter, then the run will calculate
@@ -97,7 +88,7 @@ class Project(object):
             answer_consistency = True
 
         data = {
-            "project_id": self.id,
+            "project_id": project_id,
             "overall_answer_similarity": 0,
             "overall_retrieval_precision": 0,
             "overall_augmentation_precision": 0,
@@ -107,7 +98,7 @@ class Project(object):
         }
         response = self.client.http_post("/runs/", data=data)
         run_id = response["id"]
-        return Run(run_id, self.client)
+        return RunService(run_id, self.client)
 
     def new_project(self, project_name: str, benchmark_id: str) -> str:
         data = {"name": project_name, "benchmark_id": benchmark_id}

@@ -153,7 +153,7 @@ class Scores:
         )
 
 
-class TonicValidateCalculator(object):
+class RagScoresCalculator(object):
     """Class for calculating any collection of RAG scores.
 
     Note: If all scores are set to False, then the default is to calculate the answer

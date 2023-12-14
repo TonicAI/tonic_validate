@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import List
 
-from tvalmetrics.llm_calls import (
+from tvalmetrics.utils.llm_calls import (
     ask_for_main_points,
     ask_whether_statement_derived_from_context,
 )

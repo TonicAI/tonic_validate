@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import List
 
-from tvalmetrics.llm_calls import ask_whether_context_is_relevant
+from tvalmetrics.utils.llm_calls import ask_whether_context_is_relevant
 from tvalmetrics.scorers.scorers_util import parse_boolean_response
 
 

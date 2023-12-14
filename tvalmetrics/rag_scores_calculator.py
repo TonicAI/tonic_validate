@@ -493,12 +493,11 @@ class RagScoresCalculator(object):
             )
             raise ValueError(error_message)
         return n_samples
-
+    
     def score_batch(
         self,
         question_list: Optional[List[Optional[str]]] = None,
         reference_answer_list: Optional[List[Optional[str]]] = None,
-        question_with_answer_id_list: Optional[List[Optional[str]]] = None,
         llm_answer_list: Optional[List[Optional[str]]] = None,
         retrieved_context_list_list: Optional[List[Optional[List[str]]]] = None,
         top_k_context_list_list: Optional[List[Optional[List[str]]]] = None,
@@ -531,6 +530,23 @@ class RagScoresCalculator(object):
         Scores
             All the scores that were calculated.
         """
+        return self.__score_batch(
+            question_list=question_list,
+            reference_answer_list=reference_answer_list,
+            llm_answer_list=llm_answer_list,
+            retrieved_context_list_list=retrieved_context_list_list,
+            top_k_context_list_list=top_k_context_list_list,
+        )
+
+    def __score_batch(
+        self,
+        question_list: Optional[List[Optional[str]]] = None,
+        reference_answer_list: Optional[List[Optional[str]]] = None,
+        question_with_answer_id_list: Optional[List[Optional[str]]] = None,
+        llm_answer_list: Optional[List[Optional[str]]] = None,
+        retrieved_context_list_list: Optional[List[Optional[List[str]]]] = None,
+        top_k_context_list_list: Optional[List[Optional[List[str]]]] = None,
+    ) -> Scores:
         n_samples = self.get_n_samples(question_list, retrieved_context_list_list)
         if question_list is None:
             question_list = [None for _ in range(n_samples)]

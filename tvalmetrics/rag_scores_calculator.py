@@ -494,7 +494,7 @@ class RagScoresCalculator(object):
             raise ValueError(error_message)
         return n_samples
 
-    def __score_batch(
+    def score_batch(
         self,
         question_list: Optional[List[Optional[str]]] = None,
         reference_answer_list: Optional[List[Optional[str]]] = None,

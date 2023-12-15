@@ -561,7 +561,6 @@ class RagScoresCalculator(object):
         if question_with_answer_id_list is None:
             question_with_answer_id_list = [None for _ in range(n_samples)]
 
-
         score_list = []
         for (
             question,

@@ -1,6 +1,6 @@
 import logging
 
-from tvalmetrics.llm_calls import ask_for_similarity_score
+from tvalmetrics.utils.llm_calls import ask_for_similarity_score
 
 logger = logging.getLogger()
 

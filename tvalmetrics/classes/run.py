@@ -1,7 +1,4 @@
-import enum
-from typing import List, Optional
-
-from tvalmetrics.classes.chat_objects import Benchmark, QuestionWithAnswer
+from tvalmetrics.classes.chat_objects import Benchmark
 from tvalmetrics.rag_scores_calculator import Scores
 from tvalmetrics.utils.http_client import HttpClient
 from tvalmetrics.services.run_service import RunService

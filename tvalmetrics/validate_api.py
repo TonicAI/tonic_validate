@@ -7,7 +7,6 @@ from tvalmetrics.services.project_service import ProjectService
 from tvalmetrics.utils.logging_util import convert_benchmark_response_to_benchmark
 from tvalmetrics.services.benchmark_service import BenchmarkService
 from tvalmetrics.classes.project import Project
-from tvalmetrics.services.project_service import ProjectService
 
 
 class TonicValidateApi:

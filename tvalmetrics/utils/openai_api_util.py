@@ -73,7 +73,9 @@ def make_request_with_retry(
 
 
 def get_message_response(
-    open_ai_message_list: List[ChatCompletionMessageParam], model: str, temperature: float = 1.0
+    open_ai_message_list: List[ChatCompletionMessageParam],
+    model: str,
+    temperature: float = 1.0,
 ) -> Tuple[str, CompletionUsage]:
     """Sends message list to Open AI API, parses response, and returns response message.
 
@@ -93,12 +95,16 @@ def get_message_response(
     """
     completion = make_request_with_retry(open_ai_message_list, model, temperature)
     if completion is None:
-        raise Exception(f"Failed to get completion response from {model}, max retires hit")
+        raise Exception(
+            f"Failed to get completion response from {model}, max retires hit"
+        )
 
     message_response = completion.choices[0].message.content
     usage = completion.usage
     if message_response is None:
-        raise Exception(f"Failed to get message response from {model}, message does not exist")
+        raise Exception(
+            f"Failed to get message response from {model}, message does not exist"
+        )
 
     return message_response, usage  # type: ignore
 

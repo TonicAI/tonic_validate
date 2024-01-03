@@ -1,14 +1,14 @@
 [tool.poetry]
 name = "tvalmetrics"
-version = "1.1.0"
+version = "2.0.0"
 description = "RAG evaluation metrics."
 authors = ["Joe Ferrara <joeferrara@tonic.ai>"]
-readme = "pypi_readme.md"
 
 [tool.poetry.dependencies]
 python = ">=3.8.1,<4.0.0"
 openai = ">=1.0.0"
 pandas = ">=1.2.3"
+pydantic = "^2.5.3"
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^6.0.0"

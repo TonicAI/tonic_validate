@@ -10,6 +10,8 @@ logger = logging.getLogger()
 
 
 class RetrievalPrecisionMetric(Metric):
+    name = "retrieval_precision"
+
     def score(self, llm_response: LLMResponse, openai_service: OpenAIService) -> float:
         return self.calculate_metric(llm_response, openai_service)[0]
 

@@ -12,8 +12,9 @@ logger = logging.getLogger()
 
 
 class AugmentationPrecisionMetric(Metric):
-    def __init__(self, model: str):
-        self.model = model
+    name = "augmentation_precision"
+
+    def __init__(self) -> None:
         self.augmentation_accuracy = AugmentationAccuracyMetric()
         self.retrieval_precision = RetrievalPrecisionMetric()
 

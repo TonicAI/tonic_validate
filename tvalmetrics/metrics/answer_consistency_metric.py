@@ -14,7 +14,9 @@ from tvalmetrics.utils.llm_calls import (
 logger = logging.getLogger()
 
 
-class AnswerConsistencyBinaryMetric(Metric):
+class AnswerConsistencyMetric(Metric):
+    name = "answer_consistency"
+
     def score(self, llm_response: LLMResponse, openai_service: OpenAIService) -> float:
         main_points_response = main_points_call(llm_response.llm_answer, openai_service)
         main_point_list = parse_bullet_list_response(main_points_response)

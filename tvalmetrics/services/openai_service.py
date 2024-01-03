@@ -1,4 +1,3 @@
-from turtle import mode
 from typing import Dict
 from openai import OpenAI
 

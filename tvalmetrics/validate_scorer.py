@@ -11,8 +11,9 @@ from tvalmetrics.services.openai_service import OpenAIService
 
 
 class ValidateScorer:
-    def __init__(self, metrics: List[Metric]):
+    def __init__(self, metrics: List[Metric], model_evaluator: str = "gpt-4-1106-preview"):
         self.metrics = metrics
+        self.model_evaluator = model_evaluator
 
     def score_run(self, responses: List[LLMResponse]) -> List[Score]:
         """Calculate metric scores for a list of LLMResponse objects.
@@ -30,7 +31,7 @@ class ValidateScorer:
         results: List[Score] = []
         for response in responses:
             # We cache per response, so we need to create a new OpenAIService
-            openai_service = OpenAIService()
+            openai_service = OpenAIService(self.model_evaluator)
             for metric in self.metrics:
                 score = metric.score(response, openai_service)
                 results.append(

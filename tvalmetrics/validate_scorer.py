@@ -15,7 +15,7 @@ class ValidateScorer:
         self.metrics = metrics
         self.model_evaluator = model_evaluator
 
-    def score_run(self, responses: List[LLMResponse]) -> List[Score]:
+    def score_run(self, responses: List[LLMResponse]) -> List[List[Score]]:
         """Calculate metric scores for a list of LLMResponse objects.
 
         Parameters
@@ -28,13 +28,15 @@ class ValidateScorer:
         float
             The score for the list of LLMResponse objects.
         """
-        results: List[Score] = []
+        results = []
         for response in responses:
+            scores = []
             # We cache per response, so we need to create a new OpenAIService
             openai_service = OpenAIService(self.model_evaluator)
             for metric in self.metrics:
                 score = metric.score(response, openai_service)
-                results.append(
+                scores.append(
                     Score(score=score, metric_name=metric.name, llm_response=response)
                 )
+            results.append(scores)
         return results

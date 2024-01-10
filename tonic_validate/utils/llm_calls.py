@@ -1,6 +1,6 @@
 import logging
 from typing import List
-from tvalmetrics.services.openai_service import OpenAIService
+from tonic_validate.services.openai_service import OpenAIService
 
 logger = logging.getLogger()
 

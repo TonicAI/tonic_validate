@@ -1,10 +1,10 @@
 import logging
 from typing import List, Tuple
-from tvalmetrics.classes.llm_response import LLMResponse
-from tvalmetrics.metrics.metric import Metric
-from tvalmetrics.utils.metrics_util import parse_boolean_response
-from tvalmetrics.services.openai_service import OpenAIService
-from tvalmetrics.utils.llm_calls import context_relevancy_call
+from tonic_validate.classes.llm_response import LLMResponse
+from tonic_validate.metrics.metric import Metric
+from tonic_validate.utils.metrics_util import parse_boolean_response
+from tonic_validate.services.openai_service import OpenAIService
+from tonic_validate.utils.llm_calls import context_relevancy_call
 
 logger = logging.getLogger()
 

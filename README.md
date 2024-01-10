@@ -8,7 +8,7 @@ Tonic Validate is a platform for RAG development and experiment tracking. Sign u
 
 Install Tonic Validate Metrics via
 ```
-pip install tvalmetrics
+pip install tonic-validate
 ```
 
 # Tonic Validate Metrics
@@ -44,7 +44,7 @@ It is common when building and evaluating a RAG application to not have a benchm
 
 Install Tonic Validate Metrics with pip:
 ```
-pip install tvalmetrics
+pip install tonic-validate
 ```
 
 Tonic Validate Metrics uses LLM-assisted evaluation to calculate RAG metrics. The LLM evaluator currently supports the Open AI gpt-4 and gpt-3.5 family of [models](https://platform.openai.com/docs/models/overview).

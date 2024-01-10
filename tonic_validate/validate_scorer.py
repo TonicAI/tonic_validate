@@ -2,12 +2,12 @@ from ast import Dict
 from typing import List
 
 import openai
-from tvalmetrics.classes.llm_response import LLMResponse
-from tvalmetrics.classes.run_score import Score
-from tvalmetrics.metrics.answer_similarity_metric import AnswerSimilarityMetric
+from tonic_validate.classes.llm_response import LLMResponse
+from tonic_validate.classes.run_score import Score
+from tonic_validate.metrics.answer_similarity_metric import AnswerSimilarityMetric
 
-from tvalmetrics.metrics.metric import Metric
-from tvalmetrics.services.openai_service import OpenAIService
+from tonic_validate.metrics.metric import Metric
+from tonic_validate.services.openai_service import OpenAIService
 
 
 class ValidateScorer:

@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "tvalmetrics"
+name = "tonic-validate"
 version = "2.0.0"
 description = "RAG evaluation metrics."
 authors = ["Joe Ferrara <joeferrara@tonic.ai>"]

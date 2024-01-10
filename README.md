@@ -27,7 +27,6 @@ The metrics in Tonic Validate Metrics use these objects and LLM-assisted evaluat
 * **Augmentation precision**: Is the relevant retrieved context in the answer?
 * **Augmentation accuracy**: How much of the retrieved context is in the answer?
 * **Answer consistency (binary)**: Does the answer contain any information that does not come from the retrieved context?
-* **Retrieval k-recall**: For the top k context vectors, where the retrieved context is a subset of the top k context vectors, is the retrieved context all of the relevant context among the top k context vectors for answering the question?
  
 For the complete definitions of these metrics, see the [RAG metrics reference](https://docs.tonic.ai/validate/rag-metrics/tonic-validate-rag-metrics-reference) section of our documentation or the [RAG metrics reference table](#metrics-reference-table) below. To see how these metrics vary with chunk size and number of retrieved context chunks for a simple RAG application, check out this [RAG metrics analysis jupyter notebook](examples/rag_metrics_sweep_analysis.ipynb).
 
@@ -38,7 +37,6 @@ Ideally, you have a benchmark dataset of questions and reference answers where t
 * Run the questions in the benchmark dataset through your RAG application
 * Get the RAG application answers
 * Get the retrieved context
-* If you use retrieval k-recall, get the top k context
 
 It is common when building and evaluating a RAG application to not have a benchmark dataset of questions and reference answers. In this case, you cannot calculate the answer similarity score, but you can calculate all other scores.
 
@@ -100,7 +98,6 @@ The following metrics reference table shows, for each Tonic Validate metric:
 | **Augmentation precision** | Question + Retrieved context + LLM answer             | (Count of relevant retrieved context in LLM answer) / (Count of relevant retrieved context) | Whether the relevant context is in the LLM answer. | Prompt builder + LLM                |
 | **Augmentation accuracy** | Retrieved context + LLM answer                          | (Count of retrieved context in LLM answer) / (Count of retrieved context) | Whether all the context is in the LLM answer. | Prompt builder + LLM                |
 | **Answer consistency** or **Answer consistency binary** | Retrieved context + LLM answer                          | (Count of the main points in the answer that can be attributed to context) / (Count of main points in answer) | Whether there is information in the LLM answer that does not come from the context. | Prompt builder + LLM                |
-| **Retrieval k-recall** | Question + Retrieved context + Top k context         | (Count of relevant retrieved context) / (Count of relevant context in top k context) | How well the retrieval system retrieves all of the relevant context. | Chunker + Embedder + Retriever    |
 
 
 
@@ -108,7 +105,7 @@ The following metrics reference table shows, for each Tonic Validate metric:
 
 ### What models can I use an an LLM evaluator?
 
-We currently allow the family of gpt3.5 and gpt4 models from Open AI.
+We currently allow the family of chat completion models from Open AI.
 
 This restriction makes it easy to follow the logic for the definition of the metrics in this package. It also ensures that this package does not depend on langchain, which also makes the logic of the package easier to follow.
 

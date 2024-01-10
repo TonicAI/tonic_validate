@@ -4,16 +4,16 @@
   <img src="./README_images/TonicValidate-Horizontal-Dark-Icon.svg">
 </picture>
 
-Tonic Validate is a platform for RAG development and experiment tracking. Sign up for a [free Tonic Validate account](https://validate.tonic.ai/signup), to try it out. This repository is **Tonic Validate Metrics**, the retrieval augmented generation (RAG) metrics part of Tonic Validate. Tonic Validate Metrics provides RAG metrics for evaluating responses of a RAG application. This metrics are used in Tonic Validate.
+Tonic Validate is a platform for RAG development and experiment tracking. Sign up for a [free Tonic Validate account](https://validate.tonic.ai/signup), to try it out. This repository, `tonic_validate` (formerly `tvalmetrics`) is the SDK component of Tonic Validate. It contains the code for calculating RAG metrics to be used with Tonic Validate.
 
-Install Tonic Validate Metrics via
+Install Tonic Validate via
 ```
 pip install tonic-validate
 ```
 
-# Tonic Validate Metrics
+# Tonic Validate
 
-Evaluating a RAG application is difficult. There are several moving pieces to evaluate and there are not hard metrics for evaluation like in traditional machine learning tasks. For these reasons, we created Tonic Validate Metrics to allow you to shed light on how your RAG application is performing. The metrics in Tonic Validate Metrics use LLM-assisted evaluation, which means they use an LLM (i.e. gpt-4) to score different aspects of the outputs of a RAG application. Admittedly, while using LLM-assisted evaluation to calculate metrics creates "soft" metrics, we've found that when you break down a RAG application into pieces and use an LLM to grade each piece individually, the LLM can grade the pieces as well as or better than the acting LLM in the RAG application answers the questions. [Research also agrees](https://arxiv.org/abs/2306.05685) that using an LLM as an evaluator of unstructured text is almost as good as using a human.
+Evaluating a RAG application is difficult. There are several moving pieces to evaluate and there are not hard metrics for evaluation like in traditional machine learning tasks. For these reasons, we created Tonic Validate to allow you to shed light on how your RAG application is performing. The metrics in Tonic Validate use LLM-assisted evaluation, which means they use an LLM (i.e. gpt-4) to score different aspects of the outputs of a RAG application. Admittedly, while using LLM-assisted evaluation to calculate metrics creates "soft" metrics, we've found that when you break down a RAG application into pieces and use an LLM to grade each piece individually, the LLM can grade the pieces as well as or better than the acting LLM in the RAG application answers the questions. [Research also agrees](https://arxiv.org/abs/2306.05685) that using an LLM as an evaluator of unstructured text is almost as good as using a human.
 
 Whenever a question is asked to a RAG application, the following objects can be considered:
 * The question
@@ -21,7 +21,7 @@ Whenever a question is asked to a RAG application, the following objects can be 
 * The answer that the RAG application returned
 * The context that the RAG application retrieved and used to answer the question
 
-The metrics in Tonic Validate Metrics use these objects and LLM-assisted evaluation to answer questions about the RAG application.
+The metrics in Tonic Validate use these objects and LLM-assisted evaluation to answer questions about the RAG application.
 * **Answer similarity score**: How well does the RAG answer match what the answer should be?
 * **Retrieval precision**: Is the retrieved context relevant to the question?
 * **Augmentation precision**: Is the relevant retrieved context in the answer?
@@ -30,7 +30,7 @@ The metrics in Tonic Validate Metrics use these objects and LLM-assisted evaluat
  
 For the complete definitions of these metrics, see the [RAG metrics reference](https://docs.tonic.ai/validate/rag-metrics/tonic-validate-rag-metrics-reference) section of our documentation or the [RAG metrics reference table](#metrics-reference-table) below. To see how these metrics vary with chunk size and number of retrieved context chunks for a simple RAG application, check out this [RAG metrics analysis jupyter notebook](examples/rag_metrics_sweep_analysis.ipynb).
 
-The different metrics in Tonic Validate Metrics require different inputs to calculate (see reference table below).
+The different metrics in Tonic Validate require different inputs to calculate (see reference table below).
 
 Ideally, you have a benchmark dataset of questions and reference answers where the reference answers serve as the ground truth correct answers to the questions. When you have a benchmark dataset of questions and reference answers, you can utilize all of the metrics after you:
 
@@ -42,13 +42,13 @@ It is common when building and evaluating a RAG application to not have a benchm
 
 # Installation and setup
 
-Install Tonic Validate Metrics with pip:
+Install Tonic Validate with pip:
 ```
 pip install tonic-validate
 ```
 
-Tonic Validate Metrics uses LLM-assisted evaluation to calculate RAG metrics. The LLM evaluator currently supports the Open AI gpt-4 and gpt-3.5 family of [models](https://platform.openai.com/docs/models/overview).
-To use the Open AI models, Tonic Validate Metrics assumes that:
+Tonic Validate uses LLM-assisted evaluation to calculate RAG metrics. The LLM evaluator currently supports the Open AI gpt-4 and gpt-3.5 family of [models](https://platform.openai.com/docs/models/overview).
+To use the Open AI models, Tonic Validate assumes that:
 * You have an Open AI API key.
 * The API key is set as the value of an environment variable.
 To get an Open AI API key, go to the [OpenAI API key page](https://platform.openai.com/account/api-keys).

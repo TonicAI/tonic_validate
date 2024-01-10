@@ -1,12 +1,12 @@
 import logging
 from typing import List
 from tonic_validate.classes.llm_response import LLMResponse
-from tonic_validate.metrics.augmentation_accuracy_metric import AugmentationAccuracyMetric
+from tonic_validate.metrics.augmentation_accuracy_metric import (
+    AugmentationAccuracyMetric
+)
 from tonic_validate.metrics.metric import Metric
 from tonic_validate.metrics.retrieval_precision_metric import RetrievalPrecisionMetric
-from tonic_validate.utils.metrics_util import parse_boolean_response
 from tonic_validate.services.openai_service import OpenAIService
-from tonic_validate.utils.llm_calls import answer_contains_context_call
 
 logger = logging.getLogger()
 

@@ -30,4 +30,4 @@ class AnswerConsistencyBinaryMetric(Metric):
         hallucination_response = answer_consistent_with_context_call(
             llm_response.llm_answer, llm_response.llm_context_list, openai_service
         )
-        return int(parse_boolean_response(hallucination_response))
+        return float(int(parse_boolean_response(hallucination_response)))

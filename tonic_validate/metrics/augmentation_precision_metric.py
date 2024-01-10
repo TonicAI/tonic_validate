@@ -1,12 +1,12 @@
 import logging
 from typing import List
-from tvalmetrics.classes.llm_response import LLMResponse
-from tvalmetrics.metrics.augmentation_accuracy_metric import AugmentationAccuracyMetric
-from tvalmetrics.metrics.metric import Metric
-from tvalmetrics.metrics.retrieval_precision_metric import RetrievalPrecisionMetric
-from tvalmetrics.utils.metrics_util import parse_boolean_response
-from tvalmetrics.services.openai_service import OpenAIService
-from tvalmetrics.utils.llm_calls import answer_contains_context_call
+from tonic_validate.classes.llm_response import LLMResponse
+from tonic_validate.metrics.augmentation_accuracy_metric import (
+    AugmentationAccuracyMetric
+)
+from tonic_validate.metrics.metric import Metric
+from tonic_validate.metrics.retrieval_precision_metric import RetrievalPrecisionMetric
+from tonic_validate.services.openai_service import OpenAIService
 
 logger = logging.getLogger()
 

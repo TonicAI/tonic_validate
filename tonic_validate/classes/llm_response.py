@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from tvalmetrics.classes.benchmark_item import BenchmarkItem
+from tonic_validate.classes.benchmark_item import BenchmarkItem
 
 
 class LLMResponse(BaseModel):

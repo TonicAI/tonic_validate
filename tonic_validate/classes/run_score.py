@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from tvalmetrics.classes.llm_response import LLMResponse
+from tonic_validate.classes.llm_response import LLMResponse
 
 
 class Score(BaseModel):

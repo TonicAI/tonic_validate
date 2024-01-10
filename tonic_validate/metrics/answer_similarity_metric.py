@@ -1,8 +1,8 @@
 import logging
-from tvalmetrics.classes.llm_response import LLMResponse
-from tvalmetrics.metrics.metric import Metric
-from tvalmetrics.services.openai_service import OpenAIService
-from tvalmetrics.utils.llm_calls import similarity_score_call
+from tonic_validate.classes.llm_response import LLMResponse
+from tonic_validate.metrics.metric import Metric
+from tonic_validate.services.openai_service import OpenAIService
+from tonic_validate.utils.llm_calls import similarity_score_call
 
 logger = logging.getLogger()
 

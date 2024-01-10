@@ -1,12 +1,12 @@
 import logging
-from tvalmetrics.classes.llm_response import LLMResponse
-from tvalmetrics.metrics.metric import Metric
-from tvalmetrics.utils.metrics_util import (
+from tonic_validate.classes.llm_response import LLMResponse
+from tonic_validate.metrics.metric import Metric
+from tonic_validate.utils.metrics_util import (
     parse_boolean_response,
     parse_bullet_list_response,
 )
-from tvalmetrics.services.openai_service import OpenAIService
-from tvalmetrics.utils.llm_calls import (
+from tonic_validate.services.openai_service import OpenAIService
+from tonic_validate.utils.llm_calls import (
     main_points_call,
     statement_derived_from_context_call,
 )

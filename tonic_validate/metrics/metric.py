@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from tvalmetrics.classes.llm_response import LLMResponse
-from tvalmetrics.services.openai_service import OpenAIService
+from tonic_validate.classes.llm_response import LLMResponse
+from tonic_validate.services.openai_service import OpenAIService
 
 
 class Metric(ABC):

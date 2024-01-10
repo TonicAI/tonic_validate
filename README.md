@@ -4,10 +4,7 @@
   <img src="./README_images/TonicValidate-Horizontal-Dark-Icon.svg">
 </picture>
 
-This is **Tonic Validate Metrics**, the retrieval augmented generation (RAG) metrics part of Tonic Validate. Tonic Validate Metrics provides fundamental RAG metrics and an evaluation framework for experimenting with RAG applications.
-
-* [Documentation](https://docs.tonic.ai/validate/tonic-validate-metrics-tvalmetrics-python-package/tval-package-about).
-* Tonic Validate is a platform for RAG development and experiment tracking. Sign up for a [free Tonic Validate account](https://validate.tonic.ai/signup).
+Tonic Validate is a platform for RAG development and experiment tracking. Sign up for a [free Tonic Validate account](https://validate.tonic.ai/signup), to try it out. This repository is **Tonic Validate Metrics**, the retrieval augmented generation (RAG) metrics part of Tonic Validate. Tonic Validate Metrics provides RAG metrics for evaluating responses of a RAG application. This metrics are used in Tonic Validate.
 
 Install Tonic Validate Metrics via
 ```

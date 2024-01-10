@@ -1,0 +1,61 @@
+[
+  {
+    "question": "What makes Sam Altman a good founder?",
+    "answer": "He has a great force of will.",
+    "reference_article": "Five Founders",
+    "reference_text": "5. Sam Altman\n\nI was told I shouldn't mention founders of YC-funded companies in this list. But Sam Altman can't be stopped by such flimsy rules. If he wants to be on this list, he's going to be.\n\nHonestly, Sam is, along with Steve Jobs, the founder I refer to most when I'm advising startups. On questions of design, I ask \"What would Steve do?\" but on questions of strategy or ambition I ask \"What would Sama do?\"\n\nWhat I learned from meeting Sama is that the doctrine of the elect applies to startups. It applies way less than most people think: startup investing does not consist of trying to pick winners the way you might in a horse race. But there are a few people with such force of will that they're going to get whatever they want."
+  },
+  {
+    "question": "When was the essay \"Five Founders\" written?",
+    "answer": "April 2009",
+    "reference_article": "Five Founders"
+  },
+  {
+    "question": "When does the most dramatic growth happen for a startup?",
+    "answer": "When the startup only has three or four people.",
+    "reference_article": "Learning From Founders",
+    "reference_text": "In the car world, there are at least some people who know that a high performance car looks like a Formula 1 racecar, not a sedan with giant rims and a fake spoiler bolted to the trunk. Why not in business? Probably because startups are so small. The really dramatic growth happens when a startup only has three or four people, so only three or four people see that, whereas tens of thousands see business as it's practiced by Boeing or Philip Morris."
+  },
+  {
+    "question": "What is the problem with business culture versus start up culture with respect to productivity?",
+    "answer": "In business culture, energy is expended on outward appearance to the detriment of productivity, while in startup culture there is no value of appearance it's all about productivity.",
+    "reference_article": "Learning From Founders",
+    "reference_text": "The striking thing about this phase is that it's completely different from most people's idea of what business is like. If you looked in people's heads (or stock photo collections) for images representing \"business,\" you'd get images of people dressed up in suits, groups sitting around conference tables looking serious, Powerpoint presentations, people producing thick reports for one another to read. Early stage startups are the exact opposite of this. And yet they're probably the most productive part of the whole economy.\n\nWhy the disconnect? I think there's a general principle at work here: the less energy people expend on performance, the more they expend on appearances to compensate. More often than not the energy they expend on seeming impressive makes their actual performance worse."
+  },
+  {
+    "question": "What's the single biggest thing the government could do to increase the number of startups in this country?",
+    "answer": "Establish a new class of visa for startup founders.",
+    "reference_article": "The Founder Visa",
+    "reference_text": "I usually avoid politics, but since we now seem to have an administration that's open to suggestions, I'm going to risk making one. The single biggest thing the government could do to increase the number of startups in this country is a policy that would cost nothing: establish a new class of visa for startup founders."
+  },
+  {
+    "question": "How could one create a rigorous government definition of what a startup is to categorize whether a business is a startup?",
+    "answer": "One could define a startup as a company that has received investment by recognized startup investors. An accreditation procedure would be determined to establish recognized startup investors.",
+    "reference_article": "The Founder Visa",
+    "reference_text": "The tricky part might seem to be how one defined a startup. But that could be solved quite easily: let the market decide. Startup investors work hard to find the best startups. The government could not do better than to piggyback on their expertise, and use investment by recognized startup investors as the test of whether a company was a real startup.\n\nHow would the government decide who's a startup investor? The same way they decide what counts as a university for student visas. We'll establish our own accreditation procedure. We know who one another are."
+  },
+  {
+    "question": "Why is frienship a good quality of founders?",
+    "answer": "Friendship is a good quality of founders because building a startup is tough and without a strong friendship building the startup will tear the founders apart.",
+    "reference_article": "What We Look For in Founders",
+    "reference_text": "Empirically it seems to be hard to start a startup with just one founder. Most of the big successes have two or three. And the relationship between the founders has to be strong. They must genuinely like one another, and work well together. Startups do to the relationship between the founders what a dog does to a sock: if it can be pulled apart, it will be."
+  },
+  {
+    "question": "Why is determination the most important quality in startup founders?",
+    "answer": "Because when building a startup you're going to hit a lot of obstacles, and determination will prevent one from getting demoralized by the constant obstacles.",
+    "reference_article": "What We Look For In Founders",
+    "reference_text": "1. Determination\n\nThis has turned out to be the most important quality in startup founders. We thought when we started Y Combinator that the most important quality would be intelligence. That's the myth in the Valley. And certainly you don't want founders to be stupid. But as long as you're over a certain threshold of intelligence, what matters most is determination. You're going to hit a lot of obstacles. You can't be the sort of person who gets demoralized easily."
+  },
+  {
+    "question": "For startups, what does board control mean in practice?",
+    "answer": "During board meetings, matters are decided in the discussion preceding the vote, not in the vote itself, which is usually unanimous. If opinion is divided in such discussions, the side that knows it would lose in a vote tends to be less insistent. This is what board control means in practice.",
+    "reference_article": "Founder Control",
+    "reference_text": "Control of a company is a more complicated matter than simply outvoting other parties in board meetings. Investors usually get vetos over certain big decisions, like selling the company, regardless of how many board seats they have. And board votes are rarely split. Matters are decided in the discussion preceding the vote, not in the vote itself, which is usually unanimous. But if opinion is divided in such discussions, the side that knows it would lose in a vote will tend to be less insistent. That's what board control means in practice. You don't simply get to do whatever you want; the board still has to act in the interest of the shareholders; but if you have a majority of board seats, then your opinion about what's in the interest of the shareholders will tend to prevail."
+  },
+  {
+    "question": "What's in the way of founders keeping board control after a series A?",
+    "answer": "The perception that founders keeping board control after a series A being a concession a VC has made when negotiating with startups. VCs do not want to look like they've lost a negotiation. If founders keeping control after a series A is the norm, then it happening will not look like the VCs lost the negotiation.",
+    "reference_article": "Founder Control",
+    "reference_text": "A lot of the reason VCs are harsh when negotiating with startups is that they're embarrassed to go back to their partners looking like they got beaten. When they sign a termsheet, they want to be able to brag about the good terms they got. A lot of them don't care that much personally about whether founders keep board control. They just don't want to seem like they had to make concessions. Which means if letting the founders keep control stops being perceived as a concession, it will rapidly become much more common."
+  }
+]

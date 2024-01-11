@@ -9,13 +9,10 @@ readme = "pypi_readme.md"
 python = ">=3.8.1,<4.0.0"
 openai = ">=1.0.0"
 pandas = ">=1.2.3"
-pydantic = "^2.5.3"
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^6.0.0"
-pydantic = "^2.0.1"
 black = "^23.1.0"
-pydantic-settings = "^2.0.0"
 isort = "^5.12.0"
 mypy = "^1.0.0"
 sphinx = "^7.0.0"
@@ -29,11 +26,6 @@ build-backend = "poetry.core.masonry.api"
 [tool.isort]
 profile = "black"
 
-[tool.mypy]
-plugins = [
-  "pydantic.mypy"
-]
-
 follow_imports = "silent"
 warn_redundant_casts = true
 warn_unused_ignores = true
@@ -43,8 +35,3 @@ no_implicit_reexport = true
 
 # for strict mypy: (this is the tricky one :-))
 disallow_untyped_defs = true
-
-[tool.pydantic-mypy]
-init_forbid_extra = true
-init_typed = true
-warn_required_dynamic_aliases = true

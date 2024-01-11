@@ -1,6 +1,6 @@
 import os
 from typing import Optional
-from tonic_validate.classes.benchmark_item import Benchmark
+from tonic_validate.classes.benchmark import Benchmark
 from tonic_validate.classes.run import Run
 
 from tonic_validate.utils.http_client import HttpClient

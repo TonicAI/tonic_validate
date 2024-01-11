@@ -13,7 +13,7 @@ class AnswerSimilarityMetric(Metric):
     def score(self, llm_response: LLMResponse, openai_service: OpenAIService) -> float:
         similarity_score_response = similarity_score_call(
             llm_response.benchmark_item.question,
-            llm_response.benchmark_item.reference_answer,
+            llm_response.benchmark_item.answer,
             llm_response.llm_answer,
             openai_service,
         )

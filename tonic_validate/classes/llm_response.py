@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from tonic_validate.classes.benchmark_item import BenchmarkItem
+from tonic_validate.classes.benchmark import BenchmarkItem
 
 
 @dataclass

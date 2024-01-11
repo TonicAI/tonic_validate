@@ -12,7 +12,10 @@ class BenchmarkItem:
 
 class Benchmark:
     def __init__(
-        self, questions: List[str], answers: Optional[List[str]], name: Optional[str]
+        self,
+        questions: List[str],
+        answers: Optional[List[str]] = None,
+        name: Optional[str] = None,
     ):
         self.name: Optional[str] = name
         self.items: List[BenchmarkItem] = []

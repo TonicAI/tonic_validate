@@ -7,3 +7,8 @@ docs/
 
 # junk files
 **/scratch_files/**
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json

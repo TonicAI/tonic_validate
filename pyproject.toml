@@ -2,7 +2,7 @@
 name = "tonic-validate"
 version = "2.1.0"
 description = "RAG evaluation metrics."
-authors = ["Joe Ferrara <joeferrara@tonic.ai>"]
+authors = ["Joe Ferrara <joeferrara@tonic.ai>", "Ethan Philpott <ephilpott@tonic.ai>"]
 readme = "pypi_readme.md"
 
 [tool.poetry.dependencies]

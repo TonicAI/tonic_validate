@@ -1,10 +1,7 @@
-from ast import Dict
 from typing import List
 
-import openai
 from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.classes.run import Run, RunData
-from tonic_validate.metrics.answer_similarity_metric import AnswerSimilarityMetric
 
 from tonic_validate.metrics.metric import Metric
 from tonic_validate.services.openai_service import OpenAIService

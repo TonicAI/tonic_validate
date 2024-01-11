@@ -45,7 +45,7 @@ class ValidateApi:
         for run_data in run.run_data:
             _ = self.client.http_post(
                 f"/projects/{project_id}/runs/{run_response['id']}/logs",
-                run_data.to_dict(),
+                data=run_data.to_dict(),
             )
 
     def get_benchmark(self, benchmark_id: str) -> Benchmark:
@@ -79,12 +79,12 @@ class ValidateApi:
             The name of the benchmark.
         """
         benchmark_response = self.client.http_post(
-            "/benchmarks", {"name": benchmark_name}
+            "/benchmarks", data={"name": benchmark_name}
         )
         for benchmark_item in benchmark.items:
             _ = self.client.http_post(
                 f"/benchmarks/{benchmark_response['id']}/items",
-                {
+                data={
                     "question": benchmark_item.question,
                     "answer": benchmark_item.answer,
                 },

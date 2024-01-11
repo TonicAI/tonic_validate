@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Iterator, List, Optional
 from attr import dataclass
 from uuid import UUID
 
@@ -14,8 +14,8 @@ class Benchmark:
     def __init__(
         self, questions: List[str], answers: Optional[List[str]], name: Optional[str]
     ):
-        self.name = name
-        self.items = []
+        self.name: Optional[str] = name
+        self.items: List[BenchmarkItem] = []
 
         if answers is None:
             for question in questions:
@@ -26,3 +26,7 @@ class Benchmark:
             raise ValueError("Questions and answers must be the same length")
         for question, answer in zip(questions, answers):
             self.items.append(BenchmarkItem(question, answer))
+
+    # define iterator
+    def __iter__(self) -> Iterator[BenchmarkItem]:
+        return iter(self.items)

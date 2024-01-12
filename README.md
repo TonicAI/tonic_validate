@@ -60,6 +60,48 @@ os.environ["OPENAI_API_KEY"] = "put-your-openai-api-key-here"
 
 # Quickstart
 
+Here's a code snippet to get you started.
+
+```python
+from tonic_validate import ValidateApi, ValidateScorer, Benchmark, LLMResponse
+from tonic_validate.metrics import AnswerConsistencyMetric, AugmentationAccuracyMetric
+benchmark = Benchmark(
+    questions=["What is the capital of France?"],
+    answers=["Paris"]
+)
+responses = []
+for item in benchmark:
+    # llm_answer is the answer that LLM gives
+    # llm_context_list is a list of the context that the LLM used to answer the question
+    llm_response = LLMResponse(
+        llm_answer="Paris",
+        llm_context_list=["Paris is the capital of France."],
+        benchmark_item=item
+    )
+    responses.append(llm_response)
+scorer = ValidateScorer([
+    AnswerConsistencyMetric(),
+    AugmentationAccuracyMetric()
+])
+run = scorer.score_run(responses)
+validate_api = ValidateApi("your-api-key")
+validate_api.upload_run("your-project-id", run)
+```
+
+If you want to see a benchmark you created in the Tonic Validate UI with benchmark_id ``, you can use the following code snippet.
+```python
+benchmark = validate_api.get_benchmark("benchmark0id")
+for item in benchmark:
+    print(item.question, item.answer)
+```
+
+You can upload a benchmark via
+
+```python
+validate_api.new_benchmark(benchmark, "name-here")
+```
+
+
 For a quickstart example using [LlamaIndex](https://github.com/run-llama/llama_index) for RAG, chech out this [quickstart jupyter notebook](examples/quickstart_example_paul_graham_essays.ipynb).
 
 # Metrics reference

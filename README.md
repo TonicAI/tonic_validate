@@ -122,6 +122,27 @@ The following metrics reference table shows, for each Tonic Validate metric:
 | **Augmentation accuracy** | Retrieved context + LLM answer                          | (Count of retrieved context in LLM answer) / (Count of retrieved context) | Whether all the context is in the LLM answer. | Prompt builder + LLM                |
 | **Answer consistency** or **Answer consistency binary** | Retrieved context + LLM answer                          | (Count of the main points in the answer that can be attributed to context) / (Count of main points in answer) | Whether there is information in the LLM answer that does not come from the context. | Prompt builder + LLM                |
 
+## Using Metrics
+To use metrics, instantiate an instance of them and provide them to the ValidateScorer like so
+```python
+scorer = ValidateScorer([
+    AnswerConsistencyMetric(),
+    AnswerSimilarityMetric(),
+    AugmentationAccuracyMetric(),
+    AugmentationPrecisionMetric(),
+    RetrievalPrecisionMetric()
+])
+```
+Here is a list of all the possible metrics with their imports
+| Metric Name                   | Import                                                             |
+|-------------------------------|--------------------------------------------------------------------|
+| **Answer similarity score**   | `from tonic_validate.metrics import AnswerSimilarityMetric`        |
+| **Retrieval precision**       | `from tonic_validate.metrics import RetrievalPrecisionMetric`      |
+| **Augmentation precision**    | `from tonic_validate.metrics import AugmentationPrecisionMetric`   |
+| **Augmentation accuracy**     | `from tonic_validate.metrics import AugmentationAccuracyMetric`    |
+| **Answer consistency**        | `from tonic_validate.metrics import AnswerConsistencyMetric`       |
+| **Answer consistency binary** | `from tonic_validate.metrics import AnswerConsistencyBinaryMetric` |
+
 # FAQ
 
 ### What models can I use an an LLM evaluator?

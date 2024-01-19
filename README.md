@@ -4,127 +4,199 @@
   <img src="./README_images/TonicValidate-Horizontal-Dark-Icon.svg">
 </picture>
 
-Tonic Validate is a platform for RAG development and experiment tracking. Sign up for a [free Tonic Validate account](https://validate.tonic.ai/signup), to try it out. This repository, `tonic_validate` (formerly `tvalmetrics`) is the SDK component of Tonic Validate. It contains the code for calculating RAG metrics and logging them to the Tonic Validate UI.
+Tonic Validate is a platform for Retrieval Augmented Generation (RAG) development and experiment tracking. This repository, `tonic_validate` (formerly `tvalmetrics`) is the SDK component of Tonic Validate. It contains the code for calculating RAG metrics and optionally logging them to the [Tonic Validate UI](https://www.tonic.ai/validate).
 
 *  [Documentation](https://docs.tonic.ai/validate/)
 
 # Quickstart
 
-1. Sign up for a free account at [validate.tonic.ai](https://validate.tonic.ai/signup).
-
-2. Install the Tonic Validate SDK by running
+1. Install the Tonic Validate SDK by running
    ```
    pip install tonic-validate
    ```
    in your terminal.
   
-3. Generate and get your API key from the [validate.tonic.ai](https://validate.tonic.ai/), and create a project.
-
-4. Use the following code snippet to get started.
+2. Use the following code snippet to get started.
 
     ```python
-    from tonic_validate import ValidateApi, ValidateScorer, Benchmark, LLMResponse
+    from tonic_validate import ValidateScorer, Benchmark, LLMResponse
     from tonic_validate.metrics import AnswerConsistencyMetric, AugmentationAccuracyMetric
     import os
     os.environ["OPENAI_API_KEY"] = "put-your-openai-api-key-here"
 
+    # Create a list of questions (required) and answers (optional) for scoring the LLM's performance
     benchmark = Benchmark(
         questions=["What is the capital of France?"],
         answers=["Paris"]
     )
+
+    # Function to simulate getting a response and context from your LLM
+    # Replace this with your actual function call
+    def get_llm_response(question):
+        # Simulating a response from the LLM
+        # In your actual implementation, this will call your LLM
+        return "Paris", ["Paris is the capital of France."]  # Example response and context
+
+    # Save the responses into an array for scoring
     responses = []
     for item in benchmark:
         # llm_answer is the answer that LLM gives
         # llm_context_list is a list of the context that the LLM used to answer the question
+        llm_answer, llm_context_list = get_llm_response(item.question)
         llm_response = LLMResponse(
-            llm_answer="Paris",
-            llm_context_list=["Paris is the capital of France."],
+            llm_answer=llm_answer,
+            llm_context_list=llm_context_list,
             benchmark_item=item
         )
         responses.append(llm_response)
+    
+    # Score the responses
     scorer = ValidateScorer([
         AnswerConsistencyMetric(),
         AugmentationAccuracyMetric()
     ])
     run = scorer.score_run(responses)
-    validate_api = ValidateApi("your-api-key")
-    validate_api.upload_run("your-project-id", run)
     ```
-    This code snippet, creates a benchmark with one question and reference answer and then logs an answer to Tonic Validate, scoring the answer with the metrics `AnswerConsistencyMetric` and `AugmentationAccuracyMetric`.
-  
-5. Go to [validate.tonic.ai](https://validate.tonic.ai/) to see your results.
+
+This code snippet, creates a benchmark with one question and reference answer and then scores the answer with the metrics `AnswerConsistencyMetric` and `AugmentationAccuracyMetric`.
+
+# Tonic Validate Benchmarks
+
+## What are Benchmarks?
+To evaluate the RAG (Retrieval Augmented Generation) system's performance, we need a dataset of questions to prompt it with. This is what Benchmarks are for. Benchmarks are a collection of questions which optionally include reference answers. When calculating the performance, Tonic Validate's SDK runs through the list of the questions in the benchmark and asks the LLM each question. Then, Tonic Validate uses the resulting answer from the LLM to figure out the RAG system's performance.
+
+> **Note**: If you are using the `AnswerSimilarityMetric` then you also need to provide a reference answer to each question in the benchmark. The reference answer represents the ideal or correct response to the question. For example, consider the question, "What is the capital of France?" The corresponding reference answer should be "Paris." When using the `AnswerSimilarityMetric`, the actual answer provided by the LLM is compared against this reference answer to determine how close the LLM's response is to the ideal answer.
+
+## How to use Benchmarks
+
+To use benchmarks, you can pass in a list of `questions` to ask the LLM (and optionally a list of reference answers via `answers`).
+```python
+from tonic_validate import Benchmark
+# Create a list of questions (required) and answers (optional) for scoring the LLM's performance
+benchmark = Benchmark(
+    questions=["What is the capital of France?", "What is the capital of Germany?"]
+    answers=["Paris", "Berlin"]
+)
+```
+To ask the LLM the questions from the benchmark, you can loop over the benchmark items like so  
+```python
+# Function to simulate getting a response and context from your LLM
+# Replace this with your actual function call
+def get_llm_response(question):
+    # Simulating a response from the LLM
+    # In your actual implementation, this will call your LLM
+    return "Paris", ["Paris is the capital of France."]  # Example response and context
+
+for item in benchmark:
+    # Ask your question here (replace with your own code)
+    llm_answer = get_llm_answer(item.question)
+```
+To save the LLM responses when looping over the benchmark, you can pass the `llm_answer`, `llm_context_list`, and the benchmark item to `LLMResponse`.  
+```python
+# Function to simulate getting a response and context from your LLM
+# Replace this with your actual function call
+def get_llm_response(question):
+    # Simulating a response from the LLM
+    # In your actual implementation, this will call your LLM
+    return "Paris", ["Paris is the capital of France."]  # Example response and context
+
+# Save the responses into an array for scoring
+responses = []
+for item in benchmark:
+    # llm_answer is the answer that LLM gives
+    # llm_context_list is a list of the context that the LLM used to answer the question
+    llm_answer, llm_context_list = get_llm_response(item.question)
+    llm_response = LLMResponse(
+        llm_answer=llm_answer,
+        llm_context_list=llm_context_list,
+        benchmark_item=item
+    )
+    responses.append(llm_response)
+```
 
 # Tonic Validate Metrics
+Metrics are used to score your LLM's performance. To measure each metric, you will need to provide the required inputs for that metric. Below is a table of the different metrics and the inputs they require.
 
-Evaluating a RAG application is difficult. There are several moving pieces to evaluate and there are not hard metrics for evaluation like in traditional machine learning tasks. For these reasons, we created Tonic Validate to allow you to shed light on how your RAG application is performing. The metrics in Tonic Validate use LLM-assisted evaluation, which means they use an LLM (i.e. gpt-4) to score different aspects of the outputs of a RAG application. Admittedly, while using LLM-assisted evaluation to calculate metrics creates "soft" metrics, we've found that when you break down a RAG application into pieces and use an LLM to grade each piece individually, the LLM can grade the pieces as well as or better than the acting LLM in the RAG application answers the questions. [Research also agrees](https://arxiv.org/abs/2306.05685) that using an LLM as an evaluator of unstructured text is almost as good as using a human.
+| Metric Name                                             | Inputs                                    | Formula                                                                                                       | Score Range | What does it measure?                                                               |
+|---------------------------------------------------------|-------------------------------------------|---------------------------------------------------------------------------------------------------------------|-------------|-------------------------------------------------------------------------------------|
+| **Answer similarity score**                             | Question + Reference answer + LLM answer  | Scored by LLM on a scale of 0 to 5                                                                            | 0 to 5      | How well the reference answer matches the LLM answer.                               |
+| **Retrieval precision**                                 | Question + Retrieved context              | (Count of relevant retrieved context) / (Count of retrieved context)                                          | 0 to 1      | Whether the context retrieved is relevant to answer the given question.             |
+| **Augmentation precision**                              | Question + Retrieved context + LLM answer | (Count of relevant retrieved context in LLM answer) / (Count of relevant retrieved context)                   | 0 to 1      | Whether the relevant context is in the LLM answer.                                  |
+| **Augmentation accuracy**                               | Retrieved context + LLM answer            | (Count of retrieved context in LLM answer) / (Count of retrieved context)                                     | 0 to 1      | Whether all the context is in the LLM answer.                                       |
+| **Answer consistency** or **Answer consistency binary** | Retrieved context + LLM answer            | (Count of the main points in the answer that can be attributed to context) / (Count of main points in answer) | 0 to 1      | Whether there is information in the LLM answer that does not come from the context. |
 
-Whenever a question is asked to a RAG application, the following objects can be considered:
-* The question
-* The correct answer to the question
-* The answer that the RAG application returned
-* The context that the RAG application retrieved and used to answer the question
 
-The metrics in Tonic Validate use these objects and LLM-assisted evaluation to answer questions about the RAG application.
-* **Answer similarity score**: How well does the RAG answer match what the answer should be?
-* **Retrieval precision**: Is the retrieved context relevant to the question?
-* **Augmentation precision**: Is the relevant retrieved context in the answer?
-* **Augmentation accuracy**: How much of the retrieved context is in the answer?
-* **Answer consistency (binary)**: Does the answer contain any information that does not come from the retrieved context?
- 
-For the complete definitions of these metrics, see the [RAG metrics reference](https://docs.tonic.ai/validate/rag-metrics/tonic-validate-rag-metrics-reference) section of our documentation or the [RAG metrics reference table](#metrics-reference-table) below. To see how these metrics vary with chunk size and number of retrieved context chunks for a simple RAG application, check out this [RAG metrics analysis jupyter notebook](examples/rag_metrics_sweep_analysis.ipynb).
+## Metric Inputs
+Metric inputs in Tonic Validate are used to provide the metrics with the information they need to calculate performance. Below, we explain each input type and how to pass them into Tonic Validate's SDK.
 
-The different metrics in Tonic Validate require different inputs to calculate (see reference table below).
+### Question 
+**What is it**: The question asked  
+ **How to use**: You can provide the questions by passing them into the `Benchmark` via the `questions` argument.  
+```python
+from tonic_validate import Benchmark
+benchmark = Benchmark(
+    questions=["What is the capital of France?", "What is the capital of Germany?"]
+)
+```
 
-Ideally, you have a benchmark dataset of questions and reference answers where the reference answers serve as the ground truth correct answers to the questions. When you have a benchmark dataset of questions and reference answers, you can utilize all of the metrics after you:
+### Reference answer 
+**What is it**: A prewritten answer that serves as the ground truth for how the RAG application should answer the question.  
+**How to use**: You can provide the reference answers by passing it into the `Benchmark` via the `answers` argument. Each reference answer must correspond to a given question. So if the reference answer is for the third question in the `questions` list, then the reference answer must also be the third item in the `answers` list.  
+```python
+from tonic_validate import Benchmark
+benchmark = Benchmark(
+    questions=["What is the capital of France?", "What is the capital of Germany?"]
+    answers=["Paris", "Berlin"]
+)
+```
 
-* Run the questions in the benchmark dataset through your RAG application
-* Get the RAG application answers
-* Get the retrieved context
+### LLM Answer
+**What is it**: The answer the RAG application / LLM gives to the question.  
+**How to use**: You can provide the LLM answer via `llm_answer` when creating the `LLMResponse`.  
+```python
+from tonic_validate import LLMResponse
+# Save the responses into an array for scoring
+responses = []
+for item in benchmark:
+    # llm_answer is the answer that LLM gives
+    llm_response = LLMResponse(
+        llm_answer="Paris",
+        benchmark_item=item
+    )
+    responses.append(llm_response)
+```
 
-It is common when building and evaluating a RAG application to not have a benchmark dataset of questions and reference answers. In this case, you cannot calculate the answer similarity score, but you can calculate all other scores.
+### Retrieved Context
+**What is it**: The context that your RAG application retrieves when answering a given question. This context is what's put in the prompt by the RAG application to help the LLM answer the question.  
+**How to use**: You can provide the LLM context via `llm_context_list` when creating the `LLMResponse`.  
+```python
+from tonic_validate import LLMResponse
+# Save the responses into an array for scoring
+responses = []
+for item in benchmark:
+    # llm_answer is the answer that LLM gives
+    # llm_context_list is a list of the context that the LLM used to answer the question
+    llm_response = LLMResponse(
+        llm_answer="Paris",
+        llm_context_list=["Paris is the capital of France."],
+        benchmark_item=item
+    )
+    responses.append(llm_response)
+```
 
-For an example using [LlamaIndex](https://github.com/run-llama/llama_index) for RAG, chech out this [quickstart jupyter notebook](examples/quickstart_example_paul_graham_essays.ipynb).
+## Scoring with Metrics
+### Important: Setting up OpenAI Key for Scoring
+Before scoring, you must set up an OpenAI Key as the Tonic Validate metrics make LLM calls.
+```python
+import os
+os.environ["OPENAI_API_KEY"] = "put-your-openai-api-key-here"
+```
+If you already have the `OPENAI_API_KEY` set in your system's environmental variables then you can skip this step. Otherwise, please set the environment variable before proceeding.
 
-# Metrics reference
-
-To help understand what part of a RAG application each metric measures, the following table defines the components of a typical RAG application.
-
-## RAG Components Table
-
-| Component          | Definition                                                   | Examples                                                     |
-| ------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| **Document store** | Where the textual data is stored.                            | Google Docs, Notion, Word documents                          |
-| **Chunker**        | How each document is broken into pieces (or chunks) that are then embedded. | [Llama Hub](https://llamahub.ai/)                            |
-| **Embedder**       | How each document chunk is transformed into a vector that stores its semantic meaning. | [text-embedding-ada-002](https://platform.openai.com/docs/guides/embeddings/what-are-embeddings), [sentence transformer](https://github.com/UKPLab/sentence-transformers), |
-| **Retriever**      | The algorithm that retrieves relevant chunks of text from the user query. The relevant chunks of text are used as context to answer the user query. | Take the top cosine similarity scores between the embedding of the user query and the embedded document chunks. |
-| **Prompt builder** | How the user query, along with conversation history and retrieved document chunks, are put into the context window to prompt the LLM for an answer to the user query. | Here's a user query {user_query} and here's a list of context that might be helpful to answer the user's query: {context_1}, {context_2}. Answer the user's query using the given context. |
-| **LLM**            | The large model that takes the prompt from the prompt builder and returns an answer for the user's query. | gpt3.5-turbo, gpt4, Llama 2, Claude                          |
-
-## Metrics reference table
-
-The possible inputs for a RAG metric are:
-* **Question**: The question asked.
-* **Reference answer**: A prewritten answer that serves as the ground truth for how the RAG application should answer the question.
-* **LLM answer**: The answer the RAG application gives to the question.
-* **Retrieved context**: The retrieved context that is used in the prompt of the RAG application.
-* **Top k context**: The top k pieces of context of the retrieval system, where k is fixed and the retrieved context is always a subset of the top k context.
-
-The following metrics reference table shows, for each Tonic Validate metric:
-* The inputs of the metric
-* How the metric is defined
-* What the metric measures
-
-| Metric Name              | Inputs                                                    | Formula | What does it measure? | Which components does it evaluate? |
-| ----------------------- | --------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------ |----|
-| **Answer similarity score** | Question + Reference answer + LLM answer | Score between 0 and 5 | How well the reference answer matches the LLM answer. | All components.                     |
-| **Retrieval precision** | Question + Retrieved context                         | (Count of relevant retrieved context) / (Count of retrieved context) | Whether the context retrieved is relevant to answer the given question. | Chunker + Embedder + Retriever    |
-| **Augmentation precision** | Question + Retrieved context + LLM answer             | (Count of relevant retrieved context in LLM answer) / (Count of relevant retrieved context) | Whether the relevant context is in the LLM answer. | Prompt builder + LLM                |
-| **Augmentation accuracy** | Retrieved context + LLM answer                          | (Count of retrieved context in LLM answer) / (Count of retrieved context) | Whether all the context is in the LLM answer. | Prompt builder + LLM                |
-| **Answer consistency** or **Answer consistency binary** | Retrieved context + LLM answer                          | (Count of the main points in the answer that can be attributed to context) / (Count of main points in answer) | Whether there is information in the LLM answer that does not come from the context. | Prompt builder + LLM                |
-
-## Using Metrics
+### Setting up the Tonic Validate Scorer
 To use metrics, instantiate an instance of them and provide them to the ValidateScorer like so
 ```python
+from tonic_validate import ValidateScorer
 scorer = ValidateScorer([
     AnswerConsistencyMetric(),
     AnswerSimilarityMetric(),
@@ -133,6 +205,7 @@ scorer = ValidateScorer([
     RetrievalPrecisionMetric()
 ])
 ```
+
 Here is a list of all the possible metrics with their imports
 | Metric Name                   | Import                                                             |
 |-------------------------------|--------------------------------------------------------------------|
@@ -143,12 +216,117 @@ Here is a list of all the possible metrics with their imports
 | **Answer consistency**        | `from tonic_validate.metrics import AnswerConsistencyMetric`       |
 | **Answer consistency binary** | `from tonic_validate.metrics import AnswerConsistencyBinaryMetric` |
 
+The default model used for scoring metrics is GPT 4 Turbo. To change the OpenAI model, pass the OpenAI model name into the `model` argument for `ValidateScorer`
+
+```python
+scorer = ValidateScorer([
+    AnswerConsistencyMetric(),
+    AugmentationAccuracyMetric()
+], model_evaluator="gpt-3.5-turbo")
+```
+
+### Running the Scorer
+After you instantiate the `ValidateScorer` with your desired metrics, you can then score the metrics using the list of LLM responses you collected earlier.
+
+```python
+from tonic_validate import ValidateScorer, LLMResponse
+# Save the responses into an array for scoring
+responses = []
+for item in benchmark:
+    # llm_answer is the answer that LLM gives
+    # llm_context_list is a list of the context that the LLM used to answer the question
+    llm_answer, llm_context_list = get_llm_response(item.question)
+    llm_response = LLMResponse(
+        llm_answer=llm_answer,
+        llm_context_list=llm_context_list,
+        benchmark_item=item
+    )
+    responses.append(llm_response)
+
+# Score the responses
+scorer = ValidateScorer([
+    AnswerConsistencyMetric(),
+    AugmentationAccuracyMetric()
+])
+run = scorer.score_run(responses) # Scores the metrics
+```
+The resulting run object from `score_run` contains the following information
+
+## Viewing the results
+There are two ways to view the results of a run.
+
+### Option 1: Print out the results
+You can manually print out the results via python like so
+```python
+print("Overall Scores")
+print(run.overall_scores)
+print("------")
+for item in run.run_data:
+    print("Question: ", item.reference_question)
+    print("Answer: ", item.reference_answer)
+    print("LLM Answer: ", item.llm_answer)
+    print("LLM Context: ", item.llm_context)
+    print("Scores: ", item.scores)
+    print("------")
+```
+which outputs the following
+```
+Overall Scores
+{'answer_consistency': 1.0, 'augmentation_accuracy': 1.0}
+------
+Question:  What is the capital of France?
+Answer:  Paris
+LLM Answer:  Paris
+LLM Context:  ['Paris is the capital of France.']
+Scores:  {'answer_consistency': 1.0, 'augmentation_accuracy': 1.0}
+------
+Question:  What is the capital of Spain?
+Answer:  Madrid
+LLM Answer:  Paris
+LLM Context:  ['Paris is the capital of France.']
+Scores:  {'answer_consistency': 1.0, 'augmentation_accuracy': 1.0}
+------
+```
+### Option 2: Use the Tonic Validate UI (Recommended)
+You can easily view your run results by uploading them to the Tonic Validate UI. The main advantage of this method is the Tonic Validate UI provides graphing for your results along with additional visualization features. To sign up for the UI, go to [here](https://validate.tonic.ai/).
+
+Once you sign up for the UI, you will go through an onboarding to create an API Key and Project.
+
+<picture>
+  <img src="./README_images/TonicValidate-Onboarding.png" width="800">
+</picture>
+
+Copy both the API Key and Project ID from the onboarding and insert it into the following code
+```
+from tonic_validate import ValidateApi
+validate_api = ValidateApi("your-api-key")
+validate_api.upload_run("your-project-id", run)
+```
+This will upload your run to the Tonic Validate UI where you can view the results. On the home page (as seen below) you can view the change in scores across runs over time.  
+<picture>
+  <img src="./README_images/TonicValidate-Graph.png" width="800">
+</picture>
+
+You can also view the results of an individual run in the UI as well.  
+<picture>
+  <img src="./README_images/TonicValidate-Run.png" width="800">
+</picture>
+
 # FAQ
 
-### What models can I use an an LLM evaluator?
+### What models can I use an LLM evaluator?
 
 We currently allow the family of chat completion models from Open AI.
 
 This restriction makes it easy to follow the logic for the definition of the metrics in this package. It also ensures that this package does not depend on langchain, which also makes the logic of the package easier to follow.
 
 We'd like to add more models as choices for the LLM evaluator without adding to the complexity of the package too much.
+
+The default model used for scoring metrics is GPT 4 Turbo. To change the OpenAI model, pass the OpenAI model name into the `model` argument for `ValidateScorer`
+
+```python
+scorer = ValidateScorer([
+    AnswerConsistencyMetric(),
+    AugmentationAccuracyMetric()
+], model_evaluator="gpt-3.5-turbo")
+```

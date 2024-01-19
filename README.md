@@ -8,6 +8,13 @@ Tonic Validate is a platform for Retrieval Augmented Generation (RAG) developmen
 
 *  [Documentation](https://docs.tonic.ai/validate/)
 
+## Check Out Our UI to Visualize Your Results
+In addition to the SDK, we also have a **free to use UI**. Using the UI isn't required to use the SDK, but it does allow you to easily visualize your results. To sign up, click [here](https://validate.tonic.ai/).  
+<picture>
+  <img src="./readme_images/TonicValidate-Graph.png" width="800">
+</picture>
+
+
 # Quickstart
 
 1. Install the Tonic Validate SDK by running
@@ -62,12 +69,12 @@ This code snippet, creates a benchmark with one question and reference answer an
 
 # Tonic Validate Benchmarks
 
-## What are Benchmarks?
+## What Are Benchmarks?
 To evaluate the RAG (Retrieval Augmented Generation) system's performance, we need a dataset of questions to prompt it with. This is what Benchmarks are for. Benchmarks are a collection of questions which optionally include reference answers. When calculating the performance, Tonic Validate's SDK runs through the list of the questions in the benchmark and asks the LLM each question. Then, Tonic Validate uses the resulting answer from the LLM to figure out the RAG system's performance.
 
 > **Note**: If you are using the `AnswerSimilarityMetric` then you also need to provide a reference answer to each question in the benchmark. The reference answer represents the ideal or correct response to the question. For example, consider the question, "What is the capital of France?" The corresponding reference answer should be "Paris." When using the `AnswerSimilarityMetric`, the actual answer provided by the LLM is compared against this reference answer to determine how close the LLM's response is to the ideal answer.
 
-## How to use Benchmarks
+## How to Use Benchmarks
 
 To use benchmarks, you can pass in a list of `questions` to ask the LLM (and optionally a list of reference answers via `answers`).
 ```python
@@ -139,7 +146,7 @@ benchmark = Benchmark(
 )
 ```
 
-### Reference answer 
+### Reference Answer 
 **What is it**: A prewritten answer that serves as the ground truth for how the RAG application should answer the question.  
 **How to use**: You can provide the reference answers by passing it into the `Benchmark` via the `answers` argument. Each reference answer must correspond to a given question. So if the reference answer is for the third question in the `questions` list, then the reference answer must also be the third item in the `answers` list.  
 ```python
@@ -184,7 +191,7 @@ for item in benchmark:
     responses.append(llm_response)
 ```
 
-## Scoring with Metrics
+## Scoring With Metrics
 ### Important: Setting up OpenAI Key for Scoring
 Before scoring, you must set up an OpenAI Key as the Tonic Validate metrics make LLM calls.
 ```python
@@ -252,10 +259,10 @@ run = scorer.score_run(responses) # Scores the metrics
 ```
 The resulting run object from `score_run` contains the following information
 
-## Viewing the results
+## Viewing the Results
 There are two ways to view the results of a run.
 
-### Option 1: Print out the results
+### Option 1: Print Out the Results
 You can manually print out the results via python like so
 ```python
 print("Overall Scores")
@@ -287,8 +294,8 @@ LLM Context:  ['Paris is the capital of France.']
 Scores:  {'answer_consistency': 1.0, 'augmentation_accuracy': 1.0}
 ------
 ```
-### Option 2: Use the Tonic Validate UI (Recommended)
-You can easily view your run results by uploading them to the Tonic Validate UI. The main advantage of this method is the Tonic Validate UI provides graphing for your results along with additional visualization features. To sign up for the UI, go to [here](https://validate.tonic.ai/).
+### Option 2: Use the Tonic Validate UI (Recommended, Free to Use)
+You can easily view your run results by uploading them to our **free to use UI**. The main advantage of this method is the Tonic Validate UI provides graphing for your results along with additional visualization features. To sign up for the UI, go to [here](https://validate.tonic.ai/).
 
 Once you sign up for the UI, you will go through an onboarding to create an API Key and Project.
 

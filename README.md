@@ -1,7 +1,7 @@
 <picture>
   <source media="(prefers-color-scheme: light)" srcset="./readme_images/TonicValidate-Horizontal-Dark-Icon.svg">
   <source media="(prefers-color-scheme: dark)" srcset="./readme_images/TonicValidate-Horizontal-White-Icon.svg">
-  <img src="./README_images/TonicValidate-Horizontal-Dark-Icon.svg">
+  <img src="./readme_images/TonicValidate-Horizontal-Dark-Icon.svg">
 </picture>
 
 Tonic Validate is a platform for Retrieval Augmented Generation (RAG) development and experiment tracking. This repository, `tonic_validate` (formerly `tvalmetrics`) is the SDK component of Tonic Validate. It contains the code for calculating RAG metrics and optionally logging them to the [Tonic Validate UI](https://www.tonic.ai/validate).
@@ -293,7 +293,7 @@ You can easily view your run results by uploading them to the Tonic Validate UI.
 Once you sign up for the UI, you will go through an onboarding to create an API Key and Project.
 
 <picture>
-  <img src="./README_images/TonicValidate-Onboarding.png" width="800">
+  <img src="./readme_images/TonicValidate-Onboarding.png" width="800">
 </picture>
 
 Copy both the API Key and Project ID from the onboarding and insert it into the following code
@@ -304,12 +304,12 @@ validate_api.upload_run("your-project-id", run)
 ```
 This will upload your run to the Tonic Validate UI where you can view the results. On the home page (as seen below) you can view the change in scores across runs over time.  
 <picture>
-  <img src="./README_images/TonicValidate-Graph.png" width="800">
+  <img src="./readme_images/TonicValidate-Graph.png" width="800">
 </picture>
 
 You can also view the results of an individual run in the UI as well.  
 <picture>
-  <img src="./README_images/TonicValidate-Run.png" width="800">
+  <img src="./readme_images/TonicValidate-Run.png" width="800">
 </picture>
 
 # FAQ

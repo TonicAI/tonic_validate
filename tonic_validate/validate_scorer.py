@@ -9,7 +9,7 @@ from tonic_validate.services.openai_service import OpenAIService
 
 class ValidateScorer:
     def __init__(
-        self, metrics: List[Metric], model_evaluator: str = "gpt-4-1106-preview"
+        self, metrics: List[Metric], model_evaluator: str = "gpt-4-turbo-preview"
     ):
         self.metrics = metrics
         self.model_evaluator = model_evaluator

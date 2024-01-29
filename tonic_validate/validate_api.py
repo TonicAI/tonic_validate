@@ -31,7 +31,7 @@ class ValidateApi:
                 raise Exception(exception_message)
         self.client = HttpClient(base_url, api_key)
 
-    def upload_run(self, project_id: str, run: Run) -> None:
+    def upload_run(self, project_id: str, run: Run) -> str:
         """Upload a run to a Tonic Validate project.
 
         Parameters
@@ -47,6 +47,7 @@ class ValidateApi:
                 f"/projects/{project_id}/runs/{run_response['id']}/logs",
                 data=run_data.to_dict(),
             )
+        return run_response["id"]
 
     def get_benchmark(self, benchmark_id: str) -> Benchmark:
         """Get a Tonic Validate benchmark by its ID.

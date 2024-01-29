@@ -18,6 +18,12 @@ class RetrievalPrecisionMetric(Metric):
     def calculate_metric(
         self, llm_response: LLMResponse, openai_service: OpenAIService
     ) -> Tuple[float, List[bool]]:
+        if len(llm_response.llm_context_list) == 0:
+            logger.warning(
+                "No context provided for retrieval precision metric, "
+                "setting score to 0.0"
+            )
+            return (0.0, [])
         context_relevant_list = []
         for context in llm_response.llm_context_list:
             relevance_response = context_relevancy_call(

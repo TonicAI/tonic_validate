@@ -61,7 +61,7 @@ class ValidateScorer:
 
         for item in run_data:
             for metric_name, score in item.scores.items():
-                if metric_name == AnswerSimilarityMetric.metric_name:
+                if metric_name == AnswerSimilarityMetric.name:
                     total_scores[metric_name] += score / 5
                 else:
                     total_scores[metric_name] += score

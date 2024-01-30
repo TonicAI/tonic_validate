@@ -1,5 +1,5 @@
 from typing import Iterator, List, Optional
-from attr import dataclass
+from dataclasses import dataclass
 from uuid import UUID
 
 

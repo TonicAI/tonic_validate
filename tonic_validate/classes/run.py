@@ -1,7 +1,6 @@
 from typing import Any, List, Optional
+from dataclasses import dataclass
 from uuid import UUID
-
-from attr import dataclass
 
 
 @dataclass

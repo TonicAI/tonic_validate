@@ -34,7 +34,7 @@ class ValidateScorer:
             response.llm_context_list,
         )
 
-    def score_run(self, responses: List[LLMResponse], parallelism=2) -> Run:
+    def score_run(self, responses: List[LLMResponse], parallelism=1) -> Run:
         """Calculate metric scores for a list of LLMResponse objects.
 
         Parameters

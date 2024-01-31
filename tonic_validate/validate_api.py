@@ -1,5 +1,5 @@
 import os
-from typing import Optional
+from typing import Optional, Dict
 from tonic_validate.classes.benchmark import Benchmark
 from tonic_validate.classes.run import Run
 
@@ -31,7 +31,12 @@ class ValidateApi:
                 raise Exception(exception_message)
         self.client = HttpClient(base_url, api_key)
 
-    def upload_run(self, project_id: str, run: Run) -> str:
+    def upload_run(
+        self,
+        project_id: str,
+        run: Run,
+        run_metadata: Dict[str, str] = {}
+    ) -> str:
         """Upload a run to a Tonic Validate project.
 
         Parameters
@@ -41,7 +46,9 @@ class ValidateApi:
         run : Run
             The run to upload.
         """
-        run_response = self.client.http_post(f"/projects/{project_id}/runs")
+        run_response = self.client.http_post(
+            f"/projects/{project_id}/runs", data={"run_metadata": run_metadata}
+        )
         for run_data in run.run_data:
             _ = self.client.http_post(
                 f"/projects/{project_id}/runs/{run_response['id']}/logs",

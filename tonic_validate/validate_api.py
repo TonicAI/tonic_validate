@@ -69,7 +69,7 @@ class ValidateApi:
             answers += [benchmark_item_response["answer"]]
         return Benchmark(questions, answers, benchmark_response["name"])
 
-    def new_benchmark(self, benchmark: Benchmark, benchmark_name: str) -> str:
+    def upload_benchmark(self, benchmark: Benchmark, benchmark_name: str) -> str:
         """Create a new Tonic Validate benchmark.
 
         Parameters

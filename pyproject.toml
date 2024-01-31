@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tonic-validate"
-version = "2.3.0"
+version = "2.3.1"
 description = "RAG evaluation metrics."
 authors = ["Joe Ferrara <joeferrara@tonic.ai>", "Ethan Philpott <ephilpott@tonic.ai>"]
 readme = "pypi_readme.md"
@@ -11,27 +11,11 @@ openai = ">=1.0.0"
 pandas = ">=1.2.3"
 
 [tool.poetry.group.dev.dependencies]
-flake8 = "^6.0.0"
-black = "^23.1.0"
-isort = "^5.12.0"
-mypy = "^1.0.0"
 sphinx = "^7.0.0"
 sphinx-rtd-theme = "^1.2.0"
+ruff = "^0.1.15"
 
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.isort]
-profile = "black"
-
-follow_imports = "silent"
-warn_redundant_casts = true
-warn_unused_ignores = true
-disallow_any_generics = true
-check_untyped_defs = true
-no_implicit_reexport = true
-
-# for strict mypy: (this is the tricky one :-))
-disallow_untyped_defs = true

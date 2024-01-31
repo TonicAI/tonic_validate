@@ -9,7 +9,7 @@ logger = logging.getLogger()
 
 
 class AnswerConsistencyBinaryMetric(Metric):
-    name = "answer_consistency_binary"
+    name: str = "answer_consistency_binary"
 
     def score(self, llm_response: LLMResponse, openai_service: OpenAIService) -> float:
         """Calculate answer consistency binary score.

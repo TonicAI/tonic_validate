@@ -4,7 +4,9 @@ from typing import DefaultDict, List
 
 from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.classes.run import Run, RunData
+from tonic_validate.metrics.answer_consistency_metric import AnswerConsistencyMetric
 from tonic_validate.metrics.answer_similarity_metric import AnswerSimilarityMetric
+from tonic_validate.metrics.augmentation_precision_metric import AugmentationPrecisionMetric
 
 from tonic_validate.metrics.metric import Metric
 from tonic_validate.services.openai_service import OpenAIService
@@ -12,7 +14,9 @@ from tonic_validate.services.openai_service import OpenAIService
 
 class ValidateScorer:
     def __init__(
-        self, metrics: List[Metric], model_evaluator: str = "gpt-4-turbo-preview"
+        self,
+        metrics: List[Metric] = [AnswerSimilarityMetric(), AugmentationPrecisionMetric(), AnswerConsistencyMetric()],
+        model_evaluator: str = "gpt-4-turbo-preview"
     ):
         self.metrics = metrics
         self.model_evaluator = model_evaluator

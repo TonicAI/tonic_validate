@@ -10,8 +10,8 @@ class BenchmarkItem(TypedDict):
 
 @dataclass
 class Benchmark:
-    name: Optional[str]
     items: List[BenchmarkItem]
+    name: Optional[str] = None
 
     # define iterator
     def __iter__(self) -> Iterator[BenchmarkItem]:

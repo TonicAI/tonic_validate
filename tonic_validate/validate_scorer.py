@@ -7,7 +7,9 @@ from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.classes.run import Run, RunData
 from tonic_validate.metrics.answer_consistency_metric import AnswerConsistencyMetric
 from tonic_validate.metrics.answer_similarity_metric import AnswerSimilarityMetric
-from tonic_validate.metrics.augmentation_precision_metric import AugmentationPrecisionMetric
+from tonic_validate.metrics.augmentation_precision_metric import (
+    AugmentationPrecisionMetric,
+)
 
 from tonic_validate.metrics.metric import Metric
 from tonic_validate.services.openai_service import OpenAIService
@@ -16,8 +18,12 @@ from tonic_validate.services.openai_service import OpenAIService
 class ValidateScorer:
     def __init__(
         self,
-        metrics: List[Metric] = [AnswerSimilarityMetric(), AugmentationPrecisionMetric(), AnswerConsistencyMetric()],
-        model_evaluator: str = "gpt-4-turbo-preview"
+        metrics: List[Metric] = [
+            AnswerSimilarityMetric(),
+            AugmentationPrecisionMetric(),
+            AnswerConsistencyMetric(),
+        ],
+        model_evaluator: str = "gpt-4-turbo-preview",
     ):
         self.metrics = metrics
         self.model_evaluator = model_evaluator
@@ -39,7 +45,7 @@ class ValidateScorer:
             response.llm_context_list,
         )
 
-    def score_run(self, responses: List[LLMResponse], parallelism=1) -> Run:
+    def score_run(self, responses: List[LLMResponse], parallelism: int = 1) -> Run:
         """Calculate metric scores for a list of LLMResponse objects.
 
         Parameters
@@ -48,7 +54,7 @@ class ValidateScorer:
             The list of LLMResponse objects to be scored.
         parallelism: int
             The number of threads to use for scoring.
-        
+
         Returns
         -------
         Run
@@ -58,7 +64,6 @@ class ValidateScorer:
 
         with ThreadPoolExecutor(max_workers=parallelism) as executor:
             run_data = list(executor.map(self._score_item_rundata, responses))
-        
 
         # Used to calculate overall score
         total_scores: DefaultDict[str, float] = defaultdict(float)
@@ -68,14 +73,20 @@ class ValidateScorer:
             for metric_name, score in item.scores.items():
                 total_scores[metric_name] += score
                 num_scores[metric_name] += 1
-        
+
         overall_scores: dict[str, float] = {
             metric: total / num_scores[metric] for metric, total in total_scores.items()
         }
-        
+
         return Run(overall_scores, run_data, None)
-    
-    def score(self, benchmark: Benchmark, callback: Callable[[str], Tuple[str, List[str]]], callback_parallelism = 1, scoring_parallelism = 1) -> Run:
+
+    def score(
+        self,
+        benchmark: Benchmark,
+        callback: Callable[[str], Tuple[str, List[str]]],
+        callback_parallelism=1,
+        scoring_parallelism=1,
+    ) -> Run:
         """Calculate metric scores for a benchmark.
 
         Parameters
@@ -88,7 +99,7 @@ class ValidateScorer:
             The number of threads to use for the callback function.
         scoring_parallelism: int
             The number of threads to use for scoring.
-        
+
         Returns
         -------
         Run
@@ -99,8 +110,8 @@ class ValidateScorer:
         def create_response(item: BenchmarkItem) -> LLMResponse:
             llm_answer, llm_context_list = callback(item.question)
             return LLMResponse(llm_answer, llm_context_list, item)
-        
+
         with ThreadPoolExecutor(max_workers=callback_parallelism) as executor:
             responses = list(executor.map(create_response, benchmark.items))
-        
+
         return self.score_run(responses, scoring_parallelism)

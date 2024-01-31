@@ -10,7 +10,7 @@ logger = logging.getLogger()
 
 
 class RetrievalPrecisionMetric(Metric):
-    name = "retrieval_precision"
+    name: str = "retrieval_precision"
 
     def score(self, llm_response: LLMResponse, openai_service: OpenAIService) -> float:
         return self.calculate_metric(llm_response, openai_service)[0]
@@ -24,7 +24,7 @@ class RetrievalPrecisionMetric(Metric):
                 "setting score to 0.0"
             )
             return (0.0, [])
-        context_relevant_list = []
+        context_relevant_list: List[bool] = []
         for context in llm_response.llm_context_list:
             relevance_response = context_relevancy_call(
                 llm_response.benchmark_item.question, context, openai_service

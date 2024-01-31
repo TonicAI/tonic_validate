@@ -4,7 +4,6 @@ from typing import DefaultDict, List
 
 from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.classes.run import Run, RunData
-from tonic_validate.metrics.answer_similarity_metric import AnswerSimilarityMetric
 
 from tonic_validate.metrics.metric import Metric
 from tonic_validate.services.openai_service import OpenAIService
@@ -34,7 +33,7 @@ class ValidateScorer:
             response.llm_context_list,
         )
 
-    def score_run(self, responses: List[LLMResponse], parallelism=1) -> Run:
+    def score_run(self, responses: List[LLMResponse], parallelism: int = 1) -> Run:
         """Calculate metric scores for a list of LLMResponse objects.
 
         Parameters
@@ -43,7 +42,7 @@ class ValidateScorer:
             The list of LLMResponse objects to be scored.
         parallelism: int
             The number of threads to use for scoring.
-        
+
         Returns
         -------
         Run
@@ -53,7 +52,6 @@ class ValidateScorer:
 
         with ThreadPoolExecutor(max_workers=parallelism) as executor:
             run_data = list(executor.map(self._score_item_rundata, responses))
-        
 
         # Used to calculate overall score
         total_scores: DefaultDict[str, float] = defaultdict(float)
@@ -63,9 +61,9 @@ class ValidateScorer:
             for metric_name, score in item.scores.items():
                 total_scores[metric_name] += score
                 num_scores[metric_name] += 1
-        
+
         overall_scores: dict[str, float] = {
             metric: total / num_scores[metric] for metric, total in total_scores.items()
         }
-        
+
         return Run(overall_scores, run_data, None)

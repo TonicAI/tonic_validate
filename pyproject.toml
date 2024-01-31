@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tonic-validate"
-version = "2.3.0"
+version = "2.4.0"
 description = "RAG evaluation metrics."
 authors = ["Joe Ferrara <joeferrara@tonic.ai>", "Ethan Philpott <ephilpott@tonic.ai>"]
 readme = "pypi_readme.md"

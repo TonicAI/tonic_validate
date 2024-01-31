@@ -1,5 +1,5 @@
 import os
-from typing import Optional, Dict
+from typing import List, Optional, Dict
 from tonic_validate.classes.benchmark import Benchmark
 from tonic_validate.classes.run import Run
 
@@ -78,7 +78,8 @@ class ValidateApi:
         benchmark_items_response = self.client.http_get(
             f"/benchmarks/{benchmark_id}/items"
         )
-        questions, answers = [], []
+        questions: List[str] = []
+        answers: List[str] = []
         for benchmark_item_response in benchmark_items_response:
             questions += [benchmark_item_response["question"]]
             answers += [benchmark_item_response["answer"]]

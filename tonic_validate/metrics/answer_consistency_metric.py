@@ -15,7 +15,7 @@ logger = logging.getLogger()
 
 
 class AnswerConsistencyMetric(Metric):
-    name = "answer_consistency"
+    name: str = "answer_consistency"
 
     def score(self, llm_response: LLMResponse, openai_service: OpenAIService) -> float:
         main_points_response = main_points_call(llm_response.llm_answer, openai_service)

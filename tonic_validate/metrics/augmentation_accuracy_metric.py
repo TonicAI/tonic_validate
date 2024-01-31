@@ -10,7 +10,7 @@ logger = logging.getLogger()
 
 
 class AugmentationAccuracyMetric(Metric):
-    name = "augmentation_accuracy"
+    name: str = "augmentation_accuracy"
 
     def score(self, llm_response: LLMResponse, openai_service: OpenAIService) -> float:
         return self.calculate_metric(llm_response, openai_service)[0]
@@ -18,7 +18,7 @@ class AugmentationAccuracyMetric(Metric):
     def calculate_metric(
         self, llm_response: LLMResponse, openai_service: OpenAIService
     ) -> Tuple[float, List[bool]]:
-        contains_context_list = []
+        contains_context_list: List[bool] = []
         if len(llm_response.llm_context_list) == 0:
             logger.warning(
                 "No context provided for augmentation accuracy metric, "

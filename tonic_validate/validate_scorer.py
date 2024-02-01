@@ -1,6 +1,6 @@
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
-from typing import Callable, DefaultDict, List, Tuple
+from typing import Callable, DefaultDict, List, Tuple, Union
 from tonic_validate.classes.benchmark import Benchmark, BenchmarkItem
 
 from tonic_validate.classes.llm_response import LLMResponse
@@ -82,7 +82,7 @@ class ValidateScorer:
 
     def score(
         self,
-        benchmark: Benchmark,
+        benchmark: Union[Benchmark, List[BenchmarkItem]],
         callback: Callable[[str], Tuple[str, List[str]]],
         callback_parallelism=1,
         scoring_parallelism=1,
@@ -92,7 +92,7 @@ class ValidateScorer:
         Parameters
         ----------
         benchmark: Benchmark
-            The benchmark to be scored.
+            The benchmark to be scored. Can either be a Benchmark object or a list of BenchmarkItem objects.
         callback: Callable[[str], Tuple[str, List[str]]]
             A callback function that takes a question and returns a tuple of the llm response and the retrieved context list.
         callback_parallelism: int
@@ -111,7 +111,9 @@ class ValidateScorer:
             llm_answer, llm_context_list = callback(item["question"])
             return LLMResponse(llm_answer, llm_context_list, item)
 
+        items = benchmark.items if isinstance(benchmark, Benchmark) else benchmark
+
         with ThreadPoolExecutor(max_workers=callback_parallelism) as executor:
-            responses = list(executor.map(create_response, benchmark.items))
+            responses = list(executor.map(create_response, items))
 
         return self.score_run(responses, scoring_parallelism)

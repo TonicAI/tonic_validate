@@ -1,6 +1,6 @@
 import os
 from typing import List, Optional
-from tonic_validate.classes.benchmark import Benchmark
+from tonic_validate.classes.benchmark import Benchmark, BenchmarkItem
 from tonic_validate.classes.run import Run
 
 from tonic_validate.utils.http_client import HttpClient
@@ -63,12 +63,15 @@ class ValidateApi:
         benchmark_items_response = self.client.http_get(
             f"/benchmarks/{benchmark_id}/items"
         )
-        questions: List[str] = []
-        answers: List[str] = []
+        items: List[BenchmarkItem] = []
         for benchmark_item_response in benchmark_items_response:
-            questions += [benchmark_item_response["question"]]
-            answers += [benchmark_item_response["answer"]]
-        return Benchmark(questions, answers, benchmark_response["name"])
+            items.append(
+                {
+                    "question": benchmark_item_response["question"],
+                    "answer": benchmark_item_response["answer"],
+                }
+            )
+        return Benchmark(items, benchmark_response["name"])
 
     def upload_benchmark(self, benchmark: Benchmark, benchmark_name: str) -> str:
         """Create a new Tonic Validate benchmark.
@@ -87,8 +90,8 @@ class ValidateApi:
             _ = self.client.http_post(
                 f"/benchmarks/{benchmark_response['id']}/items",
                 data={
-                    "question": benchmark_item.question,
-                    "answer": benchmark_item.answer,
+                    "question": benchmark_item["question"],
+                    "answer": benchmark_item["answer"],
                 },
             )
         return benchmark_response["id"]

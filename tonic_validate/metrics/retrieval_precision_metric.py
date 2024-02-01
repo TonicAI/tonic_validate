@@ -27,7 +27,7 @@ class RetrievalPrecisionMetric(Metric):
         context_relevant_list: List[bool] = []
         for context in llm_response.llm_context_list:
             relevance_response = context_relevancy_call(
-                llm_response.benchmark_item.question, context, openai_service
+                llm_response.benchmark_item["question"], context, openai_service
             )
             context_relevant_list.append(parse_boolean_response(relevance_response))
 

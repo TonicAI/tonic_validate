@@ -39,8 +39,8 @@ class ValidateScorer:
         benchmark_item = response.benchmark_item
         return RunData(
             scores,
-            benchmark_item.question,
-            benchmark_item.answer,
+            benchmark_item["question"],
+            benchmark_item["answer"],
             response.llm_answer,
             response.llm_context_list,
         )
@@ -108,7 +108,7 @@ class ValidateScorer:
         responses: list[LLMResponse] = []
 
         def create_response(item: BenchmarkItem) -> LLMResponse:
-            llm_answer, llm_context_list = callback(item.question)
+            llm_answer, llm_context_list = callback(item["question"])
             return LLMResponse(llm_answer, llm_context_list, item)
 
         with ThreadPoolExecutor(max_workers=callback_parallelism) as executor:

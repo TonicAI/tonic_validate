@@ -1,6 +1,6 @@
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
-from typing import Callable, DefaultDict, List, Tuple, Union
+from typing import Callable, DefaultDict, List, Tuple, Union, overload
 from tonic_validate.classes.benchmark import Benchmark, BenchmarkItem
 
 from tonic_validate.classes.llm_response import LLMResponse
@@ -79,6 +79,26 @@ class ValidateScorer:
         }
 
         return Run(overall_scores, run_data, None)
+
+    @overload
+    def score(
+        self,
+        benchmark: Benchmark,
+        callback: Callable[[str], Tuple[str, List[str]]],
+        callback_parallelism=1,
+        scoring_parallelism=1,
+    ) -> Run:
+        ...
+
+    @overload
+    def score(
+        self,
+        benchmark: List[BenchmarkItem],
+        callback: Callable[[str], Tuple[str, List[str]]],
+        callback_parallelism=1,
+        scoring_parallelism=1,
+    ) -> Run:
+        ...
 
     def score(
         self,

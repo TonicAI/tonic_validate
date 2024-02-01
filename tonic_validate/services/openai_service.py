@@ -1,10 +1,16 @@
+import logging
 import os
 from typing import Dict
-from openai import AzureOpenAI, OpenAI
+from openai import AzureOpenAI, BadRequestError, OpenAI
+from tiktoken import Encoding
+
+from tonic_validate.classes.exceptions import ContextLengthException
+
+logger = logging.getLogger()
 
 
 class OpenAIService:
-    def __init__(self, model: str = "gpt-4-1106-preview") -> None:
+    def __init__(self, encoder: Encoding, model: str = "gpt-4-1106-preview") -> None:
         # Check if AZURE_OPENAI_API_KEY is set and if so then use AzureOpenAI
         if "AZURE_OPENAI_API_KEY" in os.environ:
             if "AZURE_OPENAI_ENDPOINT" not in os.environ:
@@ -19,6 +25,7 @@ class OpenAIService:
                 "OPENAI_API_KEY or AZURE_OPENAI_API_KEY must be set in the environment"
             )
         self.model = model
+        self.encoder = encoder
         self.cache: Dict[str, str] = {}
 
     def get_response(
@@ -48,9 +55,15 @@ class OpenAIService:
                     )
                 self.cache[prompt] = response
                 return response
+            except BadRequestError as e:
+                if e.code == "context_length_exceeded":
+                    raise ContextLengthException(e.message)
             except Exception as e:
-                print(e)
+                logger.warning(e)
                 max_retries -= 1
         raise Exception(
             f"Failed to get completion response from {self.model}, max retires hit"
         )
+
+    def get_token_count(self, text: str) -> int:
+        return len(self.encoder.encode(text))

@@ -22,7 +22,7 @@ class HttpClient:
         self.base_url = base_url
         self.headers = {"Authorization": f"Bearer {access_token}"}
 
-    def http_get(self, url: str, params: dict[Any, Any] = {}) -> dict[Any, Any]:
+    def http_get(self, url: str, params: dict[Any, Any] = {}) -> Any:
         """Make a get request.
 
         Parameters
@@ -41,7 +41,7 @@ class HttpClient:
 
     def http_post(
         self, url: str, params: dict[Any, Any] = {}, data: dict[Any, Any] = {}
-    ) -> dict[Any, Any]:
+    ) -> Any:
         """Make a post request.
 
         Parameters

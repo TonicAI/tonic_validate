@@ -1,5 +1,5 @@
 import os
-from typing import List, Optional
+from typing import List, Optional, Union, overload
 from tonic_validate.classes.benchmark import Benchmark, BenchmarkItem
 from tonic_validate.classes.run import Run
 
@@ -73,7 +73,19 @@ class ValidateApi:
             )
         return Benchmark(items, benchmark_response["name"])
 
+    @overload
     def upload_benchmark(self, benchmark: Benchmark, benchmark_name: str) -> str:
+        ...
+
+    @overload
+    def upload_benchmark(
+        self, benchmark: List[BenchmarkItem], benchmark_name: str
+    ) -> str:
+        ...
+
+    def upload_benchmark(
+        self, benchmark: Union[Benchmark, List[BenchmarkItem]], benchmark_name: str
+    ) -> str:
         """Create a new Tonic Validate benchmark.
 
         Parameters
@@ -83,10 +95,11 @@ class ValidateApi:
         benchmark_name : str
             The name of the benchmark.
         """
+        items = benchmark.items if isinstance(benchmark, Benchmark) else benchmark
         benchmark_response = self.client.http_post(
             "/benchmarks", data={"name": benchmark_name}
         )
-        for benchmark_item in benchmark.items:
+        for benchmark_item in items:
             _ = self.client.http_post(
                 f"/benchmarks/{benchmark_response['id']}/items",
                 data={

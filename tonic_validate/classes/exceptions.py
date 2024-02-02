@@ -1,0 +1,2 @@
+class ContextLengthException(Exception):
+    pass

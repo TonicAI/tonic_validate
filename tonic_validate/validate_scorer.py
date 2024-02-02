@@ -1,12 +1,16 @@
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 from typing import DefaultDict, List
+import logging
 
 from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.classes.run import Run, RunData
 
 from tonic_validate.metrics.metric import Metric
 from tonic_validate.services.openai_service import OpenAIService
+import tiktoken
+
+logger = logging.getLogger()
 
 
 class ValidateScorer:
@@ -15,11 +19,16 @@ class ValidateScorer:
     ):
         self.metrics = metrics
         self.model_evaluator = model_evaluator
+        try:
+            self.encoder = tiktoken.encoding_for_model(model_evaluator)
+        except Exception as _:
+            logger.info("Defaulting to cl100k_base for measuring token count")
+            self.encoder = tiktoken.get_encoding("cl100k_base")
 
     def _score_item_rundata(self, response: LLMResponse) -> RunData:
         scores: dict[str, float] = {}
         # We cache per response, so we need to create a new OpenAIService
-        openai_service = OpenAIService(self.model_evaluator)
+        openai_service = OpenAIService(self.encoder, self.model_evaluator)
         for metric in self.metrics:
             score = metric.score(response, openai_service)
             scores[metric.name] = score

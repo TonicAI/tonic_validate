@@ -62,3 +62,27 @@ class HttpClient:
         )
         res.raise_for_status()
         return res.json()
+
+    def http_put(
+        self, url: str, params: dict[Any, Any] = {}, data: dict[Any, Any] = {}
+    ) -> Any:
+        """Make a put request.
+
+        Parameters
+        ----------
+        url : str
+            URL to make the put request. Is appended to self.base_url.
+        params: dict
+            Passed as the params parameter of the requests.put request.
+        data: dict
+            Passed as the data parameter of the requests.put request.
+        """
+        res = requests.put(
+            self.base_url + url,
+            params=params,
+            json=data,
+            headers=self.headers,
+            verify=False,
+        )
+        res.raise_for_status()
+        return res.json()

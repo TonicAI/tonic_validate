@@ -53,8 +53,8 @@ class ValidateScorer:
             response.llm_answer,
             response.llm_context_list,
         )
-
-    def score_run(self, responses: List[LLMResponse], parallelism: int = 1) -> Run:
+    
+    def score_responses(self, responses: List[LLMResponse], parallelism: int = 1) -> Run:
         """Calculate metric scores for a list of LLMResponse objects.
 
         Parameters
@@ -88,7 +88,11 @@ class ValidateScorer:
         }
 
         return Run(overall_scores, run_data, None)
-
+    
+    # TODO: For backwards compatibility, remove in the future
+    def score_run(self, responses: List[LLMResponse], parallelism: int = 1) -> Run:
+        return self.score_responses(responses, parallelism)
+    
     def score(
         self,
         benchmark: Benchmark,
@@ -123,4 +127,4 @@ class ValidateScorer:
         with ThreadPoolExecutor(max_workers=callback_parallelism) as executor:
             responses = list(executor.map(create_response, benchmark.items))
 
-        return self.score_run(responses, scoring_parallelism)
+        return self.score_responses(responses, scoring_parallelism)

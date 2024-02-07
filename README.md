@@ -26,46 +26,23 @@ In addition to the SDK, we also have a **free to use UI**. While **using the UI 
 2. Use the following code snippet to get started.
 
     ```python
-    from tonic_validate import ValidateScorer, Benchmark, LLMResponse
-    from tonic_validate.metrics import AnswerConsistencyMetric, AugmentationAccuracyMetric
-    import os
-    os.environ["OPENAI_API_KEY"] = "put-your-openai-api-key-here"
+    from tonic_validate import ValidateScorer, ValidateApi, BenchmarkItem
 
     # Create a list of questions (required) and answers (optional) for scoring the LLM's performance
-    benchmark = Benchmark(
-        questions=["What is the capital of France?"],
-        answers=["Paris"]
-    )
+    benchmark: list[BenchmarkItem] = [
+        {"question": "What is the capital of France?", "answer": "Paris"},
+    ]
 
-    # Function to simulate getting a response and context from your LLM
-    # Replace this with your actual function call
-    def get_llm_response(question):
-        # Simulating a response from the LLM
-        # In your actual implementation, this will call your LLM
-        return "Paris", ["Paris is the capital of France."]  # Example response and context
+    # Returns the RAG system's answer along with a list of the retrieved context
+    def ask_rag(question):
+        return "Paris", ["Paris is the capital of France."] 
 
-    # Save the responses into an array for scoring
-    responses = []
-    for item in benchmark:
-        # llm_answer is the answer that LLM gives
-        # llm_context_list is a list of the context that the LLM used to answer the question
-        llm_answer, llm_context_list = get_llm_response(item.question)
-        llm_response = LLMResponse(
-            llm_answer=llm_answer,
-            llm_context_list=llm_context_list,
-            benchmark_item=item
-        )
-        responses.append(llm_response)
-    
     # Score the responses
-    scorer = ValidateScorer([
-        AnswerConsistencyMetric(),
-        AugmentationAccuracyMetric()
-    ])
-    run = scorer.score_run(responses)
+    scorer = ValidateScorer()
+    run = scorer.score(benchmark, ask_rag)
     ```
 
-This code snippet, creates a benchmark with one question and reference answer and then scores the answer with the metrics `AnswerConsistencyMetric` and `AugmentationAccuracyMetric`.
+This code snippet, creates a benchmark with one question and reference answer and then scores the answer.
 
 # Tonic Validate Benchmarks
 
@@ -78,47 +55,22 @@ To evaluate the RAG (Retrieval Augmented Generation) system's performance, we ne
 
 To use benchmarks, you can pass in a list of `questions` to ask the LLM (and optionally a list of reference answers via `answers`).
 ```python
-from tonic_validate import Benchmark
+from tonic_validate import BenchmarkItem
+
 # Create a list of questions (required) and answers (optional) for scoring the LLM's performance
-benchmark = Benchmark(
-    questions=["What is the capital of France?", "What is the capital of Germany?"]
-    answers=["Paris", "Berlin"]
-)
+benchmark: list[BenchmarkItem] = [
+    {"question": "What is the capital of France?", "answer": "Paris"},
+]
 ```
-To ask the LLM the questions from the benchmark, you can loop over the benchmark items like so  
+To use the benchmark, you can pass it to the `score` function along with a callback which takes the question and returns the RAG system's response
 ```python
-# Function to simulate getting a response and context from your LLM
-# Replace this with your actual function call
-def get_llm_response(question):
-    # Simulating a response from the LLM
-    # In your actual implementation, this will call your LLM
-    return "Paris", ["Paris is the capital of France."]  # Example response and context
+# Returns the RAG system's answer along with a list of the retrieved context
+def ask_rag(question):
+     return "Paris", ["Paris is the capital of France."] 
 
-for item in benchmark:
-    # Ask your question here (replace with your own code)
-    llm_answer = get_llm_answer(item.question)
-```
-To save the LLM responses when looping over the benchmark, you can pass the `llm_answer`, `llm_context_list`, and the benchmark item to `LLMResponse`.  
-```python
-# Function to simulate getting a response and context from your LLM
-# Replace this with your actual function call
-def get_llm_response(question):
-    # Simulating a response from the LLM
-    # In your actual implementation, this will call your LLM
-    return "Paris", ["Paris is the capital of France."]  # Example response and context
-
-# Save the responses into an array for scoring
-responses = []
-for item in benchmark:
-    # llm_answer is the answer that LLM gives
-    # llm_context_list is a list of the context that the LLM used to answer the question
-    llm_answer, llm_context_list = get_llm_response(item.question)
-    llm_response = LLMResponse(
-        llm_answer=llm_answer,
-        llm_context_list=llm_context_list,
-        benchmark_item=item
-    )
-    responses.append(llm_response)
+# Score the responses
+scorer = ValidateScorer()
+run = scorer.score(benchmark, ask_rag)
 ```
 
 # Tonic Validate Metrics
@@ -138,57 +90,48 @@ Metric inputs in Tonic Validate are used to provide the metrics with the informa
 
 ### Question 
 **What is it**: The question asked  
- **How to use**: You can provide the questions by passing them into the `Benchmark` via the `questions` argument.  
+ **How to use**: You can provide the questions by passing them into the `benchmark` via the `question` key.  
 ```python
-from tonic_validate import Benchmark
-benchmark = Benchmark(
-    questions=["What is the capital of France?", "What is the capital of Germany?"]
-)
+from tonic_validate import BenchmarkItem
+benchmark: list[BenchmarkItem] = [
+    {"question": "What is the capital of France?", "answer": "Paris"},
+]
 ```
 
 ### Reference Answer 
 **What is it**: A prewritten answer that serves as the ground truth for how the RAG application should answer the question.  
-**How to use**: You can provide the reference answers by passing it into the `Benchmark` via the `answers` argument. Each reference answer must correspond to a given question. So if the reference answer is for the third question in the `questions` list, then the reference answer must also be the third item in the `answers` list.  
+**How to use**: You can provide the reference answers by passing it into the `Benchmark` via the `answer` key.  
 ```python
-from tonic_validate import Benchmark
-benchmark = Benchmark(
-    questions=["What is the capital of France?", "What is the capital of Germany?"]
-    answers=["Paris", "Berlin"]
-)
+from tonic_validate import BenchmarkItem
+benchmark: list[BenchmarkItem] = [
+    {"question": "What is the capital of France?", "answer": "Paris"},
+]
 ```
 
 ### LLM Answer
 **What is it**: The answer the RAG application / LLM gives to the question.  
-**How to use**: You can provide the LLM answer via `llm_answer` when creating the `LLMResponse`.  
+**How to use**: You can provide the LLM answer via the callback you provide to the Validate scorer. The answer is the first item in the tuple response. 
 ```python
-from tonic_validate import LLMResponse
-# Save the responses into an array for scoring
-responses = []
-for item in benchmark:
-    # llm_answer is the answer that LLM gives
-    llm_response = LLMResponse(
-        llm_answer="Paris",
-        benchmark_item=item
-    )
-    responses.append(llm_response)
+# Returns the RAG system's answer along with a list of the retrieved context
+def ask_rag(question):
+     return "Paris", ["Paris is the capital of France."] 
+
+# Score the responses
+scorer = ValidateScorer()
+run = scorer.score(benchmark, ask_rag)
 ```
 
 ### Retrieved Context
 **What is it**: The context that your RAG application retrieves when answering a given question. This context is what's put in the prompt by the RAG application to help the LLM answer the question.  
-**How to use**: You can provide the LLM context via `llm_context_list` when creating the `LLMResponse`.  
+**How to use**: You can provide the LLM's retrieved context list via the callback you provide to the Validate scorer. The answer is the second item in the tuple response. The retrieved context is always a list
 ```python
-from tonic_validate import LLMResponse
-# Save the responses into an array for scoring
-responses = []
-for item in benchmark:
-    # llm_answer is the answer that LLM gives
-    # llm_context_list is a list of the context that the LLM used to answer the question
-    llm_response = LLMResponse(
-        llm_answer="Paris",
-        llm_context_list=["Paris is the capital of France."],
-        benchmark_item=item
-    )
-    responses.append(llm_response)
+# Returns the RAG system's answer along with a list of the retrieved context
+def ask_rag(question):
+     return "Paris", ["Paris is the capital of France."] 
+
+# Score the responses
+scorer = ValidateScorer()
+run = scorer.score(benchmark, ask_rag)
 ```
 
 ## Scoring With Metrics
@@ -198,19 +141,20 @@ Before scoring, you must set up an OpenAI Key as the Tonic Validate metrics make
 import os
 os.environ["OPENAI_API_KEY"] = "put-your-openai-api-key-here"
 ```
-If you already have the `OPENAI_API_KEY` set in your system's environmental variables then you can skip this step. Otherwise, please set the environment variable before proceeding.
+If you already have the `OPENAI_API_KEY` set in your system's environment variables then you can skip this step. Otherwise, please set the environment variable before proceeding.
+#### Using Azure
+If you are using Azure, instead of setting the `OPENAI_API_KEY` environment variable, you instead need to set `AZURE_OPENAI_KEY` and `AZURE_OPENAI_ENDPOINT`. `AZURE_OPENAI_ENDPOINT` is the endpoint url for your Azure OpenAI deployment and `AZURE_OPENAI_KEY` is your API key.
+```python
+import os
+os.environ["AZURE_OPENAI_KEY"] = "put-your-azure-openai-api-key-here"
+os.environ["AZURE_OPENAI_ENDPOINT"] = "put-your-azure-endpoint-here"
+```
 
 ### Setting up the Tonic Validate Scorer
 To use metrics, instantiate an instance of them and provide them to the ValidateScorer like so
 ```python
 from tonic_validate import ValidateScorer
-scorer = ValidateScorer([
-    AnswerConsistencyMetric(),
-    AnswerSimilarityMetric(),
-    AugmentationAccuracyMetric(),
-    AugmentationPrecisionMetric(),
-    RetrievalPrecisionMetric()
-])
+scorer = ValidateScorer()
 ```
 
 Here is a list of all the possible metrics with their imports
@@ -223,7 +167,7 @@ Here is a list of all the possible metrics with their imports
 | **Answer consistency**        | `from tonic_validate.metrics import AnswerConsistencyMetric`       |
 | **Answer consistency binary** | `from tonic_validate.metrics import AnswerConsistencyBinaryMetric` |
 
-The default model used for scoring metrics is GPT 4 Turbo. To change the OpenAI model, pass the OpenAI model name into the `model` argument for `ValidateScorer`
+The default model used for scoring metrics is GPT 4 Turbo. To change the OpenAI model, pass the OpenAI model name into the `model` argument for `ValidateScorer`. You can also pass in custom metrics via an array of metrics.
 
 ```python
 scorer = ValidateScorer([
@@ -232,32 +176,26 @@ scorer = ValidateScorer([
 ], model_evaluator="gpt-3.5-turbo")
 ```
 
+### Important: Using the scorer on Azure
+If you are using Azure, you MUST set the `model_evaluator` argument to your deployment name like so
+```python
+scorer = ValidateScorer(model_evaluator="your-deployment-name")
+```
+
 ### Running the Scorer
-After you instantiate the `ValidateScorer` with your desired metrics, you can then score the metrics using the list of LLM responses you collected earlier.
+After you instantiate the `ValidateScorer` with your desired metrics, you can then score the metrics using the callback you defined earlier.
 
 ```python
-from tonic_validate import ValidateScorer, LLMResponse
-# Save the responses into an array for scoring
-responses = []
-for item in benchmark:
-    # llm_answer is the answer that LLM gives
-    # llm_context_list is a list of the context that the LLM used to answer the question
-    llm_answer, llm_context_list = get_llm_response(item.question)
-    llm_response = LLMResponse(
-        llm_answer=llm_answer,
-        llm_context_list=llm_context_list,
-        benchmark_item=item
-    )
-    responses.append(llm_response)
+from tonic_validate import ValidateScorer, ValidateApi
+
+# Returns the RAG system's answer along with a list of the retrieved context
+def ask_rag(question):
+     return "Paris", ["Paris is the capital of France."] 
 
 # Score the responses
-scorer = ValidateScorer([
-    AnswerConsistencyMetric(),
-    AugmentationAccuracyMetric()
-])
-run = scorer.score_run(responses) # Scores the metrics
+scorer = ValidateScorer()
+run = scorer.score(benchmark, ask_rag)
 ```
-The resulting run object from `score_run` contains the following information
 
 ## Viewing the Results
 There are two ways to view the results of a run.

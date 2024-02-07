@@ -1,6 +1,6 @@
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
-from typing import Callable, DefaultDict, List, Tuple, Union, overload
+from typing import Callable, DefaultDict, List, Tuple
 from tonic_validate.classes.benchmark import Benchmark, BenchmarkItem
 import logging
 
@@ -48,8 +48,8 @@ class ValidateScorer:
         benchmark_item = response.benchmark_item
         return RunData(
             scores,
-            benchmark_item["question"],
-            benchmark_item["answer"],
+            benchmark_item.question,
+            benchmark_item.answer,
             response.llm_answer,
             response.llm_context_list,
         )
@@ -89,29 +89,9 @@ class ValidateScorer:
 
         return Run(overall_scores, run_data, None)
 
-    @overload
     def score(
         self,
         benchmark: Benchmark,
-        callback: Callable[[str], Tuple[str, List[str]]],
-        callback_parallelism=1,
-        scoring_parallelism=1,
-    ) -> Run:
-        ...
-
-    @overload
-    def score(
-        self,
-        benchmark: List[BenchmarkItem],
-        callback: Callable[[str], Tuple[str, List[str]]],
-        callback_parallelism=1,
-        scoring_parallelism=1,
-    ) -> Run:
-        ...
-
-    def score(
-        self,
-        benchmark: Union[Benchmark, List[BenchmarkItem]],
         callback: Callable[[str], Tuple[str, List[str]]],
         callback_parallelism=1,
         scoring_parallelism=1,
@@ -137,7 +117,7 @@ class ValidateScorer:
         responses: list[LLMResponse] = []
 
         def create_response(item: BenchmarkItem) -> LLMResponse:
-            llm_answer, llm_context_list = callback(item["question"])
+            llm_answer, llm_context_list = callback(item.question)
             return LLMResponse(llm_answer, llm_context_list, item)
 
         items = benchmark.items if isinstance(benchmark, Benchmark) else benchmark

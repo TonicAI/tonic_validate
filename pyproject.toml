@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tonic-validate"
-version = "2.3.1"
+version = "2.4.0"
 description = "RAG evaluation metrics."
 authors = ["Joe Ferrara <joeferrara@tonic.ai>", "Ethan Philpott <ephilpott@tonic.ai>"]
 readme = "pypi_readme.md"
@@ -9,6 +9,7 @@ readme = "pypi_readme.md"
 python = ">=3.8.1,<4.0.0"
 openai = ">=1.0.0"
 pandas = ">=1.2.3"
+tiktoken = "^0.5.2"
 
 [tool.poetry.group.dev.dependencies]
 sphinx = "^7.0.0"

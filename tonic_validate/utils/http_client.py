@@ -22,7 +22,7 @@ class HttpClient:
         self.base_url = base_url
         self.headers = {"Authorization": f"Bearer {access_token}"}
 
-    def http_get(self, url: str, params: dict[str, Any] = {}) -> Any:
+    def http_get(self, url: str, params: dict[Any, Any] = {}) -> Any:
         """Make a get request.
 
         Parameters
@@ -40,7 +40,7 @@ class HttpClient:
         return res.json()
 
     def http_post(
-        self, url: str, params: dict[str, Any] = {}, data: dict[str, Any] = {}
+        self, url: str, params: dict[Any, Any] = {}, data: dict[Any, Any] = {}
     ) -> Any:
         """Make a post request.
 
@@ -54,6 +54,30 @@ class HttpClient:
             Passed as the data parameter of the requests.post request.
         """
         res = requests.post(
+            self.base_url + url,
+            params=params,
+            json=data,
+            headers=self.headers,
+            verify=False,
+        )
+        res.raise_for_status()
+        return res.json()
+
+    def http_put(
+        self, url: str, params: dict[Any, Any] = {}, data: dict[Any, Any] = {}
+    ) -> Any:
+        """Make a put request.
+
+        Parameters
+        ----------
+        url : str
+            URL to make the put request. Is appended to self.base_url.
+        params: dict
+            Passed as the params parameter of the requests.put request.
+        data: dict
+            Passed as the data parameter of the requests.put request.
+        """
+        res = requests.put(
             self.base_url + url,
             params=params,
             json=data,

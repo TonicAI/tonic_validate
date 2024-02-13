@@ -88,11 +88,11 @@ def answer_consistent_with_context_call(
 
     logger.debug(f"Asking {openai_service.model} whether answer hallucinates")
     main_message = (
-        "Considering the following list of context and then answer, which answers a"
-        "user's query using the context, determine whether the answer contains any"
-        "information that can not be attributed to the intormation in the list of"
-        "context. If the answer contains information that cannot be attributed to the"
-        "context then respond with true. Otherwise response with false. Response with"
+        "Consider the following list of context and answer. The answer answers a "
+        "user's query using the context. Determine whether the answer contains any "
+        "information that cannot be attributed to the information in the list of "
+        "context. If the answer contains information that cannot be attributed to the "
+        "context then respond with false. Otherwise respond with true. Respond with "
         "either true or false and no additional text."
     )
     for i, context in enumerate(context_list):

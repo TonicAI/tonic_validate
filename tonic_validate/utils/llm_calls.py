@@ -31,10 +31,10 @@ def similarity_score_call(
         f"Asking {openai_service.model} for similarity score for question: {question}"
     )
     main_message = (
-        "Considering the reference answer and the new answer to the following question, on"
-        "a scale of 0 to 5, where 5 means the same and 0 means not similar, how similar in"
-        "meaning is the new answer to the reference answer? Respond with just a number and"
-        "no additional text."
+        "Considering the reference answer and the new answer to the following "
+        "question, on a scale of 0 to 5, where 5 means the same and 0 means not at all "
+        "similar, how similar in meaning is the new answer to the reference answer? "
+        "Respond with just a number and no additional text."
     )
     main_message += f"\nQUESTION: {question}\n"
     main_message += f"REFERENCE ANSWER: {reference_answer}\n"
@@ -146,11 +146,11 @@ def context_relevancy_call(
         f"Asking {openai_service.model} for context relevance for question {question}"
     )
     main_message = (
-        "Considering the following question and context, determine whether the context"
-        "is relevant for answering the question. If the context is relevant for answering"
-        "the question, respond with true. If the context is not relevant for answering"
-        "the question, respond with false. Respond with either true or false and no"
-        "additional text."
+        "Considering the following question and context, determine whether the context "
+        "is relevant for answering the question. If the context is relevant for "
+        "answering the question, respond with true. If the context is not relevant for "
+        "answering the question, respond with false. Respond with either true or false "
+        "and no additional text."
     )
     main_message += f"\nQUESTION: {question}\n"
     main_message += f"CONTEXT: {context}\n"
@@ -198,11 +198,11 @@ def answer_contains_context_call(
     """
     logger.debug(f"Asking {openai_service.model} whether answer contains context")
     main_message = (
-        "Considering the following answer and context, determine whether the answer"
-        "contains information derived from the context. If the answer contains"
-        "information derived from the context, respond with true. If the answer does not"
-        "contain information derived from the context, respond with false.  Respond with"
-        "either true or false and no additinal text."
+        "Considering the following answer and context, determine whether the answer "
+        "contains information derived from the context. If the answer contains "
+        "information derived from the context, respond with true. If the answer does "
+        "not contain information derived from the context, respond with false. "
+        "Respond with either true or false and no additional text."
     )
     main_message += f"\nANSWER: {answer}\n"
     main_message += f"CONTEXT: {context}\n"
@@ -248,10 +248,10 @@ def main_points_call(answer: str, openai_service: OpenAIService) -> str:
         f"Asking {openai_service.model} for bullet list of main points in answer"
     )
     main_message = (
-        'Write down in a bulleted list using markdown (so each bullet is a "*"), the main'
-        "points in the following answer to a user's query. Respond with the bulleted list"
-        'and no additional text. Only use a single "*" for each bullet and do not use a "*"'
-        "anywhere in your response except for the bullets."
+        "Using a bulleted list in markdown (so each bullet is a '*'), write down the "
+        "main points in the following answer to a user's query. Respond with the "
+        "bulleted list and no additional text. Only use a single '*' for each bullet "
+        "and do not use a '*' anywhere in your response except for the bullets."
     )
     main_message += f"\nANSWER: {answer}"
 
@@ -298,10 +298,10 @@ def statement_derived_from_context_call(
         f"Asking {openai_service.model} whether statement is derived from context"
     )
     main_message = (
-        "Considering the following statement and then list of context, determine whether the"
-        "statement can be derived from the context. If the statement can be derived from the"
-        "context response with true. Otherwise response with false. Respond with either true"
-        "or false and no additional text."
+        "Considering the following statement and then list of context, determine "
+        "whether the statement can be derived from the context. If the statement can "
+        "be derived from the context response with true. Otherwise response with "
+        "false. Respond with either true or false and no additional text."
     )
     main_message += f"\n\nSTATEMENT:\n{statement}\nEND OF STATEMENT"
     for i, context in enumerate(context_list):

@@ -10,7 +10,7 @@ TONIC_VALIDATE_BASE_URL = os.getenv(
     "TONIC_VALIDATE_BASE_URL", "https://validate.tonic.ai/api/v1"
 )
 TONIC_VALIDATE_TELEMETRY_URL = os.getenv(
-    "TONIC_VALIDATE_TELEMETRY_URL", "https://telemetry.tonic.ai/validate/api/v1"
+    "TONIC_VALIDATE_TELEMETRY_URL", "https://telemetry.tonic.ai/validate"
 )
 TONIC_VALIDATE_DO_NOT_TRACK = os.getenv(
     "TONIC_VALIDATE_DO_NOT_TRACK", "false"

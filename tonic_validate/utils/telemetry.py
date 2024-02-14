@@ -35,7 +35,7 @@ class Telemetry:
             return
         user_id = self.get_user()
         self.http_client.http_post(
-            "/telemetry/runs",
+            "/runs",
             data={
                 "user_id": user_id,
                 "num_of_questions": num_of_questions,
@@ -48,6 +48,6 @@ class Telemetry:
             return
         user_id = self.get_user()
         self.http_client.http_post(
-            "/telemetry/benchmarks",
+            "/benchmarks",
             data={"user_id": user_id, "num_of_questions": num_of_questions},
         )

@@ -1,7 +1,10 @@
 import os
 from typing import List
 import uuid
-from tonic_validate.config import TONIC_VALIDATE_BASE_URL, TONIC_VALIDATE_DO_NOT_TRACK
+from tonic_validate.config import (
+    TONIC_VALIDATE_TELEMETRY_URL,
+    TONIC_VALIDATE_DO_NOT_TRACK,
+)
 from tonic_validate.utils.http_client import HttpClient
 from appdirs import user_data_dir
 
@@ -10,7 +13,7 @@ APP_DIR_NAME = "tonic-validate"
 
 class Telemetry:
     def __init__(self):
-        self.http_client = HttpClient(TONIC_VALIDATE_BASE_URL)
+        self.http_client = HttpClient(TONIC_VALIDATE_TELEMETRY_URL)
 
     def get_user(self) -> str:
         app_dir_path = user_data_dir(appname=APP_DIR_NAME)

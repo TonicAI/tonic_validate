@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Optional
 import requests
 from urllib3.exceptions import InsecureRequestWarning  # type: ignore
 
@@ -18,9 +18,11 @@ class HttpClient:
         The API token associated with your Tonic Validate account.
     """
 
-    def __init__(self, base_url: str, access_token: str):
+    def __init__(self, base_url: str, access_token: Optional[str] = None):
         self.base_url = base_url
-        self.headers = {"Authorization": f"Bearer {access_token}"}
+        self.headers = None
+        if access_token is not None:
+            self.headers = {"Authorization": f"Bearer {access_token}"}
 
     def http_get(self, url: str, params: dict[Any, Any] = {}) -> Any:
         """Make a get request.

@@ -2,6 +2,8 @@ from typing import Iterator, List, Optional
 from dataclasses import dataclass
 from uuid import UUID
 
+from tonic_validate.utils.telemetry import Telemetry
+
 
 @dataclass
 class BenchmarkItem:
@@ -19,6 +21,7 @@ class Benchmark:
     ):
         self.name: Optional[str] = name
         self.items: List[BenchmarkItem] = []
+        self.telemetry = Telemetry()
 
         if answers is None:
             for question in questions:
@@ -29,6 +32,11 @@ class Benchmark:
             raise ValueError("Questions and answers must be the same length")
         for question, answer in zip(questions, answers):
             self.items.append(BenchmarkItem(question, answer))
+
+        try:
+            self.telemetry.log_benchmark(len(questions))
+        except Exception as _:
+            pass
 
     # define iterator
     def __iter__(self) -> Iterator[BenchmarkItem]:

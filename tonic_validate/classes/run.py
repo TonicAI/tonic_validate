@@ -5,7 +5,7 @@ from uuid import UUID
 
 @dataclass
 class RunData:
-    scores: dict[str, float]
+    scores: dict[str, float | None]
     reference_question: str
     reference_answer: Optional[str]
     llm_answer: str

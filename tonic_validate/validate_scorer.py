@@ -28,9 +28,23 @@ class ValidateScorer:
             AnswerConsistencyMetric(),
         ],
         model_evaluator: str = "gpt-4-turbo-preview",
+        fail_on_error: bool = False,
     ):
+        """
+        Create a Tonic Validate scorer.
+
+        Parameters
+        ----------
+        metrics: List[Metric]
+            The list of metrics to be used for scoring.
+        model_evaluator: str
+            The model to be used for scoring.
+        fail_on_error: bool
+            If True, an error in calculating a metric will raise an exception. If False, the score will be set to None.
+        """
         self.metrics = metrics
         self.model_evaluator = model_evaluator
+        self.fail_on_error = fail_on_error
         try:
             self.encoder = tiktoken.encoding_for_model(model_evaluator)
         except Exception as _:
@@ -38,11 +52,18 @@ class ValidateScorer:
             self.encoder = tiktoken.get_encoding("cl100k_base")
 
     def _score_item_rundata(self, response: LLMResponse) -> RunData:
-        scores: dict[str, float] = {}
+        scores: dict[str, float | None] = {}
         # We cache per response, so we need to create a new OpenAIService
         openai_service = OpenAIService(self.encoder, self.model_evaluator)
         for metric in self.metrics:
-            score = metric.score(response, openai_service)
+            try:
+                score = metric.score(response, openai_service)
+            except Exception as e:
+                if not self.fail_on_error:
+                    score = None
+                    logger.error(f"Error calculating score for {metric.name}")
+                else:
+                    raise e
             scores[metric.name] = score
 
         benchmark_item = response.benchmark_item
@@ -82,8 +103,9 @@ class ValidateScorer:
 
         for item in run_data:
             for metric_name, score in item.scores.items():
-                total_scores[metric_name] += score
-                num_scores[metric_name] += 1
+                if score is not None:
+                    total_scores[metric_name] += score
+                    num_scores[metric_name] += 1
 
         overall_scores: dict[str, float] = {
             metric: total / num_scores[metric] for metric, total in total_scores.items()

@@ -53,8 +53,10 @@ class ValidateScorer:
             response.llm_answer,
             response.llm_context_list,
         )
-    
-    def score_responses(self, responses: List[LLMResponse], parallelism: int = 1) -> Run:
+
+    def score_responses(
+        self, responses: List[LLMResponse], parallelism: int = 1
+    ) -> Run:
         """Calculate metric scores for a list of LLMResponse objects.
 
         Parameters
@@ -69,7 +71,7 @@ class ValidateScorer:
         Run
             The Run object containing the scores and other data.
         """
-        run_data: list[RunData] = []
+        run_data: List[RunData] = []
 
         with ThreadPoolExecutor(max_workers=parallelism) as executor:
             run_data = list(executor.map(self._score_item_rundata, responses))
@@ -88,11 +90,11 @@ class ValidateScorer:
         }
 
         return Run(overall_scores, run_data, None)
-    
+
     # TODO: For backwards compatibility, remove in the future
     def score_run(self, responses: List[LLMResponse], parallelism: int = 1) -> Run:
         return self.score_responses(responses, parallelism)
-    
+
     def score(
         self,
         benchmark: Benchmark,
@@ -118,11 +120,15 @@ class ValidateScorer:
         Run
             The Run object containing the scores and other data.
         """
-        responses: list[LLMResponse] = []
+        responses: List[LLMResponse] = []
 
         def create_response(item: BenchmarkItem) -> LLMResponse:
             callback_response = callback(item.question)
-            return LLMResponse(callback_response["llm_answer"], callback_response["llm_context_list"], item)
+            return LLMResponse(
+                callback_response["llm_answer"],
+                callback_response["llm_context_list"],
+                item,
+            )
 
         with ThreadPoolExecutor(max_workers=callback_parallelism) as executor:
             responses = list(executor.map(create_response, benchmark.items))

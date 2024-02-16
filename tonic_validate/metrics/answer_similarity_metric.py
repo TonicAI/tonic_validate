@@ -13,8 +13,7 @@ class AnswerSimilarityMetric(Metric):
     def score(self, llm_response: LLMResponse, openai_service: OpenAIService) -> float:
         # Check that the benchmark item has an answer
         if llm_response.benchmark_item.answer is None:
-            error_message = "The benchmark item does not have an answer"
-            raise ValueError(error_message)
+            raise ValueError("The benchmark item does not have an answer")
 
         similarity_score_response = similarity_score_call(
             llm_response.benchmark_item.question,
@@ -25,9 +24,8 @@ class AnswerSimilarityMetric(Metric):
         try:
             similarity_score = float(similarity_score_response)
         except ValueError:
-            error_message = (
+            raise ValueError(
                 f"Failed to parse similarity score {similarity_score_response} as float"
             )
-            raise ValueError(error_message)
 
         return similarity_score

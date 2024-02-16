@@ -14,7 +14,7 @@ In addition to the SDK, we also have a **free to use UI**. While **using the UI 
   <img src="./readme_images/TonicValidate-Graph.png" width="800">
 </picture>
 
-### Telemetry
+## Telemetry
 Tonic Validate collects minimal telemetry to help us figure out what users want and how they're using the product. We do not use any existing telemetry framework and instead created our own privacy focused setup. Only the following information is tracked
 
 * What metrics were used for a run

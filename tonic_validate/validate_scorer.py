@@ -1,6 +1,6 @@
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
-from typing import Callable, DefaultDict, List
+from typing import Callable, DefaultDict, List, Dict, Union
 from tonic_validate.classes.benchmark import Benchmark, BenchmarkItem
 import logging
 
@@ -52,7 +52,7 @@ class ValidateScorer:
             self.encoder = tiktoken.get_encoding("cl100k_base")
 
     def _score_item_rundata(self, response: LLMResponse) -> RunData:
-        scores: dict[str, float | None] = {}
+        scores: Dict[str, Union[float, None]] = {}
         # We cache per response, so we need to create a new OpenAIService
         openai_service = OpenAIService(self.encoder, self.model_evaluator)
         for metric in self.metrics:
@@ -61,7 +61,7 @@ class ValidateScorer:
             except Exception as e:
                 if not self.fail_on_error:
                     score = None
-                    logger.error(f"Error calculating score for {metric.name}")
+                    logger.error(f"Error calculating score for {metric.name}, setting score to None.")
                 else:
                     raise e
             scores[metric.name] = score
@@ -107,7 +107,7 @@ class ValidateScorer:
                     total_scores[metric_name] += score
                     num_scores[metric_name] += 1
 
-        overall_scores: dict[str, float] = {
+        overall_scores: Dict[str, float] = {
             metric: total / num_scores[metric] for metric, total in total_scores.items()
         }
 

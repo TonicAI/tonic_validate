@@ -29,10 +29,8 @@ class AnswerSimilarityMetric(Metric):
             similarity_score = float(similarity_score_response)
         except ValueError:
             error_message = (
-                f"Failed to parse similarity score {similarity_score_response} as "
-                "float, setting score to 0.0"
+                f"Failed to parse similarity score {similarity_score_response} as float"
             )
-            logger.error(error_message)
-            similarity_score = 0.0
+            raise ValueError(error_message)
 
         return similarity_score

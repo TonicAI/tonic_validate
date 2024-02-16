@@ -13,11 +13,8 @@ class AnswerSimilarityMetric(Metric):
     def score(self, llm_response: LLMResponse, openai_service: OpenAIService) -> float:
         # Check that the benchmark item has an answer
         if llm_response.benchmark_item.answer is None:
-            error_message = (
-                "Benchmark item has no answer, cannot calculate answer similarity"
-            )
-            logger.error(error_message)
-            return 0.0
+            error_message = "The benchmark item does not have an answer"
+            raise ValueError(error_message)
 
         similarity_score_response = similarity_score_call(
             llm_response.benchmark_item.question,

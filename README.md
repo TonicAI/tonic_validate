@@ -259,6 +259,12 @@ scorer = ValidateScorer([
 ], model_evaluator="gpt-3.5-turbo")
 ```
 
+If an error occurs while scoring an item's metric, the score for that metric will be set to `None`. If you instead wish to have Tonic Validate throw an exception when there's an error scoring, then set `fail_on_error` to `True` in the constructor
+
+```python
+scorer = ValidateScorer(fail_on_error=True)
+```
+
 ### **Important**: Using the scorer on Azure
 If you are using Azure, you MUST set the `model_evaluator` argument to your deployment name like so
 ```python

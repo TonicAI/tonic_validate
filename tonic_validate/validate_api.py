@@ -45,7 +45,7 @@ class ValidateApi:
             Metadata to attach to the run. If the values are not strings, then they are
             converted to strings before making the request.
         """
-        # ensure run_metadata is dict[str, str]
+        # ensure run_metadata is Dict[str, str]
         processed_run_metadata = {
             str(key): str(value) for key, value in run_metadata.items()
         }

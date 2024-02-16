@@ -29,12 +29,9 @@ def parse_boolean_response(response: str) -> bool:
         return True
     if "false" in response_lower and "true" not in response_lower:
         return False
-    log_message = (
+    raise ValueError(
         f"Could not determine true or false from response {response_lower}"
-        ", returning False"
     )
-    logger.debug(log_message)
-    return False
 
 
 def parse_bullet_list_response(response: str) -> List[str]:
@@ -54,13 +51,6 @@ def parse_bullet_list_response(response: str) -> List[str]:
     List[str]
         List of strings that correspond to the bullet points in the response.
     """
-    if "*" not in response:
-        log_message = (
-            f"Response {response} does not contain bullet list. Returning all of "
-            "response as main point."
-        )
-        logger.debug(log_message)
-        return [response]
     if not response.startswith("*"):
         log_message = (
             f"Response {response} does not start with bullet, when it should be a "
@@ -69,4 +59,6 @@ def parse_bullet_list_response(response: str) -> List[str]:
         logger.debug(log_message)
     bullet_list = response.split("*")[1:]
     bullet_list = [bullet.strip() for bullet in bullet_list]
+    if len(bullet_list) == 0:
+        raise ValueError(f"Could not parse bullet list from response {response}")
     return bullet_list

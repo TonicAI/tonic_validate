@@ -1,4 +1,4 @@
-from typing import Any, Optional, Union
+from typing import Any, Dict, Optional, Union
 import requests
 from urllib3.exceptions import InsecureRequestWarning  # type: ignore
 
@@ -25,7 +25,7 @@ class HttpClient:
             self.headers = {"Authorization": f"Bearer {access_token}"}
 
     def http_get(
-        self, url: str, params: dict[Any, Any] = {}, timeout: Union[int, None] = None
+        self, url: str, params: Dict[Any, Any] = {}, timeout: Union[int, None] = None
     ) -> Any:
         """Make a get request.
 
@@ -50,8 +50,8 @@ class HttpClient:
     def http_post(
         self,
         url: str,
-        params: dict[Any, Any] = {},
-        data: dict[Any, Any] = {},
+        params: Dict[Any, Any] = {},
+        data: Dict[Any, Any] = {},
         timeout: Union[int, None] = None,
     ) -> Any:
         """Make a post request.
@@ -77,7 +77,7 @@ class HttpClient:
         return res.json()
 
     def http_put(
-        self, url: str, params: dict[Any, Any] = {}, data: dict[Any, Any] = {}
+        self, url: str, params: Dict[Any, Any] = {}, data: Dict[Any, Any] = {}
     ) -> Any:
         """Make a put request.
 

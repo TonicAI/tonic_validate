@@ -15,6 +15,7 @@ from tonic_validate.metrics.augmentation_precision_metric import (
 from tonic_validate.metrics.metric import Metric
 from tonic_validate.services.openai_service import OpenAIService
 import tiktoken
+from tonic_validate.utils.telemetry import Telemetry
 
 logger = logging.getLogger()
 
@@ -45,6 +46,7 @@ class ValidateScorer:
         self.metrics = metrics
         self.model_evaluator = model_evaluator
         self.fail_on_error = fail_on_error
+        self.telemetry = Telemetry()
         try:
             self.encoder = tiktoken.encoding_for_model(model_evaluator)
         except Exception as _:
@@ -61,7 +63,9 @@ class ValidateScorer:
             except Exception as e:
                 if not self.fail_on_error:
                     score = None
-                    logger.error(f"Error calculating score for {metric.name}, setting score to None.")
+                    logger.error(
+                        f"Error calculating score for {metric.name}, setting score to None."
+                    )
                 else:
                     raise e
             scores[metric.name] = score
@@ -92,6 +96,13 @@ class ValidateScorer:
         Run
             The Run object containing the scores and other data.
         """
+        try:
+            self.telemetry.log_run(
+                len(responses), [metric.name for metric in self.metrics]
+            )
+        except Exception as _:
+            pass
+
         run_data: List[RunData] = []
 
         with ThreadPoolExecutor(max_workers=parallelism) as executor:

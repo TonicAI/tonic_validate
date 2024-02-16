@@ -14,6 +14,19 @@ In addition to the SDK, we also have a **free to use UI**. While **using the UI 
   <img src="./readme_images/TonicValidate-Graph.png" width="800">
 </picture>
 
+## Telemetry
+Tonic Validate collects minimal telemetry to help us figure out what users want and how they're using the product. We do not use any existing telemetry framework and instead created our own privacy focused setup. Only the following information is tracked
+
+* What metrics were used for a run
+* Number of questions in a run
+* Number of questions in a benchmark
+
+We do **NOT** track things such as the contents of the questions / answers, your scores, or any other sensitive information.
+
+We also generate a random UUID to help us figure out how many users are using the product. This UUID is not linked to your Tonic Validate account if you are using the web interface. It is solely there to help us get user counts. If you want to see how we implemented telemetry, you can do so in the `tonic_validate/utils/telemetry.py` file
+
+If you wish to opt out of telemetry, you only need to set the `TONIC_VALIDATE_DO_NOT_TRACK` environment variable to `True`.
+
 
 # Quickstart
 

@@ -10,6 +10,8 @@ python = ">=3.8.1,<4.0.0"
 openai = ">=1.0.0"
 pandas = ">=1.2.3"
 tiktoken = "^0.5.2"
+appdirs = "^1.4.4"
+python-dotenv = "^1.0.1"
 
 [tool.poetry.group.dev.dependencies]
 sphinx = "^7.0.0"

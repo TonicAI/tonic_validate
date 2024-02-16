@@ -41,6 +41,7 @@ class Telemetry:
                 "num_of_questions": num_of_questions,
                 "metrics": metrics,
             },
+            timeout=5,
         )
 
     def log_benchmark(self, num_of_questions: int):
@@ -50,4 +51,5 @@ class Telemetry:
         self.http_client.http_post(
             "/benchmarks",
             data={"user_id": user_id, "num_of_questions": num_of_questions},
+            timeout=5,
         )

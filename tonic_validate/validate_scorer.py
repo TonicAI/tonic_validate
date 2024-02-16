@@ -77,7 +77,7 @@ class ValidateScorer:
             self.telemetry.log_run(
                 len(responses), [metric.name for metric in self.metrics]
             )
-        except Exception as e:
+        except Exception as _:
             pass
 
         run_data: List[RunData] = []

@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any, Optional, Union
 import requests
 from urllib3.exceptions import InsecureRequestWarning  # type: ignore
 
@@ -24,7 +24,9 @@ class HttpClient:
         if access_token is not None:
             self.headers = {"Authorization": f"Bearer {access_token}"}
 
-    def http_get(self, url: str, params: dict[Any, Any] = {}) -> Any:
+    def http_get(
+        self, url: str, params: dict[Any, Any] = {}, timeout: Union[int, None] = None
+    ) -> Any:
         """Make a get request.
 
         Parameters
@@ -36,13 +38,21 @@ class HttpClient:
 
         """
         res = requests.get(
-            self.base_url + url, params=params, headers=self.headers, verify=False
+            self.base_url + url,
+            params=params,
+            headers=self.headers,
+            verify=False,
+            timeout=timeout,
         )
         res.raise_for_status()
         return res.json()
 
     def http_post(
-        self, url: str, params: dict[Any, Any] = {}, data: dict[Any, Any] = {}
+        self,
+        url: str,
+        params: dict[Any, Any] = {},
+        data: dict[Any, Any] = {},
+        timeout: Union[int, None] = None,
     ) -> Any:
         """Make a post request.
 
@@ -61,6 +71,7 @@ class HttpClient:
             json=data,
             headers=self.headers,
             verify=False,
+            timeout=timeout,
         )
         res.raise_for_status()
         return res.json()

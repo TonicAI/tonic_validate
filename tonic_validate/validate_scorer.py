@@ -61,7 +61,7 @@ class ValidateScorer:
             except Exception as e:
                 if not self.fail_on_error:
                     score = None
-                    logger.error(f"Error calculating score for {metric.name}")
+                    logger.error(f"Error calculating score for {metric.name}, setting score to None.")
                 else:
                     raise e
             scores[metric.name] = score

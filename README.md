@@ -23,7 +23,7 @@ Tonic Validate collects minimal telemetry to help us figure out what users want 
 
 We do **NOT** track things such as the contents of the questions / answers, your scores, or any other sensitive information.
 
-We also generate a random UUID to help us figure out how many users are using the product. This UUID is not linked to your Tonic Validate account if you are using the web interface. It is solely there to help us get user counts. If you want to see how we implemented telemetry, you can do so in the `tonic_validate/utils/telemetry.py` file
+We also generate a random UUID to help us figure out how many users are using the product. This UUID is linked to your Validate account only to help track who is using the SDK and UI at once and to get user counts. If you want to see how we implemented telemetry, you can do so in the `tonic_validate/utils/telemetry.py` file
 
 If you wish to opt out of telemetry, you only need to set the `TONIC_VALIDATE_DO_NOT_TRACK` environment variable to `True`.
 

@@ -30,9 +30,9 @@ class ValidateApi:
                 )
                 raise Exception(exception_message)
         self.client = HttpClient(TONIC_VALIDATE_BASE_URL, api_key)
-        self.telemetry = Telemetry(api_key)
         try:
-            self.telemetry.link_user()
+            telemetry = Telemetry(api_key)
+            telemetry.link_user()
         except Exception as _:
             pass
 

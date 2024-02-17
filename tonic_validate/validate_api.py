@@ -4,6 +4,7 @@ from tonic_validate.classes.run import Run
 from tonic_validate.config import TONIC_VALIDATE_API_KEY, TONIC_VALIDATE_BASE_URL
 
 from tonic_validate.utils.http_client import HttpClient
+from tonic_validate.utils.telemetry import Telemetry
 
 
 class ValidateApi:
@@ -29,6 +30,11 @@ class ValidateApi:
                 )
                 raise Exception(exception_message)
         self.client = HttpClient(TONIC_VALIDATE_BASE_URL, api_key)
+        try:
+            telemetry = Telemetry(api_key)
+            telemetry.link_user()
+        except Exception as _:
+            pass
 
     def upload_run(
         self, project_id: str, run: Run, run_metadata: Dict[str, str] = {}

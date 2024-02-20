@@ -5,6 +5,7 @@ from uuid import UUID
 
 logger = logging.getLogger()
 
+
 @dataclass
 class RunData:
     scores: Dict[str, Union[float, None]]
@@ -30,17 +31,28 @@ class Run:
     id: Optional[UUID]
 
     def to_df(self):
+        """
+        Convert the run data to a pandas DataFrame
+
+        Returns:
+            pd.DataFrame: DataFrame with the run data
+        """
         try:
             import pandas as pd
-        except Exception as e:
-            logger.error("pandas not found. Please install.")
+        except ImportError as e:
+            logger.error(
+                "-------\n"
+                "Pandas not found. Please install to convert the run data to a dataframe.\n"
+                "-------"
+            )
             raise e
-        
+
         metrics = list(self.overall_scores.keys())
         columns = ["question"] + metrics
-        scores = []      
+        scores = []
         for run in self.run_data:
-            run_score = [run.reference_question] + [run.scores.get(metric, None) for metric in metrics]
+            run_score = [run.reference_question] + [
+                run.scores.get(metric, None) for metric in metrics
+            ]
             scores.append(run_score)
-        return pd.DataFrame(scores,columns=columns)
-
+        return pd.DataFrame(scores, columns=columns)

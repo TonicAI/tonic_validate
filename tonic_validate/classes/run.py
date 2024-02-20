@@ -1,7 +1,7 @@
 from typing import Any, List, Optional, Dict, Union
 from dataclasses import dataclass
 from uuid import UUID
-
+import pandas as pd
 
 @dataclass
 class RunData:
@@ -26,3 +26,13 @@ class Run:
     overall_scores: Dict[str, float]
     run_data: List[RunData]
     id: Optional[UUID]
+
+    def to_df(self):
+        metrics = list(self.overall_scores.keys())
+        columns = ["question"] + metrics
+        scores = []      
+        for run in self.run_data:
+            run_score = [run.reference_question] + [run.scores.get(metric, None) for metric in metrics]
+            scores.append(run_score)
+        return pd.DataFrame(scores,columns=columns)
+

@@ -1,7 +1,9 @@
+import logging
 from typing import Any, List, Optional, Dict, Union
 from dataclasses import dataclass
 from uuid import UUID
-import pandas as pd
+
+logger = logging.getLogger()
 
 @dataclass
 class RunData:
@@ -28,6 +30,12 @@ class Run:
     id: Optional[UUID]
 
     def to_df(self):
+        try:
+            import pandas as pd
+        except Exception as e:
+            logger.error("pandas not found. Please install.")
+            raise e
+        
         metrics = list(self.overall_scores.keys())
         columns = ["question"] + metrics
         scores = []      

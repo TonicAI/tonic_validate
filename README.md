@@ -1,6 +1,6 @@
 # Tonic Validate Evaluation Framework
 
-Tonic Validate is a framework for the evaluation of Retrieval Augmented Generation (RAG) pipelines. Validate makes it easy to evaluate, track, and monitor your RAG applications.  Install via pip and quickly embed Validate into your existing code.  More detailed documentation is available [here](https://docs.tonic.ai/validate/). But the below quickstart guide is likely all you need to get started.
+Tonic Validate is a framework for the evaluation of LLM outputs, such as Retrieval Augmented Generation (RAG) pipelines. Validate makes it easy to evaluate, track, and monitor your LLM and RAG applications.  Install via pip and quickly embed Validate into your existing code.  More detailed documentation is available [here](https://docs.tonic.ai/validate/). But the below quickstart guide is likely all you need to get started.
 
 # Quickstart
 

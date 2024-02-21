@@ -44,7 +44,7 @@ class Telemetry:
                 "user_id": user_id,
                 "num_of_questions": num_of_questions,
                 "metrics": metrics,
-                "validate_action": TONIC_VALIDATE_GITHUB_ACTION,
+                "validate_gh_action": TONIC_VALIDATE_GITHUB_ACTION,
             },
             timeout=5,
         )
@@ -58,7 +58,7 @@ class Telemetry:
             data={
                 "user_id": user_id,
                 "num_of_questions": num_of_questions,
-                "validate_action": TONIC_VALIDATE_GITHUB_ACTION,
+                "validate_gh_action": TONIC_VALIDATE_GITHUB_ACTION,
             },
             timeout=5,
         )

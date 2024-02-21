@@ -4,6 +4,7 @@ from typing import List, Optional
 import uuid
 from tonic_validate.classes.user_info import UserInfo
 from tonic_validate.config import (
+    TONIC_VALIDATE_GITHUB_ACTION,
     TONIC_VALIDATE_TELEMETRY_URL,
     TONIC_VALIDATE_DO_NOT_TRACK,
 )
@@ -43,6 +44,7 @@ class Telemetry:
                 "user_id": user_id,
                 "num_of_questions": num_of_questions,
                 "metrics": metrics,
+                "validate_action": TONIC_VALIDATE_GITHUB_ACTION,
             },
             timeout=5,
         )
@@ -53,7 +55,11 @@ class Telemetry:
         user_id = self.get_user()["user_id"]
         self.http_client.http_post(
             "/benchmarks",
-            data={"user_id": user_id, "num_of_questions": num_of_questions},
+            data={
+                "user_id": user_id,
+                "num_of_questions": num_of_questions,
+                "validate_action": TONIC_VALIDATE_GITHUB_ACTION,
+            },
             timeout=5,
         )
 

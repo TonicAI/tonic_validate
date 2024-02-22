@@ -35,7 +35,7 @@ Tonic Validate is a framework for the evaluation of LLM outputs, such as Retriev
 This code snippet, creates a benchmark with one question and reference answer and then scores the answer.  Providing a reference answer is not required for most metrics (see below Metrics table).
 
 # Tonic Validate Metrics
-Metrics are used to score your LLM's performance.  Validate ships with 6 metrics which are applicable to most RAG systems.  You can create your own metrics as well by providing your own implementation of [metric.py](https://github.com/TonicAI/tonic_validate/blob/main/tonic_validate/metrics/metric.py).  To compute a metric, you must provide it data form your RAG application.  The table below describes the available default metrics.
+Metrics are used to score your LLM's performance.  Validate ships with 6 metrics which are applicable to most RAG systems.  You can create your own metrics as well by providing your own implementation of [metric.py](https://github.com/TonicAI/tonic_validate/blob/main/tonic_validate/metrics/metric.py).  To compute a metric, you must provide it data from your RAG application.  The table below describes the available default metrics.
 
 | Metric Name | Inputs | Score Range | What does it measure? |
 |-------------------------------|-----------------------------------------------------|--------|-------------------------------------------------------------------------------------|

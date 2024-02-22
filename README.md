@@ -303,13 +303,6 @@ You can also view the results of an individual run in the UI as well.
   <img src="./readme_images/TonicValidate-Run.png" width="800">
 </picture>
 
-
-## Check Out Our UI to Visualize Your Results
-In addition to the SDK, we also have a **free to use UI**. While **using the UI isn't required to use the SDK**, it does allow you to easily visualize your results. To sign up, click [here](https://validate.tonic.ai/).  
-<picture>
-  <img src="./readme_images/TonicValidate-Graph.png" width="800">
-</picture>
-
 ## Telemetry
 Tonic Validate collects minimal telemetry to help us figure out what users want and how they're using the product. We do not use any existing telemetry framework and instead created our own privacy focused setup. Only the following information is tracked
 

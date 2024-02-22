@@ -1,6 +1,15 @@
 from .validate_api import ValidateApi
 from .validate_scorer import ValidateScorer
-from .classes import Benchmark, BenchmarkItem, LLMResponse, Run, RunData
+from .classes import (
+    Benchmark,
+    BenchmarkItem,
+    LLMResponse,
+    CallbackLLMResponse,
+    Run,
+    RunData,
+    ContextLengthException,
+    UserInfo,
+)
 
 __all__ = [
     "ValidateApi",
@@ -8,6 +17,9 @@ __all__ = [
     "Benchmark",
     "BenchmarkItem",
     "LLMResponse",
+    "CallbackLLMResponse",
     "Run",
     "RunData",
+    "ContextLengthException",
+    "UserInfo",
 ]

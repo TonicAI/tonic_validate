@@ -13,6 +13,16 @@ from appdirs import user_data_dir
 
 APP_DIR_NAME = "tonic-validate"
 
+# List of CI/CD environment variables
+# 1. Github Actions: GITHUB_ACTIONS
+# 2  Gitlab CI/CD: GITLAB_CI
+# 3. Azure devops: TF_BUILD
+# 4. CircleCI: CI
+# 5. Jenkins: JENKINS_URL
+# 6. TravisCI: CI
+# 7. Bitbucket: CI
+env_vars = ["GITHUB_ACTIONS", "GITLAB_CI", "TF_BUILD", "CI", "JENKINS_URL"]
+
 
 class Telemetry:
     def __init__(self, api_key: Optional[str] = None):
@@ -34,6 +44,12 @@ class Telemetry:
                 f.write(json_info)
         return user_info
 
+    def __is_ci(self):
+        for var in env_vars:
+            if os.environ.get(var):
+                return True
+        return False
+
     def log_run(self, num_of_questions: int, metrics: List[str]):
         if TONIC_VALIDATE_DO_NOT_TRACK:
             return
@@ -44,6 +60,7 @@ class Telemetry:
                 "user_id": user_id,
                 "num_of_questions": num_of_questions,
                 "metrics": metrics,
+                "is_ci": self.__is_ci(),
                 "validate_gh_action": TONIC_VALIDATE_GITHUB_ACTION,
             },
             timeout=5,
@@ -58,6 +75,7 @@ class Telemetry:
             data={
                 "user_id": user_id,
                 "num_of_questions": num_of_questions,
+                "is_ci": self.__is_ci(),
                 "validate_gh_action": TONIC_VALIDATE_GITHUB_ACTION,
             },
             timeout=5,

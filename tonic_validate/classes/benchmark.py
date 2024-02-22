@@ -23,14 +23,13 @@ class Benchmark:
         self.items: List[BenchmarkItem] = []
         self.telemetry = Telemetry()
 
-        if answers is None:
-            for question in questions:
-                self.items.append(BenchmarkItem(question))
-            return
+        benchmark_answers = answers
+        if benchmark_answers is None:
+            benchmark_answers = [None] * len(questions)
 
-        if len(questions) != len(answers):
+        if len(questions) != len(benchmark_answers):
             raise ValueError("Questions and answers must be the same length")
-        for question, answer in zip(questions, answers):
+        for question, answer in zip(questions, benchmark_answers):
             self.items.append(BenchmarkItem(question, answer))
 
         try:

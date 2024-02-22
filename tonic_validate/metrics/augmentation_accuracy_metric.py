@@ -20,11 +20,9 @@ class AugmentationAccuracyMetric(Metric):
     ) -> Tuple[float, List[bool]]:
         contains_context_list: List[bool] = []
         if len(llm_response.llm_context_list) == 0:
-            logger.warning(
-                "No context provided for augmentation accuracy metric, "
-                "setting score to 0.0"
+            raise ValueError(
+                "No context provided, cannot calculate augmentation accuracy"
             )
-            return (0.0, [])
         for context in llm_response.llm_context_list:
             contains_context_response = answer_contains_context_call(
                 llm_response.llm_answer, context, openai_service

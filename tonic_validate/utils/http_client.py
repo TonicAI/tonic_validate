@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Dict, Optional, Union
 import requests
 from urllib3.exceptions import InsecureRequestWarning  # type: ignore
 
@@ -18,11 +18,15 @@ class HttpClient:
         The API token associated with your Tonic Validate account.
     """
 
-    def __init__(self, base_url: str, access_token: str):
+    def __init__(self, base_url: str, access_token: Optional[str] = None):
         self.base_url = base_url
-        self.headers = {"Authorization": f"Bearer {access_token}"}
+        self.headers = None
+        if access_token is not None:
+            self.headers = {"Authorization": f"Bearer {access_token}"}
 
-    def http_get(self, url: str, params: dict[Any, Any] = {}) -> Any:
+    def http_get(
+        self, url: str, params: Dict[Any, Any] = {}, timeout: Union[int, None] = None
+    ) -> Any:
         """Make a get request.
 
         Parameters
@@ -34,13 +38,21 @@ class HttpClient:
 
         """
         res = requests.get(
-            self.base_url + url, params=params, headers=self.headers, verify=False
+            self.base_url + url,
+            params=params,
+            headers=self.headers,
+            verify=False,
+            timeout=timeout,
         )
         res.raise_for_status()
         return res.json()
 
     def http_post(
-        self, url: str, params: dict[Any, Any] = {}, data: dict[Any, Any] = {}
+        self,
+        url: str,
+        params: Dict[Any, Any] = {},
+        data: Dict[Any, Any] = {},
+        timeout: Union[int, None] = None,
     ) -> Any:
         """Make a post request.
 
@@ -59,12 +71,13 @@ class HttpClient:
             json=data,
             headers=self.headers,
             verify=False,
+            timeout=timeout,
         )
         res.raise_for_status()
         return res.json()
 
     def http_put(
-        self, url: str, params: dict[Any, Any] = {}, data: dict[Any, Any] = {}
+        self, url: str, params: Dict[Any, Any] = {}, data: Dict[Any, Any] = {}
     ) -> Any:
         """Make a put request.
 

@@ -1,9 +1,10 @@
-import os
 from typing import List, Optional, Dict
 from tonic_validate.classes.benchmark import Benchmark
 from tonic_validate.classes.run import Run
+from tonic_validate.config import TONIC_VALIDATE_API_KEY, TONIC_VALIDATE_BASE_URL
 
 from tonic_validate.utils.http_client import HttpClient
+from tonic_validate.utils.telemetry import Telemetry
 
 
 class ValidateApi:
@@ -19,17 +20,21 @@ class ValidateApi:
     def __init__(
         self,
         api_key: Optional[str] = None,
-        base_url: str = "https://validate.tonic.ai/api/v1",
     ):
         if api_key is None:
-            api_key = os.environ.get("TONIC_VALIDATE_API_KEY")
+            api_key = TONIC_VALIDATE_API_KEY
             if api_key is None:
                 exception_message = (
                     "No api key provided. Please provide an api key or set "
                     "TONIC_VALIDATE_API_KEY environment variable."
                 )
                 raise Exception(exception_message)
-        self.client = HttpClient(base_url, api_key)
+        self.client = HttpClient(TONIC_VALIDATE_BASE_URL, api_key)
+        try:
+            telemetry = Telemetry(api_key)
+            telemetry.link_user()
+        except Exception as _:
+            pass
 
     def upload_run(
         self, project_id: str, run: Run, run_metadata: Dict[str, str] = {}
@@ -46,7 +51,7 @@ class ValidateApi:
             Metadata to attach to the run. If the values are not strings, then they are
             converted to strings before making the request.
         """
-        # ensure run_metadata is dict[str, str]
+        # ensure run_metadata is Dict[str, str]
         processed_run_metadata = {
             str(key): str(value) for key, value in run_metadata.items()
         }

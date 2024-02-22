@@ -188,6 +188,12 @@ scorer = ValidateScorer([
 ], model_evaluator="gpt-3.5-turbo")
 ```
 
+If an error occurs while scoring an item's metric, the score for that metric will be set to `None`. If you instead wish to have Tonic Validate throw an exception when there's an error scoring, then set `fail_on_error` to `True` in the constructor
+
+```python
+scorer = ValidateScorer(fail_on_error=True)
+```
+
 ### **Important**: Using the scorer on Azure
 If you are using Azure, you MUST set the `model_evaluator` argument to your deployment name like so
 ```python
@@ -283,7 +289,7 @@ You can easily view your run results by uploading them to our **free to use UI**
 Once you sign up for the UI, you will go through an onboarding to create an API Key and Project.
 
 <picture>
-  <img src="./readme_images/TonicValidate-Onboarding.png" width="800">
+  <img src="https://raw.githubusercontent.com/TonicAI/tonic_validate/main/readme_images/TonicValidate-Onboarding.png" width="800">
 </picture>
 
 Copy both the API Key and Project ID from the onboarding and insert it into the following code
@@ -294,7 +300,7 @@ validate_api.upload_run("your-project-id", run)
 ```
 This will upload your run to the Tonic Validate UI where you can view the results. On the home page (as seen below) you can view the change in scores across runs over time.  
 <picture>
-  <img src="./readme_images/TonicValidate-Graph.png" width="800">
+  <img src="https://raw.githubusercontent.com/TonicAI/tonic_validate/main/readme_images/TonicValidate-Graph.png" width="800">
 </picture>
 
 You can also view the results of an individual run in the UI as well.  
@@ -316,7 +322,7 @@ Tonic Validate collects minimal telemetry to help us figure out what users want 
 * Number of questions in a run
 * Number of questions in a benchmark
 
-We do **NOT** track things such as the contents of the questions / answers, your scores, or any other sensitive information.
+We do **NOT** track things such as the contents of the questions / answers, your scores, or any other sensitive information. For detecting CI/CD, we only check for common environment variables in different CI/CD environments. We do not log the values of these environment variables.
 
 We also generate a random UUID to help us figure out how many users are using the product. This UUID is linked to your Validate account only to help track who is using the SDK and UI at once and to get user counts. If you want to see how we implemented telemetry, you can do so in the `tonic_validate/utils/telemetry.py` file
 

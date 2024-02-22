@@ -171,7 +171,7 @@ from tonic_validate import ValidateScorer
 scorer = ValidateScorer()
 ```
 
-The default model used for scoring metrics is GPT 4 Turbo. To change the OpenAI model, pass the OpenAI model name into the `model` argument for `ValidateScorer`. You can also pass in custom metrics via an array of metrics.
+The default model used for scoring metrics is GPT 4 Turbo. To change the OpenAI model, pass the OpenAI model name into the `model_evaluator` argument for `ValidateScorer`. You can also pass in custom metrics via an array of metrics.
 
 ```python
 from tonic_validate import ValidateScorer

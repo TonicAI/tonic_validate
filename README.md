@@ -145,8 +145,10 @@ run = scorer.score_responses(responses)
 
 ## Scoring With Metrics
 
+Most metrics are scored with the assistance of a LLM.  Validate supports OpenAI and Azure OpenAI but other LLMs can easily be integrated (just file an github issue against this repository).
+
 ### **Important**: Setting up OpenAI Key for Scoring
-Before scoring, you must set up an OpenAI Key as the Tonic Validate metrics make LLM calls.
+In order to use OpenAI you must provide an OpenAI API Key.
 ```python
 import os
 os.environ["OPENAI_API_KEY"] = "put-your-openai-api-key-here"
@@ -163,25 +165,18 @@ os.environ["AZURE_OPENAI_ENDPOINT"] = "put-your-azure-endpoint-here"
 
 
 ### Setting up the Tonic Validate Scorer
-To use metrics, instantiate an instance of them and provide them to the ValidateScorer like so
+To use metrics, instantiate an instance of ValidateScorer.
 ```python
 from tonic_validate import ValidateScorer
 scorer = ValidateScorer()
 ```
 
-Here is a list of all the possible metrics with their imports
-| Metric Name                   | Import                                                             |
-|-------------------------------|--------------------------------------------------------------------|
-| **Answer similarity score**   | `from tonic_validate.metrics import AnswerSimilarityMetric`        |
-| **Retrieval precision**       | `from tonic_validate.metrics import RetrievalPrecisionMetric`      |
-| **Augmentation precision**    | `from tonic_validate.metrics import AugmentationPrecisionMetric`   |
-| **Augmentation accuracy**     | `from tonic_validate.metrics import AugmentationAccuracyMetric`    |
-| **Answer consistency**        | `from tonic_validate.metrics import AnswerConsistencyMetric`       |
-| **Answer consistency binary** | `from tonic_validate.metrics import AnswerConsistencyBinaryMetric` |
-
 The default model used for scoring metrics is GPT 4 Turbo. To change the OpenAI model, pass the OpenAI model name into the `model` argument for `ValidateScorer`. You can also pass in custom metrics via an array of metrics.
 
 ```python
+from tonic_validate import ValidateScorer
+from tonic_validate.metrics import AnswerConsistencyMetric, AnswerSimilarityMetric
+
 scorer = ValidateScorer([
     AnswerConsistencyMetric(),
     AugmentationAccuracyMetric()

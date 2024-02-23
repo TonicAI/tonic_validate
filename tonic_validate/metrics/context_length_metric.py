@@ -8,7 +8,7 @@ from tonic_validate.services.openai_service import OpenAIService
 logger = logging.getLogger()
 
 
-class ContextLengthCheckerMetric(BinaryMetric):
+class ContextLengthMetric(BinaryMetric):
     def __init__(
         self,
         name: str,

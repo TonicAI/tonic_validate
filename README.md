@@ -2,7 +2,7 @@
 
 Tonic Validate is a framework for the evaluation of LLM outputs, such as Retrieval Augmented Generation (RAG) pipelines. Validate makes it easy to evaluate, track, and monitor your LLM and RAG applications.  Install via pip and quickly embed Validate into your existing code.  More detailed documentation is available [here](https://docs.tonic.ai/validate/). But the below quickstart guide is likely all you need to get started.
 
-# Quickstart
+## Quickstart
 
 1. Install Tonic Validate
    ```
@@ -34,11 +34,11 @@ Tonic Validate is a framework for the evaluation of LLM outputs, such as Retriev
 
 This code snippet, creates a benchmark with one question and reference answer and then scores the answer.  Providing a reference answer is not required for most metrics (see below Metrics table).
 
-# CI/CD
+## CI/CD
 
 Many users find value in running evaluations during the code review/pull request process.  You can create your own automation here using the snippet above and knowledge found in our documentation and this readme OR you can take advantage of our absolutely free Github Action in the Github Marketplace.  The listing is [here](https://github.com/marketplace/actions/tonic-validate-for-prs).  It's easy to setup but if you have any questions, just create an issue in the corresponding repository.
 
-# Tonic Validate Metrics
+## Tonic Validate Metrics
 Metrics are used to score your LLM's performance.  Validate ships with 6 metrics which are applicable to most RAG systems.  You can create your own metrics as well by providing your own implementation of [metric.py](https://github.com/TonicAI/tonic_validate/blob/main/tonic_validate/metrics/metric.py).  To compute a metric, you must provide it data from your RAG application.  The table below describes the available default metrics.
 
 | Metric Name | Inputs | Score Range | What does it measure? |
@@ -52,10 +52,10 @@ Metrics are used to score your LLM's performance.  Validate ships with 6 metrics
 
 **Note**: More details on these metrics can be found in our [documentation](https://docs.tonic.ai/validate/about-rag-metrics/tonic-validate-rag-metrics-reference).
 
-## Metric Inputs
+### Metric Inputs
 Metric inputs in Tonic Validate are used to provide the metrics with the information they need to calculate performance. Below, we explain each input type and how to pass them into Tonic Validate's SDK.
 
-### Question 
+#### Question 
 **What is it**: The question asked  
  **How to use**: You can provide the questions by passing them into the `Benchmark` via the `questions` argument.  
 ```python
@@ -65,7 +65,7 @@ benchmark = Benchmark(
 )
 ```
 
-### Reference Answer 
+#### Reference Answer 
 **What is it**: A prewritten answer that serves as the ground truth for how the RAG application should answer the question.  
 **How to use**: You can provide the reference answers by passing it into the `Benchmark` via the `answers` argument. Each reference answer must correspond to a given question. So if the reference answer is for the third question in the `questions` list, then the reference answer must also be the third item in the `answers` list.  The only metric that requires a reference answer is the Answer Similarity Score
 ```python
@@ -76,7 +76,7 @@ benchmark = Benchmark(
 )
 ```
 
-### LLM Answer
+#### LLM Answer
 **What is it**: The answer the RAG application / LLM gives to the question.  
 **How to use**: You can provide the LLM answer via the callback you provide to the Validate scorer. The answer is the first item in the tuple response. 
 ```python
@@ -111,7 +111,7 @@ run = scorer.score_responses(responses)
 ```
 
 
-### Retrieved Context
+#### Retrieved Context
 **What is it**: The context that your RAG application retrieves when answering a given question. This context is what's put in the prompt by the RAG application to help the LLM answer the question.  
 **How to use**: You can provide the LLM's retrieved context list via the callback you provide to the Validate scorer. The answer is the second item in the tuple response. The retrieved context is always a list
 ```python
@@ -147,11 +147,11 @@ scorer = ValidateScorer()
 run = scorer.score_responses(responses)
 ```
 
-## Scoring With Metrics
+### Scoring With Metrics
 
 Most metrics are scored with the assistance of a LLM.  Validate supports OpenAI and Azure OpenAI but other LLMs can easily be integrated (just file an github issue against this repository).
 
-### **Important**: Setting up OpenAI Key for Scoring
+#### **Important**: Setting up OpenAI Key for Scoring
 In order to use OpenAI you must provide an OpenAI API Key.
 ```python
 import os
@@ -159,7 +159,7 @@ os.environ["OPENAI_API_KEY"] = "put-your-openai-api-key-here"
 ```
 If you already have the `OPENAI_API_KEY` set in your system's environment variables then you can skip this step. Otherwise, please set the environment variable before proceeding.
 
-#### Using Azure
+##### Using Azure
 If you are using Azure, instead of setting the `OPENAI_API_KEY` environment variable, you instead need to set `AZURE_OPENAI_KEY` and `AZURE_OPENAI_ENDPOINT`. `AZURE_OPENAI_ENDPOINT` is the endpoint url for your Azure OpenAI deployment and `AZURE_OPENAI_KEY` is your API key.
 ```python
 import os
@@ -168,7 +168,7 @@ os.environ["AZURE_OPENAI_ENDPOINT"] = "put-your-azure-endpoint-here"
 ```
 
 
-### Setting up the Tonic Validate Scorer
+#### Setting up the Tonic Validate Scorer
 To use metrics, instantiate an instance of ValidateScorer.
 ```python
 from tonic_validate import ValidateScorer
@@ -193,13 +193,13 @@ If an error occurs while scoring an item's metric, the score for that metric wil
 scorer = ValidateScorer(fail_on_error=True)
 ```
 
-### **Important**: Using the scorer on Azure
+#### **Important**: Using the scorer on Azure
 If you are using Azure, you MUST set the `model_evaluator` argument to your deployment name like so
 ```python
 scorer = ValidateScorer(model_evaluator="your-deployment-name")
 ```
 
-### Running the Scorer
+#### Running the Scorer
 After you instantiate the `ValidateScorer` with your desired metrics, you can then score the metrics using the callback you defined earlier.
 
 ```python
@@ -218,7 +218,7 @@ scorer = ValidateScorer()
 run = scorer.score(benchmark, ask_rag)
 ```
 
-#### Running the Scorer with manual logging
+##### Running the Scorer with manual logging
 If you don't want to use the callback, you can instead log your answers manually by iterating over the benchmark and then score the answers.
 ```python
 from tonic_validate import ValidateScorer, LLMResponse
@@ -247,10 +247,10 @@ scorer = ValidateScorer()
 run = scorer.score_responses(responses)
 ```
 
-## Viewing the Results
+### Viewing the Results
 There are two ways to view the results of a run.
 
-### Option 1: Print Out the Results
+#### Option 1: Print Out the Results
 You can manually print out the results via python like so
 ```python
 print("Overall Scores")
@@ -282,7 +282,7 @@ LLM Context:  ['Paris is the capital of France.']
 Scores:  {'answer_consistency': 1.0, 'augmentation_accuracy': 1.0}
 ------
 ```
-## Use the Tonic Validate UI (Recommended, Free to Use)
+### Use the Tonic Validate UI (Recommended, Free to Use)
 You can easily view your run results by uploading them to our **free to use UI**. The main advantage of this method is the Tonic Validate UI provides graphing for your results along with additional visualization features. To sign up for the UI, go to [here](https://validate.tonic.ai/).
 
 Once you sign up for the UI, you will go through an onboarding to create an API Key and Project.
@@ -307,7 +307,7 @@ You can also view the results of an individual run in the UI as well.
   <img src="./readme_images/TonicValidate-Run.png" width="800">
 </picture>
 
-## Telemetry
+### Telemetry
 Tonic Validate collects minimal telemetry to help us figure out what users want and how they're using the product. We do not use any existing telemetry framework and instead created our own privacy focused setup. Only the following information is tracked
 
 * What metrics were used for a run
@@ -320,9 +320,9 @@ We also generate a random UUID to help us figure out how many users are using th
 
 If you wish to opt out of telemetry, you only need to set the `TONIC_VALIDATE_DO_NOT_TRACK` environment variable to `True`.
 
-# FAQ
+## FAQ
 
-### What models can I use an LLM evaluator?
+#### What models can I use an LLM evaluator?
 
 We currently allow the family of chat completion models from Open AI.
 

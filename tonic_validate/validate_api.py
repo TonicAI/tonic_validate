@@ -1,7 +1,7 @@
 from typing import List, Optional, Dict
 from tonic_validate.classes.benchmark import Benchmark
 from tonic_validate.classes.run import Run
-from tonic_validate.config import TONIC_VALIDATE_API_KEY, TONIC_VALIDATE_BASE_URL
+from tonic_validate.config import Config
 
 from tonic_validate.utils.http_client import HttpClient
 from tonic_validate.utils.telemetry import Telemetry
@@ -21,15 +21,16 @@ class ValidateApi:
         self,
         api_key: Optional[str] = None,
     ):
+        self.config = Config()
         if api_key is None:
-            api_key = TONIC_VALIDATE_API_KEY
+            api_key = self.config.TONIC_VALIDATE_API_KEY
             if api_key is None:
                 exception_message = (
                     "No api key provided. Please provide an api key or set "
                     "TONIC_VALIDATE_API_KEY environment variable."
                 )
                 raise Exception(exception_message)
-        self.client = HttpClient(TONIC_VALIDATE_BASE_URL, api_key)
+        self.client = HttpClient(self.config.TONIC_VALIDATE_BASE_URL, api_key)
         try:
             telemetry = Telemetry(api_key)
             telemetry.link_user()

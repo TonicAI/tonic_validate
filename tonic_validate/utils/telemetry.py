@@ -3,11 +3,7 @@ import os
 from typing import List, Optional
 import uuid
 from tonic_validate.classes.user_info import UserInfo
-from tonic_validate.config import (
-    TONIC_VALIDATE_GITHUB_ACTION,
-    TONIC_VALIDATE_TELEMETRY_URL,
-    TONIC_VALIDATE_DO_NOT_TRACK,
-)
+from tonic_validate.config import Config
 from tonic_validate.utils.http_client import HttpClient
 from appdirs import user_data_dir
 
@@ -26,7 +22,8 @@ env_vars = ["GITHUB_ACTIONS", "GITLAB_CI", "TF_BUILD", "CI", "JENKINS_URL"]
 
 class Telemetry:
     def __init__(self, api_key: Optional[str] = None):
-        self.http_client = HttpClient(TONIC_VALIDATE_TELEMETRY_URL, api_key)
+        self.config = Config()
+        self.http_client = HttpClient(self.config.TONIC_VALIDATE_TELEMETRY_URL, api_key)
 
     def get_user(self) -> UserInfo:
         app_dir_path = user_data_dir(appname=APP_DIR_NAME)
@@ -51,7 +48,7 @@ class Telemetry:
         return False
 
     def log_run(self, num_of_questions: int, metrics: List[str]):
-        if TONIC_VALIDATE_DO_NOT_TRACK:
+        if self.config.TONIC_VALIDATE_DO_NOT_TRACK:
             return
         user_id = self.get_user()["user_id"]
         self.http_client.http_post(
@@ -61,13 +58,13 @@ class Telemetry:
                 "num_of_questions": num_of_questions,
                 "metrics": metrics,
                 "is_ci": self.__is_ci(),
-                "validate_gh_action": TONIC_VALIDATE_GITHUB_ACTION,
+                "validate_gh_action": self.config.TONIC_VALIDATE_GITHUB_ACTION,
             },
             timeout=5,
         )
 
     def log_benchmark(self, num_of_questions: int):
-        if TONIC_VALIDATE_DO_NOT_TRACK:
+        if self.config.TONIC_VALIDATE_DO_NOT_TRACK:
             return
         user_id = self.get_user()["user_id"]
         self.http_client.http_post(
@@ -76,13 +73,13 @@ class Telemetry:
                 "user_id": user_id,
                 "num_of_questions": num_of_questions,
                 "is_ci": self.__is_ci(),
-                "validate_gh_action": TONIC_VALIDATE_GITHUB_ACTION,
+                "validate_gh_action": self.config.TONIC_VALIDATE_GITHUB_ACTION,
             },
             timeout=5,
         )
 
     def link_user(self):
-        if TONIC_VALIDATE_DO_NOT_TRACK:
+        if self.config.TONIC_VALIDATE_DO_NOT_TRACK:
             return
         telemetry_user = self.get_user()
         if telemetry_user["linked"]:

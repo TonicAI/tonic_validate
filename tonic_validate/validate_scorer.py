@@ -4,6 +4,7 @@ import copy
 from typing import Callable, DefaultDict, List, Dict, Union
 from tonic_validate.classes.benchmark import Benchmark, BenchmarkItem
 import logging
+from tonic_validate.classes.exceptions import LLMException
 
 from tonic_validate.classes.llm_response import CallbackLLMResponse, LLMResponse
 from tonic_validate.classes.run import Run, RunData
@@ -30,7 +31,7 @@ class ValidateScorer:
             AnswerConsistencyMetric(),
         ],
         model_evaluator: str = "gpt-4-turbo-preview",
-        max_scoring_retries: int = 3,
+        max_parsing_retries: int = 3,
         max_llm_retries: int = 5,
         fail_on_error: bool = False,
     ):
@@ -43,8 +44,8 @@ class ValidateScorer:
             The list of metrics to be used for scoring.
         model_evaluator: str
             The model to be used for scoring.
-        max_scoring_retries: int
-            The number of times to retry a failed score
+        max_parsing_retries: int
+            The number of times to retry a failed score if it failed due to parsing.
         max_llm_retries: int
             The number of times to retry a failed llm request.
         fail_on_error: bool
@@ -52,7 +53,7 @@ class ValidateScorer:
         """
         self.metrics = metrics
         self.model_evaluator = model_evaluator
-        self.max_scoring_retries = max_scoring_retries
+        self.max_scoring_retries = max_parsing_retries
         self.max_llm_retries = max_llm_retries
         self.fail_on_error = fail_on_error
         self.telemetry = Telemetry()
@@ -76,11 +77,22 @@ class ValidateScorer:
                 try:
                     scores[metric.name] = metric.score(response, openai_service)
                     break
+                except LLMException as e:
+                    if self.fail_on_error:
+                        raise Exception("Error getting LLM response: " + str(e))
+                    scores[metric.name] = None
+                    logger.warning(
+                        f"Error getting LLM response. Setting score to None. {e}"
+                    )
+                    # We reset the cache since we failed and don't want a failing cache to be used on the next metric
+                    openai_service.cache = last_cache
+                    break
                 except Exception as e:
                     tries += 1
                     openai_service.cache = last_cache
                     logger.warning(f"Error calculating {metric.name}: {e}. Retrying...")
                     exceptions.append(e)
+
             if tries == 3:
                 if self.fail_on_error:
                     raise Exception(

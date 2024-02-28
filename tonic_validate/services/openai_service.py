@@ -5,7 +5,7 @@ from typing import Dict
 from openai import AzureOpenAI, BadRequestError, OpenAI, RateLimitError
 from tiktoken import Encoding
 
-from tonic_validate.classes.exceptions import ContextLengthException
+from tonic_validate.classes.exceptions import ContextLengthException, LLMException
 
 logger = logging.getLogger()
 
@@ -92,13 +92,12 @@ class OpenAIService:
                 logger.debug(log_message)
                 time.sleep(wait_time)
                 wait_time *= self.exp_delay_base
-                num_retries += 1
             except Exception as e:
                 logger.warning(e)
                 time.sleep(wait_time)
                 wait_time *= self.exp_delay_base
-                num_retries += 1
-        raise Exception(
+            num_retries += 1
+        raise LLMException(
             f"Failed to get completion response from {self.model}, max retires hit"
         )
 

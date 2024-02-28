@@ -31,6 +31,7 @@ class ValidateScorer:
         ],
         model_evaluator: str = "gpt-4-turbo-preview",
         fail_on_error: bool = False,
+        quiet: bool = False,
     ):
         """
         Create a Tonic Validate scorer.
@@ -43,10 +44,14 @@ class ValidateScorer:
             The model to be used for scoring.
         fail_on_error: bool
             If True, an error in calculating a metric will raise an exception. If False, the score will be set to None.
+        quiet: bool
+            If True, will suppress all logging except errors.
         """
         self.metrics = metrics
         self.model_evaluator = model_evaluator
         self.fail_on_error = fail_on_error
+        logger.setLevel(logging.ERROR if quiet else logging.INFO)
+        self.quiet = quiet
         self.telemetry = Telemetry()
         try:
             self.encoder = tiktoken.encoding_for_model(model_evaluator)
@@ -112,6 +117,7 @@ class ValidateScorer:
                     executor.map(self._score_item_rundata, responses),
                     total=len(responses),
                     desc="Scoring responses",
+                    disable=self.quiet,
                 )
             )
 
@@ -176,6 +182,7 @@ class ValidateScorer:
                     executor.map(create_response, benchmark.items),
                     total=len(benchmark.items),
                     desc="Retrieving responses",
+                    disable=self.quiet,
                 )
             )
 

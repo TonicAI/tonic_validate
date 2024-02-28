@@ -51,7 +51,8 @@ def similarity_score_call(
             total_tokens - question_tokens - reference_answer_tokens - llm_answer_tokens
         )
         raise ContextLengthException(
-            "Similarity score prompt too long to score item. OpenAI returned the following error message"
+            "Similarity score prompt too long to score item. OpenAI returned the "
+            "following error message"
             "\n----------"
             f"\n{e}"
             "\n----------"
@@ -109,7 +110,8 @@ def answer_consistent_with_context_call(
         total_tokens = openai_service.get_token_count(main_message)
         base_prompt_tokens = total_tokens - context_tokens - answer_tokens
         raise ContextLengthException(
-            "Consistency prompt too long to score item. OpenAI returned the following error message"
+            "Consistency prompt too long to score item. OpenAI returned the following "
+            "error message"
             "\n----------"
             f"\n{e}"
             "\n----------"
@@ -163,7 +165,8 @@ def context_relevancy_call(
         total_tokens = openai_service.get_token_count(main_message)
         base_prompt_tokens = total_tokens - question_tokens - context_tokens
         raise ContextLengthException(
-            "Relevance prompt too long to score item. OpenAI returned the following error message"
+            "Relevance prompt too long to score item. OpenAI returned the following "
+            "error message"
             "\n----------"
             f"\n{e}"
             "\n----------"
@@ -215,7 +218,8 @@ def answer_contains_context_call(
         total_tokens = openai_service.get_token_count(main_message)
         base_prompt_tokens = total_tokens - answer_tokens - context_tokens
         raise ContextLengthException(
-            "Contains context prompt too long to score item. OpenAI returned the following error message"
+            "Contains context prompt too long to score item. OpenAI returned the "
+            "following error message"
             "\n----------"
             f"\n{e}"
             "\n----------"
@@ -262,7 +266,8 @@ def main_points_call(answer: str, openai_service: OpenAIService) -> str:
         total_tokens = openai_service.get_token_count(main_message)
         base_prompt_tokens = total_tokens - answer_tokens
         raise ContextLengthException(
-            "Main points prompt too long to score item. OpenAI returned the following error message"
+            "Main points prompt too long to score item. OpenAI returned the following "
+            "error message"
             "\n----------"
             f"\n{e}"
             "\n----------"
@@ -303,9 +308,11 @@ def statement_derived_from_context_call(
         main_message += f"\n\nCONTEXT {i}:\n{context}\nEND OF CONTEXT {i}"
 
     main_message += (
-        "\n\nDetermine whether the listed statement above can be derived from the context listed above. If the statement can "
-        "be derived from the context then you should respond with 'true'. Otherwise respond with "
-        "'false'. Your response must be either 'true' or 'false' with no additional text."
+        "\n\nDetermine whether the listed statement above can be derived from the "
+        "context listed above. If the statement can "
+        "be derived from the context then you should respond with 'true'. Otherwise "
+        "respond with 'false'. Your response must be either 'true' or 'false' with no "
+        "additional text."
     )
     try:
         response_message = openai_service.get_response(main_message)
@@ -317,7 +324,8 @@ def statement_derived_from_context_call(
         total_tokens = openai_service.get_token_count(main_message)
         base_prompt_tokens = total_tokens - context_tokens - statement_tokens
         raise ContextLengthException(
-            "Derived from context prompt too long to score item. OpenAI returned the following error message"
+            "Derived from context prompt too long to score item. OpenAI returned the "
+            "following error message"
             "\n----------"
             f"\n{e}"
             "\n----------"

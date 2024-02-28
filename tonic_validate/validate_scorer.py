@@ -16,6 +16,7 @@ from tonic_validate.metrics.metric import Metric
 from tonic_validate.services.openai_service import OpenAIService
 import tiktoken
 from tonic_validate.utils.telemetry import Telemetry
+from tqdm import tqdm
 
 logger = logging.getLogger()
 
@@ -106,7 +107,13 @@ class ValidateScorer:
         run_data: List[RunData] = []
 
         with ThreadPoolExecutor(max_workers=parallelism) as executor:
-            run_data = list(executor.map(self._score_item_rundata, responses))
+            run_data = list(
+                tqdm(
+                    executor.map(self._score_item_rundata, responses),
+                    total=len(responses),
+                    desc="Scoring responses",
+                )
+            )
 
         # Used to calculate overall score
         total_scores: DefaultDict[str, float] = defaultdict(float)
@@ -164,6 +171,12 @@ class ValidateScorer:
             )
 
         with ThreadPoolExecutor(max_workers=callback_parallelism) as executor:
-            responses = list(executor.map(create_response, benchmark.items))
+            responses = list(
+                tqdm(
+                    executor.map(create_response, benchmark.items),
+                    total=len(benchmark.items),
+                    desc="Retrieving responses",
+                )
+            )
 
         return self.score_responses(responses, scoring_parallelism)

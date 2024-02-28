@@ -34,4 +34,3 @@ class AnswerSimilarityMetric(Metric):
             raise ValueError(
                 f"Similarity score {similarity_score} is not within valid range of 0 to 5"
             )
-        return similarity_score

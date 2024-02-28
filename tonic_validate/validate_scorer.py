@@ -1,5 +1,6 @@
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
+import copy
 from typing import Callable, DefaultDict, List, Dict, Union
 from tonic_validate.classes.benchmark import Benchmark, BenchmarkItem
 import logging
@@ -29,6 +30,8 @@ class ValidateScorer:
             AnswerConsistencyMetric(),
         ],
         model_evaluator: str = "gpt-4-turbo-preview",
+        max_scoring_retries: int = 3,
+        max_llm_retries: int = 5,
         fail_on_error: bool = False,
     ):
         """
@@ -40,11 +43,17 @@ class ValidateScorer:
             The list of metrics to be used for scoring.
         model_evaluator: str
             The model to be used for scoring.
+        max_scoring_retries: int
+            The number of times to retry a failed score
+        max_llm_retries: int
+            The number of times to retry a failed llm request.
         fail_on_error: bool
             If True, an error in calculating a metric will raise an exception. If False, the score will be set to None.
         """
         self.metrics = metrics
         self.model_evaluator = model_evaluator
+        self.max_scoring_retries = max_scoring_retries
+        self.max_llm_retries = max_llm_retries
         self.fail_on_error = fail_on_error
         self.telemetry = Telemetry()
         try:
@@ -56,17 +65,20 @@ class ValidateScorer:
     def _score_item_rundata(self, response: LLMResponse) -> RunData:
         scores: Dict[str, Union[float, None]] = {}
         # We cache per response, so we need to create a new OpenAIService
-        openai_service = OpenAIService(self.encoder, self.model_evaluator)
+        openai_service = OpenAIService(
+            self.encoder, self.model_evaluator, max_retries=self.max_llm_retries
+        )
         for metric in self.metrics:
             tries = 0
             exceptions = []
+            last_cache = copy.deepcopy(openai_service.cache)
             while tries < 3:
                 try:
                     scores[metric.name] = metric.score(response, openai_service)
                     break
                 except Exception as e:
                     tries += 1
-                    openai_service = OpenAIService(self.encoder, self.model_evaluator)
+                    openai_service.cache = last_cache
                     logger.warning(f"Error calculating {metric.name}: {e}. Retrying...")
                     exceptions.append(e)
             if tries == 3:
@@ -78,6 +90,8 @@ class ValidateScorer:
                 logger.warning(
                     f"Error calculating {metric.name}. Setting score to None."
                 )
+                # We reset the cache since we failed and don't want a failing cache to be used on the next metric
+                openai_service.cache = last_cache
         benchmark_item = response.benchmark_item
         return RunData(
             scores,

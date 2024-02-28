@@ -58,18 +58,26 @@ class ValidateScorer:
         # We cache per response, so we need to create a new OpenAIService
         openai_service = OpenAIService(self.encoder, self.model_evaluator)
         for metric in self.metrics:
-            try:
-                score = metric.score(response, openai_service)
-            except Exception as e:
-                if not self.fail_on_error:
-                    score = None
-                    logger.error(
-                        f"Error calculating score for {metric.name}, setting score to None."
+            tries = 0
+            exceptions = []
+            while tries < 3:
+                try:
+                    scores[metric.name] = metric.score(response, openai_service)
+                    break
+                except Exception as e:
+                    tries += 1
+                    openai_service = OpenAIService(self.encoder, self.model_evaluator)
+                    logger.warning(f"Error calculating {metric.name}: {e}. Retrying...")
+                    exceptions.append(e)
+            if tries == 3:
+                if self.fail_on_error:
+                    raise Exception(
+                        f"Error calculating metric {metric.name}: " + str(exceptions)
                     )
-                else:
-                    raise e
-            scores[metric.name] = score
-
+                scores[metric.name] = None
+                logger.warning(
+                    f"Error calculating {metric.name}. Setting score to None."
+                )
         benchmark_item = response.benchmark_item
         return RunData(
             scores,

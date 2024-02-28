@@ -297,16 +297,16 @@ def statement_derived_from_context_call(
     logger.debug(
         f"Asking {openai_service.model} whether statement is derived from context"
     )
-    main_message = (
-        "Considering the following statement and then list of context, determine "
-        "whether the statement can be derived from the context. If the statement can "
-        "be derived from the context response with true. Otherwise response with "
-        "false. Respond with either true or false and no additional text."
-    )
+    main_message = "Considering the following statement and list of context(s)"
     main_message += f"\n\nSTATEMENT:\n{statement}\nEND OF STATEMENT"
     for i, context in enumerate(context_list):
         main_message += f"\n\nCONTEXT {i}:\n{context}\nEND OF CONTEXT {i}"
 
+    main_message += (
+        "\n\nDetermine whether the listed statement above can be derived from the context listed above. If the statement can "
+        "be derived from the context then you should respond with 'true'. Otherwise respond with "
+        "'false'. Your response must be either 'true' or 'false' with no additional text."
+    )
     try:
         response_message = openai_service.get_response(main_message)
     except ContextLengthException as e:

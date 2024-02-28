@@ -16,7 +16,7 @@ class OpenAIService:
         encoder: Encoding,
         model: str = "gpt-4-1106-preview",
         starting_wait_time: float = 0.1,
-        max_retries=5,
+        max_retries: int = 12,
         exp_delay_base: int = 2,
     ) -> None:
         """

@@ -32,7 +32,7 @@ class ValidateScorer:
         ],
         model_evaluator: str = "gpt-4-turbo-preview",
         max_parsing_retries: int = 3,
-        max_llm_retries: int = 5,
+        max_llm_retries: int = 12,
         fail_on_error: bool = False,
     ):
         """

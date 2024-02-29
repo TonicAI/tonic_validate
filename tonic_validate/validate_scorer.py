@@ -18,6 +18,7 @@ from tonic_validate.metrics.metric import Metric
 from tonic_validate.services.openai_service import OpenAIService
 import tiktoken
 from tonic_validate.utils.telemetry import Telemetry
+from tqdm import tqdm
 
 logger = logging.getLogger()
 
@@ -34,6 +35,7 @@ class ValidateScorer:
         max_parsing_retries: int = 3,
         max_llm_retries: int = 12,
         fail_on_error: bool = False,
+        quiet: bool = False,
     ):
         """
         Create a Tonic Validate scorer.
@@ -50,12 +52,16 @@ class ValidateScorer:
             The number of times to retry a failed llm request.
         fail_on_error: bool
             If True, an error in calculating a metric will raise an exception. If False, the score will be set to None.
+        quiet: bool
+            If True, will suppress all logging except errors.
         """
         self.metrics = metrics
         self.model_evaluator = model_evaluator
         self.max_parsing_retries = max_parsing_retries
         self.max_llm_retries = max_llm_retries
         self.fail_on_error = fail_on_error
+        logger.setLevel(logging.ERROR if quiet else logging.INFO)
+        self.quiet = quiet
         self.telemetry = Telemetry()
         try:
             self.encoder = tiktoken.encoding_for_model(model_evaluator)
@@ -140,7 +146,14 @@ class ValidateScorer:
         run_data: List[RunData] = []
 
         with ThreadPoolExecutor(max_workers=parallelism) as executor:
-            run_data = list(executor.map(self._score_item_rundata, responses))
+            run_data = list(
+                tqdm(
+                    executor.map(self._score_item_rundata, responses),
+                    total=len(responses),
+                    desc="Scoring responses",
+                    disable=self.quiet,
+                )
+            )
 
         # Used to calculate overall score
         total_scores: DefaultDict[str, float] = defaultdict(float)
@@ -198,6 +211,13 @@ class ValidateScorer:
             )
 
         with ThreadPoolExecutor(max_workers=callback_parallelism) as executor:
-            responses = list(executor.map(create_response, benchmark.items))
+            responses = list(
+                tqdm(
+                    executor.map(create_response, benchmark.items),
+                    total=len(benchmark.items),
+                    desc="Retrieving responses",
+                    disable=self.quiet,
+                )
+            )
 
         return self.score_responses(responses, scoring_parallelism)

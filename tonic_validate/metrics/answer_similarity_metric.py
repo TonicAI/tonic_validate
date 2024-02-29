@@ -27,5 +27,10 @@ class AnswerSimilarityMetric(Metric):
             raise ValueError(
                 f"Failed to parse similarity score {similarity_score_response} as float"
             )
-
-        return similarity_score
+        # Check if similarity_score is within valid range
+        if 0 <= similarity_score <= 5:
+            return similarity_score
+        else:
+            raise ValueError(
+                f"Similarity score {similarity_score} is not within valid range of 0 to 5"
+            )

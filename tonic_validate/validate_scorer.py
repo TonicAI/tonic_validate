@@ -1,8 +1,10 @@
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
+import copy
 from typing import Callable, DefaultDict, List, Dict, Union
 from tonic_validate.classes.benchmark import Benchmark, BenchmarkItem
 import logging
+from tonic_validate.classes.exceptions import LLMException
 
 from tonic_validate.classes.llm_response import CallbackLLMResponse, LLMResponse
 from tonic_validate.classes.run import Run, RunData
@@ -16,6 +18,7 @@ from tonic_validate.metrics.metric import Metric
 from tonic_validate.services.openai_service import OpenAIService
 import tiktoken
 from tonic_validate.utils.telemetry import Telemetry
+from tqdm import tqdm
 
 logger = logging.getLogger()
 
@@ -29,7 +32,10 @@ class ValidateScorer:
             AnswerConsistencyMetric(),
         ],
         model_evaluator: str = "gpt-4-turbo-preview",
+        max_parsing_retries: int = 3,
+        max_llm_retries: int = 12,
         fail_on_error: bool = False,
+        quiet: bool = False,
     ):
         """
         Create a Tonic Validate scorer.
@@ -40,12 +46,22 @@ class ValidateScorer:
             The list of metrics to be used for scoring.
         model_evaluator: str
             The model to be used for scoring.
+        max_parsing_retries: int
+            The number of times to retry a failed score if it failed due to parsing.
+        max_llm_retries: int
+            The number of times to retry a failed llm request.
         fail_on_error: bool
             If True, an error in calculating a metric will raise an exception. If False, the score will be set to None.
+        quiet: bool
+            If True, will suppress all logging except errors.
         """
         self.metrics = metrics
         self.model_evaluator = model_evaluator
+        self.max_parsing_retries = max_parsing_retries
+        self.max_llm_retries = max_llm_retries
         self.fail_on_error = fail_on_error
+        logger.setLevel(logging.ERROR if quiet else logging.INFO)
+        self.quiet = quiet
         self.telemetry = Telemetry()
         try:
             self.encoder = tiktoken.encoding_for_model(model_evaluator)
@@ -56,20 +72,44 @@ class ValidateScorer:
     def _score_item_rundata(self, response: LLMResponse) -> RunData:
         scores: Dict[str, Union[float, None]] = {}
         # We cache per response, so we need to create a new OpenAIService
-        openai_service = OpenAIService(self.encoder, self.model_evaluator)
+        openai_service = OpenAIService(
+            self.encoder, self.model_evaluator, max_retries=self.max_llm_retries
+        )
         for metric in self.metrics:
-            try:
-                score = metric.score(response, openai_service)
-            except Exception as e:
-                if not self.fail_on_error:
-                    score = None
-                    logger.error(
-                        f"Error calculating score for {metric.name}, setting score to None."
+            tries = 0
+            exceptions = []
+            last_cache = copy.deepcopy(openai_service.cache)
+            while tries < self.max_parsing_retries:
+                try:
+                    scores[metric.name] = metric.score(response, openai_service)
+                    break
+                except LLMException as e:
+                    if self.fail_on_error:
+                        raise Exception("Error getting LLM response: " + str(e))
+                    scores[metric.name] = None
+                    logger.warning(
+                        f"Error getting LLM response. Setting score to None. {e}"
                     )
-                else:
-                    raise e
-            scores[metric.name] = score
+                    # We reset the cache since we failed and don't want a failing cache to be used on the next metric
+                    openai_service.cache = last_cache
+                    break
+                except Exception as e:
+                    tries += 1
+                    openai_service.cache = last_cache
+                    logger.warning(f"Error calculating {metric.name}: {e}. Retrying...")
+                    exceptions.append(e)
 
+            if tries == self.max_parsing_retries:
+                if self.fail_on_error:
+                    raise Exception(
+                        f"Error calculating metric {metric.name}: " + str(exceptions)
+                    )
+                scores[metric.name] = None
+                logger.warning(
+                    f"Error calculating {metric.name}. Setting score to None."
+                )
+                # We reset the cache since we failed and don't want a failing cache to be used on the next metric
+                openai_service.cache = last_cache
         benchmark_item = response.benchmark_item
         return RunData(
             scores,
@@ -106,7 +146,14 @@ class ValidateScorer:
         run_data: List[RunData] = []
 
         with ThreadPoolExecutor(max_workers=parallelism) as executor:
-            run_data = list(executor.map(self._score_item_rundata, responses))
+            run_data = list(
+                tqdm(
+                    executor.map(self._score_item_rundata, responses),
+                    total=len(responses),
+                    desc="Scoring responses",
+                    disable=self.quiet,
+                )
+            )
 
         # Used to calculate overall score
         total_scores: DefaultDict[str, float] = defaultdict(float)
@@ -164,6 +211,13 @@ class ValidateScorer:
             )
 
         with ThreadPoolExecutor(max_workers=callback_parallelism) as executor:
-            responses = list(executor.map(create_response, benchmark.items))
+            responses = list(
+                tqdm(
+                    executor.map(create_response, benchmark.items),
+                    total=len(benchmark.items),
+                    desc="Retrieving responses",
+                    disable=self.quiet,
+                )
+            )
 
         return self.score_responses(responses, scoring_parallelism)

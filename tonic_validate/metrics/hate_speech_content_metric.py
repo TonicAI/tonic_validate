@@ -14,7 +14,7 @@ logger = logging.getLogger()
 
 
 class HateSpeechContentMetric(BinaryMetric):
-    name: str = "offensive_content"
+    name: str = "hate_speech_content"
 
     def __init__(self):
         super().__init__(self.name, self.metric_callback)

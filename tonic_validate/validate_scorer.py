@@ -53,7 +53,7 @@ class ValidateScorer:
         """
         self.metrics = metrics
         self.model_evaluator = model_evaluator
-        self.max_scoring_retries = max_parsing_retries
+        self.max_parsing_retries = max_parsing_retries
         self.max_llm_retries = max_llm_retries
         self.fail_on_error = fail_on_error
         self.telemetry = Telemetry()
@@ -73,7 +73,7 @@ class ValidateScorer:
             tries = 0
             exceptions = []
             last_cache = copy.deepcopy(openai_service.cache)
-            while tries < 3:
+            while tries < self.max_parsing_retries:
                 try:
                     scores[metric.name] = metric.score(response, openai_service)
                     break
@@ -93,7 +93,7 @@ class ValidateScorer:
                     logger.warning(f"Error calculating {metric.name}: {e}. Retrying...")
                     exceptions.append(e)
 
-            if tries == 3:
+            if tries == self.max_parsing_retries:
                 if self.fail_on_error:
                     raise Exception(
                         f"Error calculating metric {metric.name}: " + str(exceptions)

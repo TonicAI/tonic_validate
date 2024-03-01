@@ -1,0 +1,18 @@
+name: Tonic Validate PR Action Test
+on: [pull_request]
+
+jobs:
+  tonic-validate:
+    runs-on: ubuntu-latest
+    name: Tonic Validate
+    env:
+      OPENAI_API_KEY:  ${{ secrets.OPENAI_API_KEY }}
+      AZURE_OPENAI_KEY: ${{ secrets.AZURE_OPENAI_KEY}}
+      AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT}}
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4      
+      - name: Tonic Validate PR Action Test
+        uses: TonicAI/tonic_validate_pr_action@v0.3.0
+        with:
+          llm_response_path: ./validate_responses.json

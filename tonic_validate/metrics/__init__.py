@@ -6,7 +6,6 @@ from .augmentation_precision_metric import AugmentationPrecisionMetric
 from .retrieval_precision_metric import RetrievalPrecisionMetric
 from .answer_match_metric import AnswerMatchMetric
 from .binary_metric import BinaryMetric
-from .contains_numbers_metric import ContainsNumbersMetric
 from .contains_text_metric import ContainsTextMetric
 from .context_length_metric import ContextLengthMetric
 from .duplication_metric import DuplicationMetric
@@ -22,7 +21,6 @@ __all__ = [
     "RetrievalPrecisionMetric",
     "AnswerMatchMetric",
     "BinaryMetric",
-    "ContainsNumbersMetric",
     "ContainsTextMetric",
     "ContextLengthMetric",
     "DuplicationMetric",

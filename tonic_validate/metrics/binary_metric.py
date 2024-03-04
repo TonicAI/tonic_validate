@@ -9,7 +9,8 @@ logger = logging.getLogger()
 
 
 class BinaryMetric(Metric):
-    def name(self):
+    @property
+    def name(self) -> str:
         return self._name
 
     def __init__(

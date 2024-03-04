@@ -10,7 +10,7 @@ from tonic_validate.utils.metrics_util import parse_boolean_response
 logger = logging.getLogger()
 
 
-class DuplicationtMetric(BinaryMetric):
+class DuplicationMetric(BinaryMetric):
     name: str = "duplication_metric"
 
     def __init__(self):

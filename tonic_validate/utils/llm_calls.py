@@ -7,7 +7,7 @@ logger = logging.getLogger()
 
 
 def similarity_score_call(
-        question: str, reference_answer: str, llm_answer: str, openai_service: OpenAIService
+    question: str, reference_answer: str, llm_answer: str, openai_service: OpenAIService
 ) -> str:
     """Sends prompt for answer similarity score to OpenAI API, and returns response.
 
@@ -48,7 +48,7 @@ def similarity_score_call(
         llm_answer_tokens = openai_service.get_token_count(llm_answer)
         total_tokens = openai_service.get_token_count(main_message)
         base_prompt_tokens = (
-                total_tokens - question_tokens - reference_answer_tokens - llm_answer_tokens
+            total_tokens - question_tokens - reference_answer_tokens - llm_answer_tokens
         )
         raise ContextLengthException(
             "Similarity score prompt too long to score item. OpenAI returned the following error message"
@@ -67,7 +67,7 @@ def similarity_score_call(
 
 
 def answer_consistent_with_context_call(
-        answer: str, context_list: List[str], openai_service: OpenAIService
+    answer: str, context_list: List[str], openai_service: OpenAIService
 ) -> str:
     """Sends prompt for answer consistency binary score and returns response.
 
@@ -124,7 +124,7 @@ def answer_consistent_with_context_call(
 
 
 def context_relevancy_call(
-        question: str, context: str, openai_service: OpenAIService
+    question: str, context: str, openai_service: OpenAIService
 ) -> str:
     """Sends prompt to get context relevance to Open AI API and returns response.
 
@@ -178,7 +178,7 @@ def context_relevancy_call(
 
 
 def answer_contains_context_call(
-        answer: str, context: str, openai_service: OpenAIService
+    answer: str, context: str, openai_service: OpenAIService
 ) -> str:
     """Sends prompt for whether answer contains context and returns response.
 
@@ -276,7 +276,7 @@ def main_points_call(answer: str, openai_service: OpenAIService) -> str:
 
 
 def statement_derived_from_context_call(
-        statement: str, context_list: List[str], openai_service: OpenAIService
+    statement: str, context_list: List[str], openai_service: OpenAIService
 ) -> str:
     """Sends prompt for whether statement is derived from context and returns response.
 

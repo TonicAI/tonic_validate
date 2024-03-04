@@ -6,6 +6,9 @@ from uuid import UUID
 logger = logging.getLogger()
 
 
+MetadataDict = Dict[str, Union[str, Dict[str, str]]]
+
+
 @dataclass
 class RunData:
     scores: Dict[str, Union[float, None]]

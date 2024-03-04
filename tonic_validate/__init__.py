@@ -9,6 +9,7 @@ from .classes import (
     RunData,
     ContextLengthException,
     UserInfo,
+    MetadataDict,
 )
 
 __all__ = [
@@ -22,4 +23,5 @@ __all__ = [
     "RunData",
     "ContextLengthException",
     "UserInfo",
+    "MetadataDict",
 ]

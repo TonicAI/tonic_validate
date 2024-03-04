@@ -1,6 +1,6 @@
-from typing import List, Optional, Dict
+from typing import List, Optional
 from tonic_validate.classes.benchmark import Benchmark
-from tonic_validate.classes.run import Run
+from tonic_validate.classes.run import MetadataDict, Run
 from tonic_validate.config import Config
 
 from tonic_validate.utils.http_client import HttpClient
@@ -38,7 +38,7 @@ class ValidateApi:
             pass
 
     def upload_run(
-        self, project_id: str, run: Run, run_metadata: Dict[str, str] = {}
+        self, project_id: str, run: Run, run_metadata: MetadataDict = {}
     ) -> str:
         """Upload a run to a Tonic Validate project.
 
@@ -48,14 +48,20 @@ class ValidateApi:
             The ID of the project to upload the run to.
         run : Run
             The run to upload.
-        run_metadata : Dict[str, str]
+        run_metadata : Dict[str, Union[str, Dict[str, str]]]
             Metadata to attach to the run. If the values are not strings, then they are
             converted to strings before making the request.
         """
-        # ensure run_metadata is Dict[str, str]
-        processed_run_metadata = {
-            str(key): str(value) for key, value in run_metadata.items()
-        }
+
+        # Convert all items in run_metadata to strings (including nested items)
+        processed_run_metadata = {}
+        for key, value in run_metadata.items():
+            if isinstance(value, dict):
+                processed_run_metadata[key] = {}
+                for nested_key, nested_value in value.items():
+                    processed_run_metadata[key][nested_key] = str(nested_value)
+            else:
+                processed_run_metadata[key] = str(value)
         run_response = self.client.http_post(f"/projects/{project_id}/runs")
         run_response = self.client.http_put(
             f"/projects/{project_id}/runs/{run_response['id']}",

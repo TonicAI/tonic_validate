@@ -1,6 +1,6 @@
 from .benchmark import Benchmark, BenchmarkItem
 from .llm_response import LLMResponse, CallbackLLMResponse
-from .run import Run, RunData
+from .run import Run, RunData, MetadataDict
 from .exceptions import ContextLengthException
 from .user_info import UserInfo
 
@@ -13,4 +13,5 @@ __all__ = [
     "RunData",
     "ContextLengthException",
     "UserInfo",
+    "MetadataDict",
 ]

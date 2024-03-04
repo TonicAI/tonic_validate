@@ -1,0 +1,24 @@
+[
+  {
+    "llm_answer": "Paris",
+    "benchmark_item": {
+      "question": "What is the capital of Paris",
+      "answer": "Paris"
+    }
+  },
+  {
+    "llm_answer": "Berlin",
+    "benchmark_item": {
+      "question": "What is the capital of Germany",
+      "answer": "Berlin"
+    }
+  },
+  {
+    "llm_answer": "Sam Altman is the CEO of OpenAI",
+    "llm_context_list": ["Sam Altman has been the CEO of OpenAI since 2019."],
+    "benchmark_item": {
+      "question": "Who is the CEO of OpenAI?",
+      "answer": "Sam Altman"
+    }
+  }
+]

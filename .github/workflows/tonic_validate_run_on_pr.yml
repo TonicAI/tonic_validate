@@ -15,4 +15,4 @@ jobs:
       - name: Tonic Validate PR Action Test
         uses: TonicAI/tonic_validate_pr_action@v0.3.0
         with:
-          llm_response_path: ./validate_responses.json
+          llm_response_path: ./sample_questions.json

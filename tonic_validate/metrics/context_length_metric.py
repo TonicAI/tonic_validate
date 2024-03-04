@@ -22,8 +22,15 @@ class ContextLengthMetric(BinaryMetric):
     def metric_callback(
         self, llm_response: LLMResponse, openai_service: OpenAIService
     ) -> bool:
-        if self.min_length and len(llm_response.llm_context_list) < self.min_length:
+        # For all items in the context list, check if the length is within the min and max length
+        return all(
+            self.check_context_length(context)
+            for context in llm_response.llm_context_list
+        )
+
+    def check_context_length(self, context: str) -> bool:
+        if self.min_length and len(context) < self.min_length:
             return False
-        if self.max_length and len(llm_response.llm_context_list) > self.max_length:
+        if self.max_length and len(context) > self.max_length:
             return False
         return True

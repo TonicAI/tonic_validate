@@ -528,5 +528,5 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [linkedin-url]: https://linkedin.com/in/tonicfakedata
 [email-shield]: https://img.shields.io/badge/Email%20Us-validate%40tonic.ai-blue?style=for-the-badge
 [email-url]: mailto:validate@tonic.ai
-[meeting-shield]: https://img.shields.io/badge/Want%20to%20talk%3F-Schedule%20a%20meeting%20with%20us-red?style=for-the-badge
+[meeting-shield]: https://img.shields.io/badge/Want%20to%20talk%3F-Schedule%20a%20meeting-red?style=for-the-badge
 [meeting-url]: https://www.getclockwise.com/c/adam-tonic-ai/adam-tonic-30-minute-meeting

@@ -31,7 +31,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/TonicAI/tonic_validate">
-    <img src="readme_images/validate-check.svg" alt="Logo" width="80" height="80">
+    <img src="https://raw.githubusercontent.com/TonicAI/tonic_validate/main/readme_images/validate-check.svg" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">Tonic Validate</h3>
@@ -416,7 +416,7 @@ This will upload your run to the Tonic Validate UI where you can view the result
 
 You can also view the results of an individual run in the UI as well.  
 <picture>
-  <img src="./readme_images/TonicValidate-Run.png" width="800">
+  <img src="https://raw.githubusercontent.com/TonicAI/tonic_validate/main/readme_images/TonicValidate-Run.png" width="800">
 </picture>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

@@ -25,6 +25,8 @@
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
+[![Email][email-shield]][email-url]
+[![Schedule a meeting][meeting-shield]][meeting-url]
 
 
 

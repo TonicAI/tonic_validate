@@ -509,7 +509,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [pypi-url]: https://github.com/TonicAI/tonic_validate/graphs/contributors
 [stars-shield]: https://img.shields.io/github/stars/TonicAI/tonic_validate.svg?style=for-the-badge
 [stars-url]: https://github.com/TonicAI/tonic_validate/stargazers
-[issues-shield]: https://img.shields.io/github/issues/TonicAI/tonic_validate.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/TonicAI/tonic_validate.svg?style=for-the-badge&color=green
 [issues-url]: https://github.com/TonicAI/tonic_validate/issues
 [license-shield]: https://img.shields.io/github/license/TonicAI/tonic_validate.svg?style=for-the-badge
 [license-url]: https://github.com/TonicAI/tonic_validate/blob/master/LICENSE.txt

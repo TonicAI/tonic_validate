@@ -4,6 +4,7 @@ from .answer_similarity_metric import AnswerSimilarityMetric
 from .augmentation_accuracy_metric import AugmentationAccuracyMetric
 from .augmentation_precision_metric import AugmentationPrecisionMetric
 from .retrieval_precision_metric import RetrievalPrecisionMetric
+from .latency_metric import LatencyMetric
 
 __all__ = [
     "AnswerConsistencyBinaryMetric",
@@ -12,4 +13,5 @@ __all__ = [
     "AugmentationAccuracyMetric",
     "AugmentationPrecisionMetric",
     "RetrievalPrecisionMetric",
+    "LatencyMetric",
 ]

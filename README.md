@@ -18,13 +18,10 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Contributors][contributors-shield]][contributors-url]
 [![PyPi Version][pypi-shield]][pypi-url]
-[![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
 [![Email][email-shield]][email-url]
 [![Schedule a meeting][meeting-shield]][meeting-url]
 
@@ -508,12 +505,8 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/TonicAI/tonic_validate.svg?style=for-the-badge
-[contributors-url]: https://github.com/TonicAI/tonic_validate/graphs/contributors
 [pypi-shield]: https://img.shields.io/pypi/v/tonic-validate?style=for-the-badge&label=PyPI%20Version
 [pypi-url]: https://github.com/TonicAI/tonic_validate/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/TonicAI/tonic_validate.svg?style=for-the-badge
-[forks-url]: https://github.com/TonicAI/tonic_validate/network/members
 [stars-shield]: https://img.shields.io/github/stars/TonicAI/tonic_validate.svg?style=for-the-badge
 [stars-url]: https://github.com/TonicAI/tonic_validate/stargazers
 [issues-shield]: https://img.shields.io/github/issues/TonicAI/tonic_validate.svg?style=for-the-badge

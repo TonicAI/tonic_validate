@@ -63,12 +63,20 @@
     <li>
       <a href="#quick-start">Quick Start</a>
     </li>
+    <li>
+      <a href="#cicd">CI/CD</a>
+    </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
+    <ul>
+        <li><a href="#tonic-validate-metrics">Tonic Validate Metrics</a></li>
+        <li><a href="#metric-inputs">Metric Inputs</a></li>
+        <li><a href="#scoring-with-metrics">Scoring With Metrics</a></li>
+        <li><a href="#viewing-the-results">Viewing the Results</a></li>
+    </ul>
+    <li><a href="#faq">FAQ</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -125,12 +133,16 @@ This code snippet, creates a benchmark with one question and reference answer an
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+
+
 <!-- CI/CD -->
 ## CI/CD
 
 Many users find value in running evaluations during the code review/pull request process.  You can create your own automation here using the snippet above and knowledge found in our documentation and this readme OR you can take advantage of our absolutely free Github Action in the Github Marketplace.  The listing is [here](https://github.com/marketplace/actions/tonic-validate-for-prs).  It's easy to setup but if you have any questions, just create an issue in the corresponding repository.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
 
 <!-- USAGE EXAMPLES -->
 ## Usage
@@ -152,9 +164,9 @@ Metrics are used to score your LLM's performance.  Validate ships with 6 metrics
 ### Metric Inputs
 Metric inputs in Tonic Validate are used to provide the metrics with the information they need to calculate performance. Below, we explain each input type and how to pass them into Tonic Validate's SDK.
 
-#### Question
-*What is it*: The question asked  
-*How to use*: You can provide the questions by passing them into the `Benchmark` via the `questions` argument.  
+#### **Question**
+**What is it**: The question asked  
+**How to use**: You can provide the questions by passing them into the `Benchmark` via the `questions` argument.  
 ```python
 from tonic_validate import Benchmark
 benchmark = Benchmark(
@@ -162,9 +174,9 @@ benchmark = Benchmark(
 )
 ```
 
-#### Reference Answer 
-*What is it*: A prewritten answer that serves as the ground truth for how the RAG application should answer the question.  
-*How to use*: You can provide the reference answers by passing it into the `Benchmark` via the `answers` argument. Each reference answer must correspond to a given question. So if the reference answer is for the third question in the `questions` list, then the reference answer must also be the third item in the `answers` list.  The only metric that requires a reference answer is the Answer Similarity Score
+#### **Reference Answer**
+**What is it**: A prewritten answer that serves as the ground truth for how the RAG application should answer the question.  
+**How to use**: You can provide the reference answers by passing it into the `Benchmark` via the `answers` argument. Each reference answer must correspond to a given question. So if the reference answer is for the third question in the `questions` list, then the reference answer must also be the third item in the `answers` list.  The only metric that requires a reference answer is the Answer Similarity Score
 ```python
 from tonic_validate import Benchmark
 benchmark = Benchmark(
@@ -173,9 +185,9 @@ benchmark = Benchmark(
 )
 ```
 
-#### LLM Answer
-*What is it*: The answer the RAG application / LLM gives to the question.  
-*How to use*: You can provide the LLM answer via the callback you provide to the Validate scorer. The answer is the first item in the tuple response. 
+#### **LLM Answer**
+**What is it**: The answer the RAG application / LLM gives to the question.  
+**How to use**: You can provide the LLM answer via the callback you provide to the Validate scorer. The answer is the first item in the tuple response. 
 ```python
 # Function to simulate getting a response and context from your LLM
 # Replace this with your actual function call
@@ -208,9 +220,9 @@ run = scorer.score_responses(responses)
 ```
 
 
-#### Retrieved Context
-*What is it*: The context that your RAG application retrieves when answering a given question. This context is what's put in the prompt by the RAG application to help the LLM answer the question.  
-*How to use*: You can provide the LLM's retrieved context list via the callback you provide to the Validate scorer. The answer is the second item in the tuple response. The retrieved context is always a list
+#### **Retrieved Context**
+**What is it**: The context that your RAG application retrieves when answering a given question. This context is what's put in the prompt by the RAG application to help the LLM answer the question.  
+**How to use**: You can provide the LLM's retrieved context list via the callback you provide to the Validate scorer. The answer is the second item in the tuple response. The retrieved context is always a list
 ```python
 # Function to simulate getting a response and context from your LLM
 # Replace this with your actual function call
@@ -243,6 +255,10 @@ for item in benchmark:
 scorer = ValidateScorer()
 run = scorer.score_responses(responses)
 ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
 
 ### Scoring With Metrics
 
@@ -344,6 +360,10 @@ scorer = ValidateScorer()
 run = scorer.score_responses(responses)
 ```
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
 ### Viewing the Results
 There are two ways to view the results of a run.
 
@@ -379,7 +399,7 @@ LLM Context:  ['Paris is the capital of France.']
 Scores:  {'answer_consistency': 1.0, 'augmentation_accuracy': 1.0}
 ------
 ```
-### Use the Tonic Validate UI (Recommended, Free to Use)
+#### Option 2: Use the Tonic Validate UI (Recommended, Free to Use)
 You can easily view your run results by uploading them to our **free to use UI**. The main advantage of this method is the Tonic Validate UI provides graphing for your results along with additional visualization features. To sign up for the UI, go to [here](https://validate.tonic.ai/).
 
 Once you sign up for the UI, you will go through an onboarding to create an API Key and Project.
@@ -419,6 +439,11 @@ We also generate a random UUID to help us figure out how many users are using th
 
 If you wish to opt out of telemetry, you only need to set the `TONIC_VALIDATE_DO_NOT_TRACK` environment variable to `True`.
 
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
 <!-- FAQ -->
 ## FAQ
 
@@ -438,6 +463,9 @@ scorer = ValidateScorer([
     AugmentationAccuracyMetric()
 ], model_evaluator="gpt-3.5-turbo")
 ```
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
@@ -470,10 +498,11 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <!-- CONTACT -->
 ## Contact
+[![LinkedIn][linkedin-shield]][linkedin-url]
+[![Email][email-shield]][email-url]
+[![Schedule a meeting][meeting-shield]][meeting-url]
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
 
-Project Link: [https://github.com/TonicAI/tonic_validate](https://github.com/TonicAI/tonic_validate)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -495,3 +524,7 @@ Project Link: [https://github.com/TonicAI/tonic_validate](https://github.com/Ton
 [license-url]: https://github.com/TonicAI/tonic_validate/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/tonicfakedata
+[email-shield]: https://img.shields.io/badge/Email%20Us-validate%40tonic.ai-blue?style=for-the-badge
+[email-url]: mailto:validate@tonic.ai
+[meeting-shield]: https://img.shields.io/badge/Want%20to%20talk%3F-Schedule%20a%20meeting%20with%20us-red?style=for-the-badge
+[meeting-url]: https://www.getclockwise.com/c/adam-tonic-ai/adam-tonic-30-minute-meeting

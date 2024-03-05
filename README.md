@@ -87,10 +87,6 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-<picture>
-  <img src="https://raw.githubusercontent.com/TonicAI/tonic_validate/main/readme_images/TonicValidate-Graph.png" width="700">
-</picture>
-
 Tonic Validate is a framework for the evaluation of LLM outputs, such as Retrieval Augmented Generation (RAG) pipelines. Validate makes it easy to evaluate, track, and monitor your LLM and RAG applications. Validate allows you to evaluate your LLM outputs through the use of our provided metrics which measure everything from answer correctness to LLM hallucination. Additionally, Validate has an optional UI to visualize your evaluation results for easy tracking and monitoring.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

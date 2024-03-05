@@ -514,7 +514,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [license-shield]: https://img.shields.io/github/license/TonicAI/tonic_validate.svg?style=for-the-badge
 [license-url]: https://github.com/TonicAI/tonic_validate/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/tonicfakedata
+[linkedin-url]: https://www.linkedin.com/company/tonicfakedata
 [email-shield]: https://img.shields.io/badge/Email%20Us-validate%40tonic.ai-blue?style=for-the-badge
 [email-url]: mailto:validate@tonic.ai
 [meeting-shield]: https://img.shields.io/badge/Want%20to%20talk%3F-Schedule%20a%20meeting-red?style=for-the-badge

@@ -15,6 +15,18 @@ class ContainsTextMetric(BinaryMetric):
         text: Union[str, List[str]],
         case_sensitive: Optional[bool] = False,
     ):
+        """
+        Create a metric that checks if the LLM response contains a given string.
+
+        Parameters
+        ----------
+        name: str
+            The name of the metric that displays in the UI
+        text: Union[str, List[str]]
+            The text to check if it is contained in the LLM response
+        case_sensitive: Optional[bool]
+            If True, the comparison will be case sensitive
+        """
         super().__init__(name, self.metric_callback)
         self.text = text
         self.case_sensitive = case_sensitive

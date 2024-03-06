@@ -15,6 +15,18 @@ class ContextLengthMetric(BinaryMetric):
         min_length: Optional[int] = None,
         max_length: Optional[int] = None,
     ):
+        """
+        Create a metric that checks if each item in the context list is within a given length.
+
+        Parameters
+        ----------
+        name: str
+            The name of the metric that displays in the UI
+        min_length: Optional[int]
+            The minimum length of the context
+        max_length: Optional[int]
+            The maximum length of the context
+        """
         super().__init__(name, self.metric_callback)
         self.min_length = min_length
         self.max_length = max_length

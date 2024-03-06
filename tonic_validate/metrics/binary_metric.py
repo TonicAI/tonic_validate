@@ -16,6 +16,17 @@ class BinaryMetric(Metric):
     def __init__(
         self, name: str, callback: Callable[[LLMResponse, OpenAIService], bool]
     ):
+        """
+        Create a binary metric with a name and a callback.
+
+        Parameters
+        ----------
+        name: str
+            The name of the metric that displays in the UI
+        callback: Callable[[LLMResponse, OpenAIService], bool]
+            The callback that takes an LLMResponse and an OpenAIService and returns a boolean.
+        """
+
         self._name = name
         self.callback = callback
 

@@ -9,13 +9,26 @@ logger = logging.getLogger()
 
 class AnswerMatchMetric(BinaryMetric):
     def __init__(self, name: str, answer: str, case_sensitive: bool = False):
+        """
+        Create a metric that checks if the answer matches a given string.
+
+        Parameters
+        ----------
+        name: str
+            The name of the metric that displays in the UI
+        answer: str
+            The answer to check if it matches the LLM response
+        case_sensitive: bool
+            If True, the comparison will be case sensitive
+
+        """
         super().__init__(name, self.metric_callback)
-        self.text = answer
+        self.answer = answer
         self.case_sensitive = case_sensitive
 
     def metric_callback(
         self, llm_response: LLMResponse, openai_service: OpenAIService
     ) -> bool:
         if self.case_sensitive:
-            return self.text == llm_response.llm_answer
-        return self.text.lower() == llm_response.llm_answer.lower()
+            return self.answer == llm_response.llm_answer
+        return self.answer.lower() == llm_response.llm_answer.lower()

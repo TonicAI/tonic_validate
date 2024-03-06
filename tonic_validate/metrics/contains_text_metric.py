@@ -9,6 +9,8 @@ logger = logging.getLogger()
 
 
 class ContainsTextMetric(BinaryMetric):
+    """Checks whether or not response contains the given text."""
+
     def __init__(
         self,
         name: str,

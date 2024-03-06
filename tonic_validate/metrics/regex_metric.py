@@ -9,6 +9,8 @@ logger = logging.getLogger()
 
 
 class RegexMetric(BinaryMetric):
+    """Searches response matching regex."""
+
     def __init__(self, name: str, pattern: str, match_count: int = 1):
         super().__init__(name, self.metric_callback)
         self.text = pattern

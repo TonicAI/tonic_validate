@@ -9,6 +9,8 @@ logger = logging.getLogger()
 
 
 class ContextLengthMetric(BinaryMetric):
+    """Checks that context length is within a certain range."""
+
     def __init__(
         self,
         name: str,

@@ -9,6 +9,8 @@ logger = logging.getLogger()
 
 
 class ResponseLengthMetric(BinaryMetric):
+    """Checks that response is within a certain number of characters."""
+
     def __init__(
         self,
         name: str,

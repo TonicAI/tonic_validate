@@ -12,9 +12,9 @@ tiktoken = "^0.5.2"
 appdirs = "^1.4.4"
 python-dotenv = "^1.0.1"
 tqdm = "^4.66.2"
-sphinx = "7.0.0"
 
 [tool.poetry.group.dev.dependencies]
+sphinx = "^7.0.0"
 sphinx-rtd-theme = "^1.2.0"
 ruff = "^0.1.15"
 

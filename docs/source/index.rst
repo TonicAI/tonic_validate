@@ -3,10 +3,12 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Tonic Validate's documentation!
+Welcome to Tonic Validate's Documentation!
 ==========================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
+   quickstart/index
+   api_reference/index

@@ -1,0 +1,16 @@
+.container {
+    max-width: 1600px;
+    grid-template-columns: 360px minmax(0,1fr);
+}
+
+.container main {
+    grid-template-columns: 1fr 360px;
+}
+
+.max-w-prose {
+    max-width: 1600px;
+}
+
+#right-sidebar {
+    display: none;
+}

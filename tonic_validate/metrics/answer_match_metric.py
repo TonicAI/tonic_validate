@@ -11,6 +11,7 @@ class AnswerMatchMetric(BinaryMetric):
     def __init__(self, name: str, answer: str, case_sensitive: bool = False):
         """
         Create a metric that checks if the answer matches a given string.
+        Returns 1 (True) if the LLM response matches the given string, 0 (False) otherwise.
 
         Parameters
         ----------

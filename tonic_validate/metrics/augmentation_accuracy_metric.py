@@ -12,6 +12,13 @@ logger = logging.getLogger()
 class AugmentationAccuracyMetric(Metric):
     name: str = "augmentation_accuracy"
 
+    def __init__(self):
+        """
+        Metric that checks whether all the context is in the LLM answer.
+        Returns a float between 0 and 1, where 1 is it contains all the context and 0 is it contains none of the context.
+        """
+        pass
+
     def score(self, llm_response: LLMResponse, openai_service: OpenAIService) -> float:
         return self.calculate_metric(llm_response, openai_service)[0]
 

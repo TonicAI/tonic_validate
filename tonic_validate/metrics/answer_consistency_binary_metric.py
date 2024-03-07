@@ -12,6 +12,10 @@ class AnswerConsistencyBinaryMetric(BinaryMetric):
     name: str = "answer_consistency_binary"
 
     def __init__(self):
+        """
+        Binary metric that checks whether there is information in the LLM answer that does not come from the context.
+        Returns either 1 (consistent) or 0 (inconsistent).
+        """
         super().__init__(self.name, self.metric_callback)
 
     def metric_callback(

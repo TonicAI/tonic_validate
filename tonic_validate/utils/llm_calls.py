@@ -337,3 +337,51 @@ def statement_derived_from_context_call(
         ) from e
 
     return response_message
+
+
+def contains_duplicate_information(
+    statement: str, openai_service: OpenAIService
+) -> str:
+    """Sends prompt for whether statement contains duplicate information and returns response.
+
+    Parameters
+    ----------
+    statement: str
+        The statement to be checked.
+    openai_service: OpenAIService
+        The OpenAI Service which allows for communication with the OpenAI API.
+
+    Returns
+    -------
+    str
+        Response from OpenAI API.
+    """
+    logger.debug(
+        f"Asking {openai_service.model} whether statement contains duplicate information"
+    )
+    main_message = (
+        "Considering the following statement, determine whether the statement contains "
+        "duplicate information. If the statement contains duplicate information, respond "
+        "with 'true'. If the statement does not contain duplicate information, respond "
+        "with 'false'. Respond with either 'true' or 'false' and no additional text."
+    )
+    main_message += f"\n\nSTATEMENT:\n{statement}\nEND OF STATEMENT"
+
+    try:
+        response_message = openai_service.get_response(main_message)
+    except ContextLengthException as e:
+        statement_tokens = openai_service.get_token_count(statement)
+        total_tokens = openai_service.get_token_count(main_message)
+        base_prompt_tokens = total_tokens - statement_tokens
+        raise ContextLengthException(
+            "Duplicate information prompt too long to score item. OpenAI returned the following error message"
+            "\n----------"
+            f"\n{e}"
+            "\n----------"
+            "\nSee details below for breakdown of token counts"
+            f"\nStatement tokens: {statement_tokens}"
+            f"\nBase prompt tokens: {base_prompt_tokens}"
+            f"\nTotal tokens: {total_tokens}"
+        ) from e
+
+    return response_message

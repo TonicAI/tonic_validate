@@ -46,11 +46,11 @@ exclude_patterns = []
 html_theme = "sphinxawesome_theme"
 
 theme_options = ThemeOptions(
-    logo_light="./_static/tonic-textual-logo.svg",
-    logo_dark="./_static/tonic-textual-logo.svg",
+    logo_light="./_static/tonic-validate-icon.svg",
+    logo_dark="./_static/tonic-validate-icon.svg",
 )
 
-html_favicon = "./_static/tonic-textual-logo.svg"
+html_favicon = "./_static/tonic-validate-icon.svg"
 
 
 html_theme_options = asdict(theme_options)

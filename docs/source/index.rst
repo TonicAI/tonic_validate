@@ -10,5 +10,4 @@ Welcome to Tonic Validate's Documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   quickstart/index
    api_reference/index

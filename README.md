@@ -1,8 +1,100 @@
-# High Performance LLM/RAG Evaluation Framework
+<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
+<a name="readme-top"></a>
+<!--
+*** Thanks for checking out the Best-README-Template. If you have a suggestion
+*** that would make this better, please fork the repo and create a pull request
+*** or simply open an issue with the tag "enhancement".
+*** Don't forget to give the project a star!
+*** Thanks again! Now go create something AMAZING! :D
+-->
 
-Tonic Validate is a framework for the evaluation of LLM outputs, such as Retrieval Augmented Generation (RAG) pipelines. Validate makes it easy to evaluate, track, and monitor your LLM and RAG applications.  Install via pip and quickly embed Validate into your existing code.  More detailed documentation is available [here](https://docs.tonic.ai/validate/). But the below quickstart guide is likely all you need to get started.
 
-## Quickstart
+
+<!-- PROJECT SHIELDS -->
+<!--
+*** I'm using markdown "reference style" links for readability.
+*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
+*** See the bottom of this document for the declaration of the reference variables
+*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
+*** https://www.markdownguide.org/basic-syntax/#reference-style-links
+-->
+[![PyPi Version][pypi-shield]][pypi-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+[![Email][email-shield]][email-url]
+[![Schedule a meeting][meeting-shield]][meeting-url]
+
+
+
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/TonicAI/tonic_validate">
+    <img src="https://raw.githubusercontent.com/TonicAI/tonic_validate/main/readme_images/validate-check.svg" alt="Logo" width="80" height="80">
+  </a>
+
+<h3 align="center">Tonic Validate</h3>
+
+  <p align="center">
+    A high performance LLM/RAG evaluation framework
+    <br />
+    <a href="https://docs.tonic.ai/validate"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/TonicAI/tonic_validate/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/TonicAI/tonic_validate/issues">Request Feature</a>
+    ·
+    <a href="#quick-start">Quick Start</a>
+  </p>
+</div>
+
+
+
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+    </li>
+    <li>
+      <a href="#quick-start">Quick Start</a>
+    </li>
+    <li>
+      <a href="#cicd">CI/CD</a>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <ul>
+        <li><a href="#tonic-validate-metrics">Tonic Validate Metrics</a></li>
+        <li><a href="#metric-inputs">Metric Inputs</a></li>
+        <li><a href="#scoring-with-metrics">Scoring With Metrics</a></li>
+        <li><a href="#viewing-the-results">Viewing the Results</a></li>
+    </ul>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ol>
+</details>
+
+
+
+<!-- ABOUT THE PROJECT -->
+## About The Project
+
+Tonic Validate is a framework for the evaluation of LLM outputs, such as Retrieval Augmented Generation (RAG) pipelines. Validate makes it easy to evaluate, track, and monitor your LLM and RAG applications. Validate allows you to evaluate your LLM outputs through the use of our provided metrics which measure everything from answer correctness to LLM hallucination. Additionally, Validate has an optional UI to visualize your evaluation results for easy tracking and monitoring.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- Quick Start -->
+## Quick Start
+
+This is an example of how you may give instructions on setting up your project locally.
+To get a local copy up and running follow these simple example steps.
 
 1. Install Tonic Validate
    ```
@@ -34,11 +126,23 @@ Tonic Validate is a framework for the evaluation of LLM outputs, such as Retriev
 
 This code snippet, creates a benchmark with one question and reference answer and then scores the answer.  Providing a reference answer is not required for most metrics (see below Metrics table).
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- CI/CD -->
 ## CI/CD
 
 Many users find value in running evaluations during the code review/pull request process.  You can create your own automation here using the snippet above and knowledge found in our documentation and this readme OR you can take advantage of our absolutely free Github Action in the Github Marketplace.  The listing is [here](https://github.com/marketplace/actions/tonic-validate-for-prs).  It's easy to setup but if you have any questions, just create an issue in the corresponding repository.
 
-## Tonic Validate Metrics
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- USAGE EXAMPLES -->
+## Usage
+
+### Tonic Validate Metrics
 Metrics are used to score your LLM's performance.  Validate ships with 6 metrics which are applicable to most RAG systems.  You can create your own metrics as well by providing your own implementation of [metric.py](https://github.com/TonicAI/tonic_validate/blob/main/tonic_validate/metrics/metric.py).  To compute a metric, you must provide it data from your RAG application.  The table below describes the available default metrics.
 
 | Metric Name | Inputs | Score Range | What does it measure? |
@@ -55,9 +159,9 @@ Metrics are used to score your LLM's performance.  Validate ships with 6 metrics
 ### Metric Inputs
 Metric inputs in Tonic Validate are used to provide the metrics with the information they need to calculate performance. Below, we explain each input type and how to pass them into Tonic Validate's SDK.
 
-#### Question 
+#### **Question**
 **What is it**: The question asked  
- **How to use**: You can provide the questions by passing them into the `Benchmark` via the `questions` argument.  
+**How to use**: You can provide the questions by passing them into the `Benchmark` via the `questions` argument.  
 ```python
 from tonic_validate import Benchmark
 benchmark = Benchmark(
@@ -65,7 +169,7 @@ benchmark = Benchmark(
 )
 ```
 
-#### Reference Answer 
+#### **Reference Answer**
 **What is it**: A prewritten answer that serves as the ground truth for how the RAG application should answer the question.  
 **How to use**: You can provide the reference answers by passing it into the `Benchmark` via the `answers` argument. Each reference answer must correspond to a given question. So if the reference answer is for the third question in the `questions` list, then the reference answer must also be the third item in the `answers` list.  The only metric that requires a reference answer is the Answer Similarity Score
 ```python
@@ -76,7 +180,7 @@ benchmark = Benchmark(
 )
 ```
 
-#### LLM Answer
+#### **LLM Answer**
 **What is it**: The answer the RAG application / LLM gives to the question.  
 **How to use**: You can provide the LLM answer via the callback you provide to the Validate scorer. The answer is the first item in the tuple response. 
 ```python
@@ -111,7 +215,7 @@ run = scorer.score_responses(responses)
 ```
 
 
-#### Retrieved Context
+#### **Retrieved Context**
 **What is it**: The context that your RAG application retrieves when answering a given question. This context is what's put in the prompt by the RAG application to help the LLM answer the question.  
 **How to use**: You can provide the LLM's retrieved context list via the callback you provide to the Validate scorer. The answer is the second item in the tuple response. The retrieved context is always a list
 ```python
@@ -146,6 +250,10 @@ for item in benchmark:
 scorer = ValidateScorer()
 run = scorer.score_responses(responses)
 ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
 
 ### Scoring With Metrics
 
@@ -247,6 +355,10 @@ scorer = ValidateScorer()
 run = scorer.score_responses(responses)
 ```
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
 ### Viewing the Results
 There are two ways to view the results of a run.
 
@@ -282,7 +394,7 @@ LLM Context:  ['Paris is the capital of France.']
 Scores:  {'answer_consistency': 1.0, 'augmentation_accuracy': 1.0}
 ------
 ```
-### Use the Tonic Validate UI (Recommended, Free to Use)
+#### Option 2: Use the Tonic Validate UI (Recommended, Free to Use)
 You can easily view your run results by uploading them to our **free to use UI**. The main advantage of this method is the Tonic Validate UI provides graphing for your results along with additional visualization features. To sign up for the UI, go to [here](https://validate.tonic.ai/).
 
 Once you sign up for the UI, you will go through an onboarding to create an API Key and Project.
@@ -304,8 +416,10 @@ This will upload your run to the Tonic Validate UI where you can view the result
 
 You can also view the results of an individual run in the UI as well.  
 <picture>
-  <img src="./readme_images/TonicValidate-Run.png" width="800">
+  <img src="https://raw.githubusercontent.com/TonicAI/tonic_validate/main/readme_images/TonicValidate-Run.png" width="800">
 </picture>
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Telemetry
 Tonic Validate collects minimal telemetry to help us figure out what users want and how they're using the product. We do not use any existing telemetry framework and instead created our own privacy focused setup. Only the following information is tracked
@@ -320,6 +434,12 @@ We also generate a random UUID to help us figure out how many users are using th
 
 If you wish to opt out of telemetry, you only need to set the `TONIC_VALIDATE_DO_NOT_TRACK` environment variable to `True`.
 
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- FAQ -->
 ## FAQ
 
 #### What models can I use an LLM evaluator?
@@ -338,3 +458,64 @@ scorer = ValidateScorer([
     AugmentationAccuracyMetric()
 ], model_evaluator="gpt-3.5-turbo")
 ```
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- CONTRIBUTING -->
+## Contributing
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- LICENSE -->
+## License
+
+Distributed under the MIT License. See `LICENSE.txt` for more information.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- CONTACT -->
+## Contact
+[![LinkedIn][linkedin-shield]][linkedin-url]
+[![Email][email-shield]][email-url]
+[![Schedule a meeting][meeting-shield]][meeting-url]
+
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[pypi-shield]: https://img.shields.io/pypi/v/tonic-validate?style=for-the-badge&label=PyPI%20Version
+[pypi-url]: https://github.com/TonicAI/tonic_validate/graphs/contributors
+[stars-shield]: https://img.shields.io/github/stars/TonicAI/tonic_validate.svg?style=for-the-badge
+[stars-url]: https://github.com/TonicAI/tonic_validate/stargazers
+[issues-shield]: https://img.shields.io/github/issues/TonicAI/tonic_validate.svg?style=for-the-badge&color=green
+[issues-url]: https://github.com/TonicAI/tonic_validate/issues
+[license-shield]: https://img.shields.io/github/license/TonicAI/tonic_validate.svg?style=for-the-badge
+[license-url]: https://github.com/TonicAI/tonic_validate/blob/master/LICENSE.txt
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://www.linkedin.com/company/tonicfakedata
+[email-shield]: https://img.shields.io/badge/Email%20Us-validate%40tonic.ai-blue?style=for-the-badge
+[email-url]: mailto:validate@tonic.ai
+[meeting-shield]: https://img.shields.io/badge/Want%20to%20talk%3F-Schedule%20a%20meeting-red?style=for-the-badge
+[meeting-url]: https://www.getclockwise.com/c/adam-tonic-ai/adam-tonic-30-minute-meeting

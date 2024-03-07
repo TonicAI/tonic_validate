@@ -8,16 +8,16 @@ from tonic_validate.utils.telemetry import Telemetry
 @dataclass
 class BenchmarkItem:
     """
-    A benchmark item is a question and an optional answer used in a benchmark.
+    A benchmark item is a question that is used in a benchmark. It can include an optional answer
 
     Parameters
     ----------
     question: str
-        The question to be asked
+        The question to ask
     answer: Optional[str]
-        The ground truth answer to the question
+        The preferred or ground truth answer to the question
     benchmark_id: Optional[UUID]
-        The ID of the benchmark
+        The identifier of the benchmark that contains the question
     """
 
     question: str
@@ -33,14 +33,14 @@ class Benchmark:
         name: Optional[str] = None,
     ):
         """
-        A benchmark is a collection of questions and answers used to evaluate a model.
+        A benchmark is a collection of questions and answers that are used to evaluate a model
 
         Parameters
         ----------
         questions: List[str]
-            A list of questions to be asked
+            A list of questions to ask
         answers: Optional[List[str]]
-            A list of ground truth answers to the questions
+            A list of preferred/ground truth answers to the questions
         name: Optional[str]
             The name of the benchmark
         """

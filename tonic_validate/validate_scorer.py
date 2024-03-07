@@ -71,17 +71,17 @@ class ValidateScorer:
 
     def _score_item_rundata(self, response: LLMResponse) -> RunData:
         """
-        Score a single LLMResponse object.
+        Calculates scores for a single LLMResponse object
 
         Parameters
         ----------
         response: LLMResponse
-            The LLMResponse object to be scored.
+            The LLMResponse object to calculate scores for
 
         Returns
         -------
         RunData
-            The RunData object containing the scores and other data.
+            Contains the scores and other data
         """
         scores: Dict[str, Union[float, None]] = {}
         # We cache per response, so we need to create a new OpenAIService
@@ -187,7 +187,7 @@ class ValidateScorer:
     # TODO: For backwards compatibility, remove in the future
     def score_run(self, responses: List[LLMResponse], parallelism: int = 1) -> Run:
         """
-        Alias for score_responses for backwards compatibility.
+        Alias for score_responses. Used for backward compatibility
         """
         return self.score_responses(responses, parallelism)
 

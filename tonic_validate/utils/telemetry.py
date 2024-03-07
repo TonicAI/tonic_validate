@@ -23,7 +23,7 @@ env_vars = ["GITHUB_ACTIONS", "GITLAB_CI", "TF_BUILD", "CI", "JENKINS_URL"]
 class Telemetry:
     def __init__(self, api_key: Optional[str] = None):
         """
-        The Telemetry class is used to log telemetry data to the Tonic Validate server.
+        Used to log telemetry data to the Tonic Validate server
 
         Parameters
         ----------
@@ -35,12 +35,12 @@ class Telemetry:
 
     def get_user(self) -> UserInfo:
         """
-        Gets the user info from the file or creates a new user if it does not exist.
+        Retrieves the user information from the file. If the user does not exist, creates a new user
 
         Returns
         -------
         UserInfo
-            The user info
+            Information about the user
         """
         app_dir_path = user_data_dir(appname=APP_DIR_NAME)
         user_id_path = os.path.join(app_dir_path, "user.json")
@@ -59,7 +59,7 @@ class Telemetry:
 
     def __is_ci(self):
         """
-        Check if the current environment is a CI/CD environment.
+        Checks whether the current environment is a CI/CD environment
         """
         for var in env_vars:
             if os.environ.get(var):
@@ -68,14 +68,14 @@ class Telemetry:
 
     def log_run(self, num_of_questions: int, metrics: List[str]):
         """
-        Log a run to the Tonic Validate server.
+        Logs a run to the Tonic Validate server
 
         Parameters
         ----------
         num_of_questions: int
             The number of questions asked
         metrics: List[str]
-            The metrics used to evaluate the run
+            The metrics that were used to evaluate the run
         """
         if self.config.TONIC_VALIDATE_DO_NOT_TRACK:
             return
@@ -94,7 +94,7 @@ class Telemetry:
 
     def log_benchmark(self, num_of_questions: int):
         """
-        Log a benchmark to the Tonic Validate server.
+        Logs a benchmark to the Tonic Validate server
 
         Parameters
         ----------
@@ -117,7 +117,7 @@ class Telemetry:
 
     def link_user(self):
         """
-        Links an api user to sdk user in telemetry to be able to filter out users not on the web UI.
+        In the telemetry, links an API user to an SDK user. Used to filter out users that do not use the web application
         """
         if self.config.TONIC_VALIDATE_DO_NOT_TRACK:
             return

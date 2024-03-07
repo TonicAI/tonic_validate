@@ -58,7 +58,7 @@ class OpenAIService:
 
     def get_response(self, prompt: str) -> str:
         """
-        Get a response from the language model.
+        Retrieves a response from the language model
 
         Parameters
         ----------

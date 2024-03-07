@@ -13,13 +13,12 @@ class ValidateApi:
         api_key: Optional[str] = None,
     ):
         """
-        The ValidateApi class is used to interact with the Tonic Validate Web UI.
+        Used to interact with the Tonic Validate web application
 
         Parameters
         ----------
         api_key : str
-            The access token for the Tonic Validate UI. The access token is obtained from
-            the Tonic Validate UI.
+            The access token for the Tonic Validate application. Obtained from the web application
         """
         self.config = Config()
         if api_key is None:

@@ -22,7 +22,7 @@ class RunData:
     llm_answer: str
         The answer from the language model
     llm_context: Optional[List[str]]
-        The context used to generate the answer
+        The context that was used to generate the answer
     """
 
     scores: Dict[str, Union[float, None]]
@@ -50,7 +50,7 @@ class RunData:
 @dataclass
 class Run:
     """
-    Represents a run with overall scores and run data.
+    Represents a run. Includes the run data and the overall scores
 
     Parameters:
     -----------
@@ -59,7 +59,7 @@ class Run:
     run_data: List[RunData]
         The run data
     id: Optional[UUID]
-        The ID of the run
+        The identifier of the run
     """
 
     overall_scores: Dict[str, float]

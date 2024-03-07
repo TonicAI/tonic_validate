@@ -1,6 +1,6 @@
 class LLMException(Exception):
     """
-    Base class for all exceptions in the LLM
+    The base class for all of the exceptions in the LLM
     """
 
     pass
@@ -8,7 +8,7 @@ class LLMException(Exception):
 
 class ContextLengthException(LLMException):
     """
-    Exception raised when the context length is invalid
+    The exception to raise when the context length is invalid
     """
 
     pass

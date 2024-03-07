@@ -3,12 +3,12 @@ from typing import TypedDict
 
 class UserInfo(TypedDict):
     """
-    A user info object used for telemetry.
+    Information about a user. Used to provide telemetry
 
     Parameters
     ----------
     user_id: str
-        The user's ID
+        The identifier of the user
     linked: bool
         Whether the user is linked to an account
     """

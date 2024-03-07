@@ -14,9 +14,9 @@ class LLMResponse:
     llm_answer: str
         The answer from the language model
     llm_context_list: List[str]
-        The context used to generate the answer
+        That context that was used to generate the answer
     benchmark_item: BenchmarkItem
-        The benchmark item used to ask the LLM the question
+        The benchmark item that was used to ask the LLM the question
     """
 
     llm_answer: str
@@ -33,7 +33,7 @@ class CallbackLLMResponse(TypedDict):
     llm_answer: str
         The answer from the language model
     llm_context_list: List[str]
-        The context used to generate the answer
+        The context that was used to generate the answer
     """
 
     llm_answer: str

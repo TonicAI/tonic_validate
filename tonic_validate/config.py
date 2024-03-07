@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 class Config:
     def __init__(self) -> None:
         """
-        Config class is used to load the configuration from the environment.
+        Used to load the configuration from the environment
         """
         load_dotenv()
 

@@ -8,19 +8,19 @@ from tonic_validate.utils.telemetry import Telemetry
 
 
 class ValidateApi:
-    """Wrapper class for invoking the Tonic Validate UI.
-
-    Parameters
-    ----------
-    api_key : str
-        The access token for the Tonic Validate UI. The access token is obtained from
-        the Tonic Validate UI.
-    """
-
     def __init__(
         self,
         api_key: Optional[str] = None,
     ):
+        """
+        The ValidateApi class is used to interact with the Tonic Validate Web UI.
+
+        Parameters
+        ----------
+        api_key : str
+            The access token for the Tonic Validate UI. The access token is obtained from
+            the Tonic Validate UI.
+        """
         self.config = Config()
         if api_key is None:
             api_key = self.config.TONIC_VALIDATE_API_KEY

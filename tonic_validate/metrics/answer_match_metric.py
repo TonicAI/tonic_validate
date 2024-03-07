@@ -20,7 +20,6 @@ class AnswerMatchMetric(BinaryMetric):
             The answer to check if it matches the LLM response
         case_sensitive: bool
             If True, the comparison will be case sensitive
-
         """
         super().__init__(name, self.metric_callback)
         self.answer = answer

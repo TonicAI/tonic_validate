@@ -22,10 +22,26 @@ env_vars = ["GITHUB_ACTIONS", "GITLAB_CI", "TF_BUILD", "CI", "JENKINS_URL"]
 
 class Telemetry:
     def __init__(self, api_key: Optional[str] = None):
+        """
+        The Telemetry class is used to log telemetry data to the Tonic Validate server.
+
+        Parameters
+        ----------
+        api_key: Optional[str]
+            The API key to use for authentication
+        """
         self.config = Config()
         self.http_client = HttpClient(self.config.TONIC_VALIDATE_TELEMETRY_URL, api_key)
 
     def get_user(self) -> UserInfo:
+        """
+        Gets the user info from the file or creates a new user if it does not exist.
+
+        Returns
+        -------
+        UserInfo
+            The user info
+        """
         app_dir_path = user_data_dir(appname=APP_DIR_NAME)
         user_id_path = os.path.join(app_dir_path, "user.json")
         # check if user_id exists else we create a new uuid and write it to the file
@@ -42,12 +58,25 @@ class Telemetry:
         return user_info
 
     def __is_ci(self):
+        """
+        Check if the current environment is a CI/CD environment.
+        """
         for var in env_vars:
             if os.environ.get(var):
                 return True
         return False
 
     def log_run(self, num_of_questions: int, metrics: List[str]):
+        """
+        Log a run to the Tonic Validate server.
+
+        Parameters
+        ----------
+        num_of_questions: int
+            The number of questions asked
+        metrics: List[str]
+            The metrics used to evaluate the run
+        """
         if self.config.TONIC_VALIDATE_DO_NOT_TRACK:
             return
         user_id = self.get_user()["user_id"]
@@ -64,6 +93,14 @@ class Telemetry:
         )
 
     def log_benchmark(self, num_of_questions: int):
+        """
+        Log a benchmark to the Tonic Validate server.
+
+        Parameters
+        ----------
+        num_of_questions: int
+            The number of questions in the benchmark
+        """
         if self.config.TONIC_VALIDATE_DO_NOT_TRACK:
             return
         user_id = self.get_user()["user_id"]
@@ -79,6 +116,9 @@ class Telemetry:
         )
 
     def link_user(self):
+        """
+        Links an api user to sdk user in telemetry to be able to filter out users not on the web UI.
+        """
         if self.config.TONIC_VALIDATE_DO_NOT_TRACK:
             return
         telemetry_user = self.get_user()

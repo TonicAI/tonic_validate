@@ -51,7 +51,8 @@ def similarity_score_call(
             total_tokens - question_tokens - reference_answer_tokens - llm_answer_tokens
         )
         raise ContextLengthException(
-            "Similarity score prompt too long to score item. OpenAI returned the following error message"
+            "Similarity score prompt too long to score item. OpenAI returned the "
+            "following error message"
             "\n----------"
             f"\n{e}"
             "\n----------"
@@ -109,7 +110,8 @@ def answer_consistent_with_context_call(
         total_tokens = openai_service.get_token_count(main_message)
         base_prompt_tokens = total_tokens - context_tokens - answer_tokens
         raise ContextLengthException(
-            "Consistency prompt too long to score item. OpenAI returned the following error message"
+            "Consistency prompt too long to score item. OpenAI returned the following "
+            "error message"
             "\n----------"
             f"\n{e}"
             "\n----------"
@@ -163,7 +165,8 @@ def context_relevancy_call(
         total_tokens = openai_service.get_token_count(main_message)
         base_prompt_tokens = total_tokens - question_tokens - context_tokens
         raise ContextLengthException(
-            "Relevance prompt too long to score item. OpenAI returned the following error message"
+            "Relevance prompt too long to score item. OpenAI returned the following "
+            "error message"
             "\n----------"
             f"\n{e}"
             "\n----------"
@@ -215,7 +218,8 @@ def answer_contains_context_call(
         total_tokens = openai_service.get_token_count(main_message)
         base_prompt_tokens = total_tokens - answer_tokens - context_tokens
         raise ContextLengthException(
-            "Contains context prompt too long to score item. OpenAI returned the following error message"
+            "Contains context prompt too long to score item. OpenAI returned the "
+            "following error message"
             "\n----------"
             f"\n{e}"
             "\n----------"
@@ -262,7 +266,8 @@ def main_points_call(answer: str, openai_service: OpenAIService) -> str:
         total_tokens = openai_service.get_token_count(main_message)
         base_prompt_tokens = total_tokens - answer_tokens
         raise ContextLengthException(
-            "Main points prompt too long to score item. OpenAI returned the following error message"
+            "Main points prompt too long to score item. OpenAI returned the following "
+            "error message"
             "\n----------"
             f"\n{e}"
             "\n----------"
@@ -297,16 +302,18 @@ def statement_derived_from_context_call(
     logger.debug(
         f"Asking {openai_service.model} whether statement is derived from context"
     )
-    main_message = (
-        "Considering the following statement and then list of context, determine "
-        "whether the statement can be derived from the context. If the statement can "
-        "be derived from the context response with true. Otherwise response with "
-        "false. Respond with either true or false and no additional text."
-    )
+    main_message = "Considering the following statement and list of context(s)"
     main_message += f"\n\nSTATEMENT:\n{statement}\nEND OF STATEMENT"
     for i, context in enumerate(context_list):
         main_message += f"\n\nCONTEXT {i}:\n{context}\nEND OF CONTEXT {i}"
 
+    main_message += (
+        "\n\nDetermine whether the listed statement above can be derived from the "
+        "context listed above. If the statement can "
+        "be derived from the context then you should respond with 'true'. Otherwise "
+        "respond with 'false'. Your response must be either 'true' or 'false' with no "
+        "additional text."
+    )
     try:
         response_message = openai_service.get_response(main_message)
     except ContextLengthException as e:
@@ -317,7 +324,8 @@ def statement_derived_from_context_call(
         total_tokens = openai_service.get_token_count(main_message)
         base_prompt_tokens = total_tokens - context_tokens - statement_tokens
         raise ContextLengthException(
-            "Derived from context prompt too long to score item. OpenAI returned the following error message"
+            "Derived from context prompt too long to score item. OpenAI returned the "
+            "following error message"
             "\n----------"
             f"\n{e}"
             "\n----------"
@@ -331,7 +339,57 @@ def statement_derived_from_context_call(
     return response_message
 
 
-def is_statement_hate_speech(statement: str, openai_service: OpenAIService) -> str:
+def contains_duplicate_information(
+    statement: str, openai_service: OpenAIService
+) -> str:
+    """Sends prompt for whether statement contains duplicate information and returns response.
+
+    Parameters
+    ----------
+    statement: str
+        The statement to be checked.
+    openai_service: OpenAIService
+        The OpenAI Service which allows for communication with the OpenAI API.
+
+    Returns
+    -------
+    str
+        Response from OpenAI API.
+    """
+    logger.debug(
+        f"Asking {openai_service.model} whether statement contains duplicate information"
+    )
+    main_message = (
+        "Considering the following statement, determine whether the statement contains "
+        "duplicate information. If the statement contains duplicate information, respond "
+        "with 'true'. If the statement does not contain duplicate information, respond "
+        "with 'false'. Respond with either 'true' or 'false' and no additional text."
+    )
+    main_message += f"\n\nSTATEMENT:\n{statement}\nEND OF STATEMENT"
+
+    try:
+        response_message = openai_service.get_response(main_message)
+    except ContextLengthException as e:
+        statement_tokens = openai_service.get_token_count(statement)
+        total_tokens = openai_service.get_token_count(main_message)
+        base_prompt_tokens = total_tokens - statement_tokens
+        raise ContextLengthException(
+            "Duplicate information prompt too long to score item. OpenAI returned the following error message"
+            "\n----------"
+            f"\n{e}"
+            "\n----------"
+            "\nSee details below for breakdown of token counts"
+            f"\nStatement tokens: {statement_tokens}"
+            f"\nBase prompt tokens: {base_prompt_tokens}"
+            f"\nTotal tokens: {total_tokens}"
+        ) from e
+
+    return response_message
+
+
+def contains_hate_speech(
+    statement: str, openai_service: OpenAIService
+) -> str:
     """Sends prompt for whether statement contains hate speech and returns response.
 
     Parameters
@@ -346,12 +404,14 @@ def is_statement_hate_speech(statement: str, openai_service: OpenAIService) -> s
     str
         Response from OpenAI API.
     """
-    logger.debug(f"Asking {openai_service.model} whether statement contains hate speech")
+    logger.debug(
+        f"Asking {openai_service.model} whether statement contains hate speech"
+    )
     main_message = (
         "Considering the following statement, determine whether the statement contains "
-        "hate speech. If the statement contains hate speech, respond with 'true'. If the statement "
-        "does not contain hate speech, respond with 'false'. Respond with either 'true' or 'false' and no "
-        "additional text."
+        "hate speech. If the statement contains hate speech, respond "
+        "with 'true'. If the statement does not contain hate speech, respond "
+        "with 'false'. Respond with either 'true' or 'false' and no additional text."
     )
     main_message += f"\n\nSTATEMENT:\n{statement}\nEND OF STATEMENT"
 
@@ -362,7 +422,7 @@ def is_statement_hate_speech(statement: str, openai_service: OpenAIService) -> s
         total_tokens = openai_service.get_token_count(main_message)
         base_prompt_tokens = total_tokens - statement_tokens
         raise ContextLengthException(
-            "Hate speech statement prompt too long to score item. OpenAI returned the following error message"
+            "Hate speech prompt too long to score item. OpenAI returned the following error message"
             "\n----------"
             f"\n{e}"
             "\n----------"

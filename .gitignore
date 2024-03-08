@@ -14,3 +14,4 @@ docs/
 dmypy.json
 
 .env
+*.pkl

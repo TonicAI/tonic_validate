@@ -8,6 +8,23 @@ logger = logging.getLogger()
 
 @dataclass
 class RunData:
+    """
+    Represents the data for a single run.
+
+    Parameters:
+    -----------
+    scores: Dict[str, Union[float, None]]
+        The scores for the run
+    reference_question: str
+        The reference question
+    reference_answer: Optional[str]
+        The reference answer
+    llm_answer: str
+        The answer from the language model
+    llm_context: Optional[List[str]]
+        The context that was used to generate the answer
+    """
+
     scores: Dict[str, Union[float, None]]
     reference_question: str
     reference_answer: Optional[str]
@@ -15,6 +32,12 @@ class RunData:
     llm_context: Optional[List[str]]
 
     def to_dict(self) -> Dict[str, Any]:
+        """
+        Converts the RunData object to a dictionary.
+
+        Returns:
+            Dict[str, Any]: A dictionary representation of the RunData object.
+        """
         return {
             "scores": self.scores,
             "reference_question": self.reference_question,
@@ -26,6 +49,19 @@ class RunData:
 
 @dataclass
 class Run:
+    """
+    Represents a run. Includes the run data and the overall scores
+
+    Parameters:
+    -----------
+    overall_scores: Dict[str, float]
+        The overall scores for the run
+    run_data: List[RunData]
+        The run data
+    id: Optional[UUID]
+        The identifier of the run
+    """
+
     overall_scores: Dict[str, float]
     run_data: List[RunData]
     id: Optional[UUID]

@@ -9,12 +9,24 @@ logger = logging.getLogger()
 
 
 class BinaryMetric(Metric):
-    def name(self):
+    @property
+    def name(self) -> str:
         return self._name
 
     def __init__(
         self, name: str, callback: Callable[[LLMResponse, OpenAIService], bool]
     ):
+        """
+        Create a binary metric with a name and a callback. A binary metric returns either True (1) or False (0).
+
+        Parameters
+        ----------
+        name: str
+            The name of the metric that displays in the UI
+        callback: Callable[[LLMResponse, OpenAIService], bool]
+            The callback that takes an LLMResponse and an OpenAIService and returns a boolean.
+        """
+
         self._name = name
         self.callback = callback
 

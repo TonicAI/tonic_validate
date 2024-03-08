@@ -385,3 +385,51 @@ def contains_duplicate_information(
         ) from e
 
     return response_message
+
+
+def contains_hate_speech(
+    statement: str, openai_service: OpenAIService
+) -> str:
+    """Sends prompt for whether statement contains hate speech and returns response.
+
+    Parameters
+    ----------
+    statement: str
+        The statement to be checked.
+    openai_service: OpenAIService
+        The OpenAI Service which allows for communication with the OpenAI API.
+
+    Returns
+    -------
+    str
+        Response from OpenAI API.
+    """
+    logger.debug(
+        f"Asking {openai_service.model} whether statement contains hate speech"
+    )
+    main_message = (
+        "Considering the following statement, determine whether the statement contains "
+        "hate speech. If the statement contains hate speech, respond "
+        "with 'true'. If the statement does not contain hate speech, respond "
+        "with 'false'. Respond with either 'true' or 'false' and no additional text."
+    )
+    main_message += f"\n\nSTATEMENT:\n{statement}\nEND OF STATEMENT"
+
+    try:
+        response_message = openai_service.get_response(main_message)
+    except ContextLengthException as e:
+        statement_tokens = openai_service.get_token_count(statement)
+        total_tokens = openai_service.get_token_count(main_message)
+        base_prompt_tokens = total_tokens - statement_tokens
+        raise ContextLengthException(
+            "Hate speech prompt too long to score item. OpenAI returned the following error message"
+            "\n----------"
+            f"\n{e}"
+            "\n----------"
+            "\nSee details below for breakdown of token counts"
+            f"\nStatement tokens: {statement_tokens}"
+            f"\nBase prompt tokens: {base_prompt_tokens}"
+            f"\nTotal tokens: {total_tokens}"
+        ) from e
+
+    return response_message

@@ -16,8 +16,8 @@ class ResponseLengthMetric(BinaryMetric):
         max_length: Optional[int] = None,
     ):
         """
-        Create a binary metric that checks if the length of the LLM response is within a given length.
-        Returns 1 (True) if the length is within the given range, 0 (False) otherwise.
+        Creates a binary metric that checks whether the LLM response length falls within a given range.
+        Returns 1 (True) if the length is within the range. Returns 0 (False) if the length falls outside of the range.
 
         Parameters
         ----------

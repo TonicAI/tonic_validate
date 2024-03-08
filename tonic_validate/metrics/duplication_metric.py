@@ -15,8 +15,8 @@ class DuplicationMetric(BinaryMetric):
 
     def __init__(self):
         """
-        Binary metric that checks whether or not there's duplicate information in the response.
-        Returns either 1 (contains duplicate information) or 0 (does not contain duplicate information).
+        Binary metric that checks whether the response contains duplicate information.
+        Returns 1 (True) if the response contains duplicate information. Returns 0 (False) if it does not contain duplicate information.
         """
         super().__init__(self.name, self.metric_callback)
 

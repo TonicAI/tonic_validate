@@ -14,8 +14,8 @@ class AugmentationAccuracyMetric(Metric):
 
     def __init__(self):
         """
-        Metric that checks whether all the context is in the LLM answer.
-        Returns a float between 0 and 1, where 1 is it contains all the context and 0 is it contains none of the context.
+        Metric that checks whether the LLM answer includes all of the context.
+        Returns a float between 0 and 1. 1 indicates that the answer contains all of the context. 0 indicates that it contains none of the context.
         """
         pass
 

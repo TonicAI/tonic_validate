@@ -19,7 +19,7 @@ class AnswerConsistencyMetric(Metric):
 
     def __init__(self):
         """
-        Metric that checks whether there is information in the LLM answer that does not come from the context.
+        Metric that checks whether the LLM answer contains information that does not come from the context.
         Returns a float between 0 and 1, where 1 is completely consistent and 0 is completely inconsistent.
         """
         pass

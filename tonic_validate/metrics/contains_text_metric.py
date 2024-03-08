@@ -18,8 +18,8 @@ class ContainsTextMetric(BinaryMetric):
         case_sensitive: Optional[bool] = False,
     ):
         """
-        Create a binary metric that checks if the LLM response contains a given string.
-        Returns 1 (True) if the LLM response contains the given string, 0 (False) otherwise.
+        Creates a binary metric that checks whether the LLM response contains a given string.
+        Returns 1 (True) if the LLM response contains the string. Returns 0 (False) if it does not contain the string.
 
         Parameters
         ----------

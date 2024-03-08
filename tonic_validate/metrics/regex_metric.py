@@ -11,8 +11,8 @@ logger = logging.getLogger()
 class RegexMetric(BinaryMetric):
     def __init__(self, name: str, pattern: str, match_count: int = 1):
         """
-        Create a binary metric that checks if the answer matches a given regex pattern.
-        Returns 1 (True) if the pattern matches the LLM response, 0 (False) otherwise.
+        Creates a binary metric that checks whether the answer matches a given regex pattern.
+        Returns 1 (True) if the LLM response matches the pattern. Returns 0 (False) if it does not match the pattern.
 
         Parameters
         ----------

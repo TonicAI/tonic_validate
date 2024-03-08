@@ -14,8 +14,8 @@ class RetrievalPrecisionMetric(Metric):
 
     def __init__(self):
         """
-        Metric that checks whether the context retrieved is relevant to answer the given question.
-        Returns a float between 0 and 1, where 1 is all the context is relevant and 0 is none of the context is relevant.
+        Metric that checks whether the retrieved context is relevant to answer the given question.
+        Returns a float between 0 and 1. 1 indicates that all of the context is relevant. 0 indicates that none of the context is relevant.
         """
         pass
 

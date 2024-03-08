@@ -11,6 +11,7 @@ from .context_length_metric import ContextLengthMetric
 from .duplication_metric import DuplicationMetric
 from .regex_metric import RegexMetric
 from .response_length_metric import ResponseLengthMetric
+from .hate_speech_content_metric import HateSpeechContentMetric
 
 __all__ = [
     "AnswerConsistencyBinaryMetric",
@@ -26,4 +27,5 @@ __all__ = [
     "DuplicationMetric",
     "RegexMetric",
     "ResponseLengthMetric",
+    "HateSpeechContentMetric",
 ]

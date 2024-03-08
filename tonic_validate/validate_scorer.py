@@ -19,6 +19,7 @@ from tonic_validate.services.openai_service import OpenAIService
 import tiktoken
 from tonic_validate.utils.telemetry import Telemetry
 from tqdm import tqdm
+import time
 
 logger = logging.getLogger()
 
@@ -219,11 +220,17 @@ class ValidateScorer:
         responses: List[LLMResponse] = []
 
         def create_response(item: BenchmarkItem) -> LLMResponse:
+            # Time the callback
+            start_time = time.time()
+            callback_response = callback(item.question)
+            end_time = time.time()
+            run_time = end_time - start_time
             callback_response = callback(item.question)
             return LLMResponse(
                 callback_response["llm_answer"],
                 callback_response["llm_context_list"],
                 item,
+                run_time,
             )
 
         with ThreadPoolExecutor(max_workers=callback_parallelism) as executor:

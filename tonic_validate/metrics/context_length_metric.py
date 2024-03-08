@@ -18,7 +18,8 @@ class ContextLengthMetric(BinaryMetric):
         max_length: Optional[int] = None,
     ):
         """
-        Create a metric that checks if each item in the context list is within a given length.
+        Creates a binary metric that checks whether each item in the context list is within a given length.
+        Returns 1 (True) if the length is within the given length range. Returns 0 (False) if the context length falls outside of the range.
 
         Parameters
         ----------

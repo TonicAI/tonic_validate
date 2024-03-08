@@ -8,8 +8,10 @@ class Metric(ABC):
     @property
     @abstractmethod
     def name(self) -> str:
+        """Metric name for the UI"""
         pass
 
     @abstractmethod
     def score(self, llm_response: LLMResponse, openai_service: OpenAIService) -> float:
+        """Calculate the score of the metric"""
         pass

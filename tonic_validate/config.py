@@ -4,6 +4,9 @@ from dotenv import load_dotenv
 
 class Config:
     def __init__(self) -> None:
+        """
+        Used to load the configuration from the environment
+        """
         load_dotenv()
 
         self.TONIC_VALIDATE_API_KEY = os.getenv(

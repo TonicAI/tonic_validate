@@ -12,6 +12,13 @@ logger = logging.getLogger()
 class RetrievalPrecisionMetric(Metric):
     name: str = "retrieval_precision"
 
+    def __init__(self):
+        """
+        Metric that checks whether the retrieved context is relevant to answer the given question.
+        Returns a float between 0 and 1. 1 indicates that all of the context is relevant. 0 indicates that none of the context is relevant.
+        """
+        pass
+
     def score(self, llm_response: LLMResponse, openai_service: OpenAIService) -> float:
         return self.calculate_metric(llm_response, openai_service)[0]
 

@@ -3,7 +3,7 @@
 **/.vs/**
 **/.DS_Store
 dist/
-docs/
+docs/build/
 
 # junk files
 **/scratch_files/**

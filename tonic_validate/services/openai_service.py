@@ -57,6 +57,19 @@ class OpenAIService:
         self.starting_wait_time = starting_wait_time
 
     def get_response(self, prompt: str) -> str:
+        """
+        Retrieves a response from the language model
+
+        Parameters
+        ----------
+        prompt: str
+            The prompt to send to the language model.
+
+        Returns
+        -------
+        str
+            The response from the language model.
+        """
         if prompt in self.cache:
             return self.cache[prompt]
         num_retries = 0

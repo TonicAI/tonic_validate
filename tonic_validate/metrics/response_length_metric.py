@@ -9,8 +9,6 @@ logger = logging.getLogger()
 
 
 class ResponseLengthMetric(BinaryMetric):
-    """Checks that response is within a certain number of characters."""
-
     def __init__(
         self,
         name: str,
@@ -18,7 +16,8 @@ class ResponseLengthMetric(BinaryMetric):
         max_length: Optional[int] = None,
     ):
         """
-        Create a metric that checks if the length of the LLM response is within a given length.
+        Creates a binary metric that checks whether the LLM response length falls within a given range.
+        Returns 1 (True) if the length is within the range. Returns 0 (False) if the length falls outside of the range.
 
         Parameters
         ----------

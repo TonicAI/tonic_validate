@@ -15,6 +15,10 @@ class AugmentationPrecisionMetric(Metric):
     name: str = "augmentation_precision"
 
     def __init__(self) -> None:
+        """
+        Metric that checks whether the LLM answer contains the relevant context.
+        Returns a float between 0 and 1. 1 indicates that the answer contains all of the relevant context. 0 indicates that it contains none of the relevant context.
+        """
         self.augmentation_accuracy = AugmentationAccuracyMetric()
         self.retrieval_precision = RetrievalPrecisionMetric()
 

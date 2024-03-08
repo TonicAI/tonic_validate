@@ -10,9 +10,6 @@ from tonic_validate.utils.metrics_util import parse_boolean_response
 logger = logging.getLogger()
 
 
-
-
-
 class HateSpeechContentMetric(BinaryMetric):
     name: str = "hate_speech_content"
 

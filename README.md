@@ -251,6 +251,31 @@ scorer = ValidateScorer()
 run = scorer.score_responses(responses)
 ```
 
+#### **Run Time**
+**What is it**: Used for the latency metric to measure how long it took the LLM to respond.  
+**How to use**: If you are using the Validate scorer callback, then this metric is automatically calculated for you. If you are manually creating the LLM responses, then you need to provide how long the LLM took yourself via the `run_time` argument.
+```python
+from tonic_validate import LLMResponse
+
+# Save the responses into an array for scoring
+responses = []
+for item in benchmark:
+    run_time = # Float representing how many seconds the LLM took to respond
+    # llm_answer is the answer that LLM gives
+    # llm_context_list is a list of the context that the LLM used to answer the question
+    llm_response = LLMResponse(
+        llm_answer="Paris",
+        llm_context_list=["Paris is the capital of France."],
+        benchmark_item=item
+        run_time=run_time
+    )
+    responses.append(llm_response)
+
+# Score the responses
+scorer = ValidateScorer()
+run = scorer.score_responses(responses)
+```
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 

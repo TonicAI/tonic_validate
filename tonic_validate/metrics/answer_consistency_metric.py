@@ -17,6 +17,13 @@ logger = logging.getLogger()
 class AnswerConsistencyMetric(Metric):
     name: str = "answer_consistency"
 
+    def __init__(self):
+        """
+        Metric that checks whether the LLM answer contains information that does not come from the context.
+        Returns a float between 0 and 1, where 1 is completely consistent and 0 is completely inconsistent.
+        """
+        pass
+
     def score(self, llm_response: LLMResponse, openai_service: OpenAIService) -> float:
         main_points_response = main_points_call(llm_response.llm_answer, openai_service)
         main_point_list = parse_bullet_list_response(main_points_response)

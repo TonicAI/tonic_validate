@@ -11,11 +11,13 @@ logger = logging.getLogger()
 
 
 class DuplicationMetric(BinaryMetric):
-    """Checks whether or not there's duplicate information in the response."""
-
     name: str = "duplication_metric"
 
     def __init__(self):
+        """
+        Binary metric that checks whether the response contains duplicate information.
+        Returns 1 (True) if the response contains duplicate information. Returns 0 (False) if it does not contain duplicate information.
+        """
         super().__init__(self.name, self.metric_callback)
 
     def metric_callback(

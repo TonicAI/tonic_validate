@@ -10,6 +10,13 @@ logger = logging.getLogger()
 class AnswerSimilarityMetric(Metric):
     name: str = "answer_similarity"
 
+    def __init__(self) -> None:
+        """
+        Metric that checks how well the reference answer matches the LLM answer.
+        Returns a float between 0 and 5, where 5 is the most similar and 0 is the least similar.
+        """
+        pass
+
     def score(self, llm_response: LLMResponse, openai_service: OpenAIService) -> float:
         # Check that the benchmark item has an answer
         if llm_response.benchmark_item.answer is None:

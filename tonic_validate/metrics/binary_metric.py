@@ -17,7 +17,7 @@ class BinaryMetric(Metric):
         self, name: str, callback: Callable[[LLMResponse, OpenAIService], bool]
     ):
         """
-        Create a binary metric with a name and a callback.
+        Create a binary metric with a name and a callback. A binary metric returns either True (1) or False (0).
 
         Parameters
         ----------

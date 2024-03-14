@@ -143,18 +143,18 @@ Many users find value in running evaluations during the code review/pull request
 ## Usage
 
 ### Tonic Validate Metrics
-Metrics are used to score your LLM's performance.  Validate ships with 6 metrics which are applicable to most RAG systems.  You can create your own metrics as well by providing your own implementation of [metric.py](https://github.com/TonicAI/tonic_validate/blob/main/tonic_validate/metrics/metric.py).  To compute a metric, you must provide it data from your RAG application.  The table below describes the available default metrics.
+Metrics are used to score your LLM's performance.  Validate ships with many different metrics which are applicable to most RAG systems.  You can create your own metrics as well by providing your own implementation of [metric.py](https://github.com/TonicAI/tonic_validate/blob/main/tonic_validate/metrics/metric.py).  To compute a metric, you must provide it data from your RAG application.  The table below shows a few of the many metrics we offer with Tonic Validate.  For more detail explanations of our metrics refer to our [documentation](https://docs.tonic.ai/validate/about-rag-metrics/tonic-validate-rag-metrics-reference).
 
-| Metric Name | Inputs | Score Range | What does it measure? |
-|-------------------------------|-----------------------------------------------------|--------|-------------------------------------------------------------------------------------|
-| **Answer similarity score**   | `Question`<br/>`Reference answer`<br/>`LLM answer`  | 0 to 5 | How well the reference answer matches the LLM answer.                               |
-| **Retrieval precision**       | `Question`<br/>`Retrieved Context`                  | 0 to 1 | Whether the context retrieved is relevant to answer the given question.             |
-| **Augmentation precision**    | `Question`<br/>`Retrieved Context`<br/>`LLM answer` | 0 to 1 | Whether the relevant context is in the LLM answer.                                  |
-| **Augmentation accuracy**     | `Retrieved Context`<br/>`LLM answer`                | 0 to 1 | Whether all the context is in the LLM answer.                                       |
-| **Answer consistency**        | `Retrieved Context`<br/>`LLM answer`                | 0 to 1 | Whether there is information in the LLM answer that does not come from the context. |
-| **Answer consistency binary** | `Retrieved Context`<br/>`LLM answer`                | 0 to 1 | Whether there is information in the LLM answer that does not come from the context. |
-
-**Note**: More details on these metrics can be found in our [documentation](https://docs.tonic.ai/validate/about-rag-metrics/tonic-validate-rag-metrics-reference).
+| Metric Name                                                                                                                                                                                   | Inputs                                              | Score Range | What does it measure?                                                               |
+|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------|-------------|-------------------------------------------------------------------------------------|
+| **Answer similarity score**                                                                                                                                                                   | `Question`<br/>`Reference answer`<br/>`LLM answer`  | 0 to 5      | How well the reference answer matches the LLM answer.                               |
+| **Retrieval precision**                                                                                                                                                                       | `Question`<br/>`Retrieved Context`                  | 0 to 1      | Whether the context retrieved is relevant to answer the given question.             |
+| **Augmentation precision**                                                                                                                                                                    | `Question`<br/>`Retrieved Context`<br/>`LLM answer` | 0 to 1      | Whether the relevant context is in the LLM answer.                                  |
+| **Augmentation accuracy**                                                                                                                                                                     | `Retrieved Context`<br/>`LLM answer`                | 0 to 1      | Whether all the context is in the LLM answer.                                       |
+| **Answer consistency**                                                                                                                                                                        | `Retrieved Context`<br/>`LLM answer`                | 0 to 1      | Whether there is information in the LLM answer that does not come from the context. |
+| **Latency**                                                                                                                                                                                   | `Run Time`                                          | 0 or 1      | Measures how long it takes for the LLM to complete a request.                       |
+| **Contains Text**                                                                                                                                                                             | `LLM Answer`                                        | 0 or 1      | Checks whether or not response contains the given text.                             |
+|
 
 ### Metric Inputs
 Metric inputs in Tonic Validate are used to provide the metrics with the information they need to calculate performance. Below, we explain each input type and how to pass them into Tonic Validate's SDK.
@@ -243,6 +243,31 @@ for item in benchmark:
         llm_answer="Paris",
         llm_context_list=["Paris is the capital of France."],
         benchmark_item=item
+    )
+    responses.append(llm_response)
+
+# Score the responses
+scorer = ValidateScorer()
+run = scorer.score_responses(responses)
+```
+
+#### **Run Time**
+**What is it**: Used for the latency metric to measure how long it took the LLM to respond.  
+**How to use**: If you are using the Validate scorer callback, then this metric is automatically calculated for you. If you are manually creating the LLM responses, then you need to provide how long the LLM took yourself via the `run_time` argument.
+```python
+from tonic_validate import LLMResponse
+
+# Save the responses into an array for scoring
+responses = []
+for item in benchmark:
+    run_time = # Float representing how many seconds the LLM took to respond
+    # llm_answer is the answer that LLM gives
+    # llm_context_list is a list of the context that the LLM used to answer the question
+    llm_response = LLMResponse(
+        llm_answer="Paris",
+        llm_context_list=["Paris is the capital of France."],
+        benchmark_item=item
+        run_time=run_time
     )
     responses.append(llm_response)
 

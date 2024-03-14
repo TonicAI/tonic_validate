@@ -154,7 +154,6 @@ Metrics are used to score your LLM's performance.  Validate ships with many diff
 | **Answer consistency**                                                                                                                                                                        | `Retrieved Context`<br/>`LLM answer`                | 0 to 1      | Whether there is information in the LLM answer that does not come from the context. |
 | **Latency**                                                                                                                                                                                   | `Run Time`                                          | 0 or 1      | Measures how long it takes for the LLM to complete a request.                       |
 | **Contains Text**                                                                                                                                                                             | `LLM Answer`                                        | 0 or 1      | Checks whether or not response contains the given text.                             |
-|
 
 ### Metric Inputs
 Metric inputs in Tonic Validate are used to provide the metrics with the information they need to calculate performance. Below, we explain each input type and how to pass them into Tonic Validate's SDK.

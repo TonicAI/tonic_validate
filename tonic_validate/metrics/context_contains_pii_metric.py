@@ -1,3 +1,4 @@
+import os
 from typing import List, Optional
 from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.metrics.binary_metric import BinaryMetric
@@ -20,7 +21,9 @@ class ContextContainsPiiMetric(BinaryMetric):
 
         """
         self.pii_types = [p.lower() for p in pii_types]
-        if textual_api_key is None:            
+        if textual_api_key is None:
+            if os.getenv("TONIC_TEXTUAL_API_KEY") is None:
+                raise ValueError("You must set TONIC_TEXTUAL_API_KEY in your ENV or pass your Textual API key into the constructor.")
             self.textual = TonicTextual("https://textual.tonic.ai")
         else:
             self.textual = TonicTextual("https://textual.tonic.ai", textual_api_key)

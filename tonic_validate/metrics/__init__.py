@@ -13,6 +13,8 @@ from .regex_metric import RegexMetric
 from .response_length_metric import ResponseLengthMetric
 from .hate_speech_content_metric import HateSpeechContentMetric
 from .latency_metric import LatencyMetric
+from .context_contains_pii_metric import ContextContainsPiiMetric
+from .answer_contains_pii_metric import AnswerContainsPiiMetric
 
 __all__ = [
     "AnswerConsistencyBinaryMetric",
@@ -30,4 +32,6 @@ __all__ = [
     "ResponseLengthMetric",
     "HateSpeechContentMetric",
     "LatencyMetric",
+    "ContextContainsPiiMetric",
+    "AnswerContainsPiiMetric"
 ]

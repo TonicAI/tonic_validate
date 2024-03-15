@@ -1,4 +1,5 @@
 import os
+import requests
 from typing import List, Optional
 from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.metrics.binary_metric import BinaryMetric
@@ -37,5 +38,8 @@ class AnswerContainsPiiMetric(BinaryMetric):
                 if d.label.lower() in self.pii_types:
                     return 1.0
             return 0.0
+        except requests.exceptions.HTTPError as e:
+             if e.response.status_code==401:
+                 raise ValueError('Cannot compute AnswerContainsPiiMetric. Your Textual API Key is INVALID.')
         except Exception:
             raise ValueError('Cannot compute AnswerContainsPiiMetric. Error occured communicating with Textual.  Please try again later or reach out via GitHub issues.')

@@ -358,10 +358,9 @@ from tonic_validate import ValidateScorer, LLMResponse
 # Save the responses into an array for scoring
 responses = []
 for item in benchmark:
-    rag_response = get_rag_response(item.question)
     llm_response = LLMResponse(
-        llm_answer=rag_response["llm_answer"],
-        llm_context_list=rag_response["llm_context_list"],
+        llm_answer="Paris",
+        llm_context_list=["Paris is the capital of France"],
         benchmark_item=item
     )
     responses.append(llm_response)

@@ -355,14 +355,6 @@ If you don't want to use the callback, you can instead log your answers manually
 ```python
 from tonic_validate import ValidateScorer, LLMResponse
 
-# Function to simulate getting a response and context from your LLM
-# Replace this with your actual function call
-def get_rag_response(question):
-    return {
-        "llm_answer": "Paris",
-        "llm_context_list": ["Paris is the capital of France."]
-    }
-
 # Save the responses into an array for scoring
 responses = []
 for item in benchmark:

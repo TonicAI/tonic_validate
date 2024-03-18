@@ -56,7 +56,7 @@ class ValidateApi:
             str(key): str(value) for key, value in run_metadata.items()
         }
         run_response = self.client.http_post(
-            f"/projects/{project_id}/runs",
+            f"/projects/{project_id}/runs/with_data",
             data={
                 "run_metadata": processed_run_metadata,
                 "data": [run_data.to_dict() for run_data in run.run_data],

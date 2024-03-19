@@ -26,8 +26,9 @@ class BinaryMetric(Metric):
         ----------
         name: str
             The name of the metric that displays in the UI
-        callback: Callable[[LLMResponse, OpenAIService], bool]
+        callback: Callable[[LLMResponse, OpenAIService], Awaitable[bool] | bool]
             The callback that takes an LLMResponse and an OpenAIService and returns a boolean.
+            The callback can be either an async function or a regular function.
         """
 
         self._name = name

@@ -19,10 +19,12 @@ class AugmentationAccuracyMetric(Metric):
         """
         pass
 
-    def score(self, llm_response: LLMResponse, openai_service: OpenAIService) -> float:
-        return self.calculate_metric(llm_response, openai_service)[0]
+    async def score(
+        self, llm_response: LLMResponse, openai_service: OpenAIService
+    ) -> float:
+        return (await self.calculate_metric(llm_response, openai_service))[0]
 
-    def calculate_metric(
+    async def calculate_metric(
         self, llm_response: LLMResponse, openai_service: OpenAIService
     ) -> Tuple[float, List[bool]]:
         contains_context_list: List[bool] = []
@@ -31,7 +33,7 @@ class AugmentationAccuracyMetric(Metric):
                 "No context provided, cannot calculate augmentation accuracy"
             )
         for context in llm_response.llm_context_list:
-            contains_context_response = answer_contains_context_call(
+            contains_context_response = await answer_contains_context_call(
                 llm_response.llm_answer, context, openai_service
             )
             contains_context_list.append(

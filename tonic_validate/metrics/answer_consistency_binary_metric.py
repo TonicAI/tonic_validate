@@ -18,7 +18,7 @@ class AnswerConsistencyBinaryMetric(BinaryMetric):
         """
         super().__init__(self.name, self.metric_callback)
 
-    def metric_callback(
+    async def metric_callback(
         self, llm_response: LLMResponse, openai_service: OpenAIService
     ) -> bool:
         """Check if answer is consistent with context.
@@ -35,7 +35,7 @@ class AnswerConsistencyBinaryMetric(BinaryMetric):
         bool
             True if answer is consistent with context, False otherwise.
         """
-        hallucination_response = answer_consistent_with_context_call(
+        hallucination_response = await answer_consistent_with_context_call(
             llm_response.llm_answer, llm_response.llm_context_list, openai_service
         )
         return parse_boolean_response(hallucination_response)

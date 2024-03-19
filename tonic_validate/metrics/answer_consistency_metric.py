@@ -24,13 +24,17 @@ class AnswerConsistencyMetric(Metric):
         """
         pass
 
-    def score(self, llm_response: LLMResponse, openai_service: OpenAIService) -> float:
-        main_points_response = main_points_call(llm_response.llm_answer, openai_service)
+    async def score(
+        self, llm_response: LLMResponse, openai_service: OpenAIService
+    ) -> float:
+        main_points_response = await main_points_call(
+            llm_response.llm_answer, openai_service
+        )
         main_point_list = parse_bullet_list_response(main_points_response)
         main_point_derived_from_context_list = []
         for main_point in main_point_list:
             statement_derived_from_context_response = (
-                statement_derived_from_context_call(
+                await statement_derived_from_context_call(
                     main_point, llm_response.llm_context_list, openai_service
                 )
             )

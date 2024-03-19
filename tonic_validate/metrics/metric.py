@@ -12,6 +12,8 @@ class Metric(ABC):
         pass
 
     @abstractmethod
-    def score(self, llm_response: LLMResponse, openai_service: OpenAIService) -> float:
+    async def score(
+        self, llm_response: LLMResponse, openai_service: OpenAIService
+    ) -> float:
         """Calculate the score of the metric"""
         pass

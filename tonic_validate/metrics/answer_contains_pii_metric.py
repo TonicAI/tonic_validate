@@ -22,7 +22,7 @@ class AnswerContainsPiiMetric(BinaryMetric):
 
         """
         try:
-            from tonic_textual.api import TonicTextual
+            from tonic_textual.api import TonicTextual  # type: ignore
         except ImportError:
             raise ImportError(
                 "You must install tonic-textual to use the AnswerContainsPiiMetric. You can install it via pip: pip install tonic-textual"
@@ -41,19 +41,18 @@ class AnswerContainsPiiMetric(BinaryMetric):
 
     def metric_callback(
         self, llm_response: LLMResponse, openai_service: OpenAIService
-    ) -> float:
+    ) -> bool:
         try:
             response = self.textual.redact("\n".join(llm_response.llm_context_list))
             for d in response.de_identify_results:
                 if d.label.lower() in self.pii_types:
-                    return 1.0
-            return 0.0
+                    return True
+            return False
         except requests.exceptions.HTTPError as e:
             if e.response.status_code == 401:
                 raise ValueError(
                     "Cannot compute AnswerContainsPiiMetric. Your Textual API Key is INVALID."
                 )
-        except Exception:
-            raise ValueError(
-                "Cannot compute AnswerContainsPiiMetric. Error occured communicating with Textual.  Please try again later or reach out via GitHub issues."
-            )
+        raise ValueError(
+            "Cannot compute AnswerContainsPiiMetric. Error occured communicating with Textual.  Please try again later or reach out via GitHub issues."
+        )

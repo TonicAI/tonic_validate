@@ -17,12 +17,14 @@ class AnswerSimilarityMetric(Metric):
         """
         pass
 
-    def score(self, llm_response: LLMResponse, openai_service: OpenAIService) -> float:
+    async def score(
+        self, llm_response: LLMResponse, openai_service: OpenAIService
+    ) -> float:
         # Check that the benchmark item has an answer
         if llm_response.benchmark_item.answer is None:
             raise ValueError("The benchmark item does not have an answer")
 
-        similarity_score_response = similarity_score_call(
+        similarity_score_response = await similarity_score_call(
             llm_response.benchmark_item.question,
             llm_response.benchmark_item.answer,
             llm_response.llm_answer,

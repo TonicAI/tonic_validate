@@ -1,8 +1,9 @@
+import asyncio
 import logging
 import os
-import time
+import random
 from typing import Dict
-from openai import AzureOpenAI, BadRequestError, OpenAI, RateLimitError
+from openai import AsyncAzureOpenAI, BadRequestError, AsyncOpenAI, RateLimitError
 from tiktoken import Encoding
 
 from tonic_validate.classes.exceptions import ContextLengthException, LLMException
@@ -42,9 +43,9 @@ class OpenAIService:
                 raise Exception(
                     "AZURE_OPENAI_ENDPOINT must be set in the environment when using AzureOpenAI"
                 )
-            self.client = AzureOpenAI(api_version="2023-12-01-preview")
+            self.client = AsyncAzureOpenAI(api_version="2023-12-01-preview")
         elif "OPENAI_API_KEY" in os.environ:
-            self.client = OpenAI()
+            self.client = AsyncOpenAI()
         else:
             raise Exception(
                 "OPENAI_API_KEY or AZURE_OPENAI_API_KEY must be set in the environment"
@@ -56,7 +57,7 @@ class OpenAIService:
         self.exp_delay_base = exp_delay_base
         self.starting_wait_time = starting_wait_time
 
-    def get_response(self, prompt: str) -> str:
+    async def get_response(self, prompt: str) -> str:
         """
         Retrieves a response from the language model
 
@@ -76,7 +77,7 @@ class OpenAIService:
         wait_time = self.starting_wait_time
         while num_retries < self.max_retries:
             try:
-                completion = self.client.chat.completions.create(
+                completion = await self.client.chat.completions.create(
                     model=self.model,
                     messages=[
                         {
@@ -103,11 +104,11 @@ class OpenAIService:
                     f"logic, num_retries={num_retries}"
                 )
                 logger.debug(log_message)
-                time.sleep(wait_time)
-                wait_time *= self.exp_delay_base
+                await asyncio.sleep(wait_time)
+                wait_time *= self.exp_delay_base * (1 + random.random())
             except Exception as e:
                 logger.warning(e)
-                time.sleep(wait_time)
+                await asyncio.sleep(wait_time)
                 wait_time *= self.exp_delay_base
             num_retries += 1
         raise LLMException(

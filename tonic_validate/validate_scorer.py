@@ -91,57 +91,60 @@ class ValidateScorer:
         RunData
             Contains the scores and other data
         """
-        scores: Dict[str, Union[float, None]] = {}
-        # We cache per response, so we need to create a new OpenAIService
-        openai_service = OpenAIService(
-            self.encoder, self.model_evaluator, max_retries=self.max_llm_retries
-        )
-        for metric in self.metrics:
-            tries = 0
-            exceptions = []
-            last_cache = copy.deepcopy(openai_service.cache)
-            while tries < self.max_parsing_retries:
-                try:
-                    async with semaphore:
+        async with semaphore:
+            scores: Dict[str, Union[float, None]] = {}
+            # We cache per response, so we need to create a new OpenAIService
+            openai_service = OpenAIService(
+                self.encoder, self.model_evaluator, max_retries=self.max_llm_retries
+            )
+            for metric in self.metrics:
+                tries = 0
+                exceptions = []
+                last_cache = copy.deepcopy(openai_service.cache)
+                while tries < self.max_parsing_retries:
+                    try:
                         scores[metric.name] = await metric.score(
                             response, openai_service
                         )
-                    break
-                except LLMException as e:
+                        break
+                    except LLMException as e:
+                        if self.fail_on_error:
+                            raise Exception("Error getting LLM response: " + str(e))
+                        scores[metric.name] = None
+                        logger.warning(
+                            f"Error getting LLM response. Setting score to None. {e}"
+                        )
+                        # We reset the cache since we failed and don't want a failing cache to be used on the next metric
+                        openai_service.cache = last_cache
+                        break
+                    except Exception as e:
+                        tries += 1
+                        openai_service.cache = last_cache
+                        logger.warning(
+                            f"Error calculating {metric.name}: {e}. Retrying..."
+                        )
+                        exceptions.append(e)
+
+                if tries == self.max_parsing_retries:
                     if self.fail_on_error:
-                        raise Exception("Error getting LLM response: " + str(e))
+                        raise Exception(
+                            f"Error calculating metric {metric.name}: "
+                            + str(exceptions)
+                        )
                     scores[metric.name] = None
                     logger.warning(
-                        f"Error getting LLM response. Setting score to None. {e}"
+                        f"Error calculating {metric.name}. Setting score to None."
                     )
                     # We reset the cache since we failed and don't want a failing cache to be used on the next metric
                     openai_service.cache = last_cache
-                    break
-                except Exception as e:
-                    tries += 1
-                    openai_service.cache = last_cache
-                    logger.warning(f"Error calculating {metric.name}: {e}. Retrying...")
-                    exceptions.append(e)
-
-            if tries == self.max_parsing_retries:
-                if self.fail_on_error:
-                    raise Exception(
-                        f"Error calculating metric {metric.name}: " + str(exceptions)
-                    )
-                scores[metric.name] = None
-                logger.warning(
-                    f"Error calculating {metric.name}. Setting score to None."
-                )
-                # We reset the cache since we failed and don't want a failing cache to be used on the next metric
-                openai_service.cache = last_cache
-        benchmark_item = response.benchmark_item
-        return RunData(
-            scores,
-            benchmark_item.question,
-            benchmark_item.answer,
-            response.llm_answer,
-            response.llm_context_list,
-        )
+            benchmark_item = response.benchmark_item
+            return RunData(
+                scores,
+                benchmark_item.question,
+                benchmark_item.answer,
+                response.llm_answer,
+                response.llm_context_list,
+            )
 
     async def a_score_responses(
         self,

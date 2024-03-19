@@ -206,7 +206,20 @@ class ValidateScorer:
         responses: List[LLMResponse],
         parallelism: int = DEFAULT_PARALLELISM_SCORING,
     ) -> Run:
-        return asyncio.run(self.a_score_responses(responses, parallelism))
+        try:
+            asyncio.get_running_loop()
+            in_loop = True
+        except RuntimeError:
+            in_loop = False
+
+        if in_loop:
+            # Hack to get asyncio.run to work inside juptyer notebooks
+            with ThreadPoolExecutor(1) as executor:
+                return executor.submit(
+                    asyncio.run, self.a_score_responses(responses, parallelism)
+                ).result()
+        else:
+            return asyncio.run(self.a_score_responses(responses, parallelism))
 
     # TODO: For backwards compatibility, remove in the future
     def score_run(

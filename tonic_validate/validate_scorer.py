@@ -225,7 +225,6 @@ class ValidateScorer:
             callback_response = callback(item.question)
             end_time = time.time()
             run_time = end_time - start_time
-            callback_response = callback(item.question)
             return LLMResponse(
                 callback_response["llm_answer"],
                 callback_response["llm_context_list"],

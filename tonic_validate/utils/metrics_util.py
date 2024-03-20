@@ -51,14 +51,22 @@ def parse_bullet_list_response(response: str) -> List[str]:
     List[str]
         List of strings that correspond to the bullet points in the response.
     """
-    if not response.startswith("*"):
-        log_message = (
-            f"Response {response} does not start with bullet, when it should be a "
-            "bulleted list. Content before the first bullet will be removed."
-        )
-        logger.debug(log_message)
-    bullet_list = response.split("*")[1:]
-    bullet_list = [bullet.strip() for bullet in bullet_list]
-    if len(bullet_list) == 0:
-        raise ValueError(f"Could not parse bullet list from response {response}")
-    return bullet_list
+
+    def get_bullet_list(bullet: str):
+        if not response.startswith(bullet):
+            log_message = (
+                f"Response {response} does not start with bullet, when it should be a "
+                "bulleted list. Content before the first bullet will be removed."
+            )
+            logger.debug(log_message)
+        bullet_list = response.split(bullet)[1:]
+        bullet_list = [bullet.strip() for bullet in bullet_list]
+        if len(bullet_list) == 0:
+            raise ValueError(f"Could not parse bullet list from response {response}")
+        return bullet_list
+
+    try:
+        result = get_bullet_list("*")
+    except ValueError:
+        result = get_bullet_list("-")
+    return result

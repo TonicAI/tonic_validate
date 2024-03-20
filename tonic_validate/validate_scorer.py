@@ -19,7 +19,8 @@ from tonic_validate.metrics.metric import Metric
 from tonic_validate.services.openai_service import OpenAIService
 import tiktoken
 from tonic_validate.utils.telemetry import Telemetry
-from tqdm.asyncio import tqdm
+from tqdm.asyncio import tqdm as async_tqdm
+from tqdm import tqdm
 import time
 
 logger = logging.getLogger()
@@ -169,9 +170,9 @@ class ValidateScorer:
             self._score_item_rundata(response, semaphore) for response in responses
         ]
 
-        run_data: List[RunData] = await tqdm.gather(
+        run_data: List[RunData] = await async_tqdm.gather(
             *tasks,
-            total=len(responses),
+            total=len(tasks),
             desc="Scoring responses",
             disable=self.quiet,
         )
@@ -248,7 +249,6 @@ class ValidateScorer:
         Run
             The Run object containing the scores and other data.
         """
-        responses: List[LLMResponse] = []
 
         semaphore = Semaphore(callback_parallelism)
 
@@ -267,9 +267,9 @@ class ValidateScorer:
                 )
 
         tasks = [create_response(item) for item in benchmark.items]
-        responses = await tqdm.gather(
+        responses: List[LLMResponse] = await async_tqdm.gather(
             *tasks,
-            total=len(responses),
+            total=len(tasks),
             desc="Retrieving responses",
             disable=self.quiet,
         )

@@ -3,6 +3,7 @@ import asyncio
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 import copy
+import platform
 from typing import Awaitable, Callable, DefaultDict, List, Dict, Union
 from tonic_validate.classes.benchmark import Benchmark, BenchmarkItem
 import logging
@@ -172,18 +173,17 @@ class ValidateScorer:
         except Exception as _:
             pass
 
-        run_data: List[RunData] = []
-
         semaphore = Semaphore(parallelism)
         tasks = [
             self._score_item_rundata(response, semaphore) for response in responses
         ]
 
-        for coro in tqdm.as_completed(
-            tasks, total=len(responses), desc="Scoring responses", disable=self.quiet
-        ):
-            result = await coro
-            run_data.append(result)
+        run_data: List[RunData] = await tqdm.gather(
+            *tasks,
+            total=len(responses),
+            desc="Scoring responses",
+            disable=self.quiet,
+        )
 
         # Used to calculate overall score
         total_scores: DefaultDict[str, float] = defaultdict(float)
@@ -276,12 +276,12 @@ class ValidateScorer:
                 )
 
         tasks = [create_response(item) for item in benchmark.items]
-        responses = []
-        for coro in tqdm.as_completed(
-            tasks, total=len(responses), desc="Retrieving responses", disable=self.quiet
-        ):
-            result = await coro
-            responses.append(result)
+        responses = await tqdm.gather(
+            *tasks,
+            total=len(responses),
+            desc="Retrieving responses",
+            disable=self.quiet,
+        )
 
         return await self.a_score_responses(responses, scoring_parallelism)
 

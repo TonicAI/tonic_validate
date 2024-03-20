@@ -21,7 +21,10 @@ class LatencyMetric(BinaryMetric):
         """
         self.target_time = target_time
 
-    def score(self, llm_response: LLMResponse, openai_service: OpenAIService) -> float:
+    # We do async here for consistency even though this method doesn't use async
+    async def score(
+        self, llm_response: LLMResponse, openai_service: OpenAIService
+    ) -> float:
         # Check that llm_response.run_time is not None
         if llm_response.run_time is None:
             raise ValueError("No run time provided in LLMResponse")

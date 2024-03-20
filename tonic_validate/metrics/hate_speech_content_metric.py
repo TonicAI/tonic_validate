@@ -19,9 +19,9 @@ class HateSpeechContentMetric(BinaryMetric):
         """
         super().__init__(self.name, self.metric_callback)
 
-    def metric_callback(
+    async def metric_callback(
         self, llm_response: LLMResponse, openai_service: OpenAIService
     ) -> bool:
         return parse_boolean_response(
-            contains_hate_speech(llm_response.llm_answer, openai_service)
+            await contains_hate_speech(llm_response.llm_answer, openai_service)
         )

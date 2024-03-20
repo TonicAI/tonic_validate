@@ -6,7 +6,7 @@ from tonic_validate.services.openai_service import OpenAIService
 logger = logging.getLogger()
 
 
-def similarity_score_call(
+async def similarity_score_call(
     question: str, reference_answer: str, llm_answer: str, openai_service: OpenAIService
 ) -> str:
     """Sends prompt for answer similarity score to OpenAI API, and returns response.
@@ -36,7 +36,7 @@ def similarity_score_call(
     main_message += f"NEW ANSWER: {llm_answer}\n"
 
     try:
-        response_message = openai_service.get_response(main_message)
+        response_message = await openai_service.get_response(main_message)
     except ContextLengthException as e:
         question_tokens = openai_service.get_token_count(question)
         reference_answer_tokens = openai_service.get_token_count(reference_answer)
@@ -79,7 +79,7 @@ def similarity_score_prompt():
     return main_message
 
 
-def answer_consistent_with_context_call(
+async def answer_consistent_with_context_call(
     answer: str, context_list: List[str], openai_service: OpenAIService
 ) -> str:
     """Sends prompt for answer consistency binary score and returns response.
@@ -106,7 +106,7 @@ def answer_consistent_with_context_call(
     main_message += f"\n\nANSWER: {answer}"
 
     try:
-        response_message = openai_service.get_response(main_message)
+        response_message = await openai_service.get_response(main_message)
     except ContextLengthException as e:
         answer_tokens = openai_service.get_token_count(answer)
         context_tokens = 0
@@ -149,7 +149,7 @@ def context_consistency_prompt():
     return main_message
 
 
-def context_relevancy_call(
+async def context_relevancy_call(
     question: str, context: str, openai_service: OpenAIService
 ) -> str:
     """Sends prompt to get context relevance to Open AI API and returns response.
@@ -176,7 +176,7 @@ def context_relevancy_call(
     main_message += f"CONTEXT: {context}\n"
 
     try:
-        response_message = openai_service.get_response(main_message)
+        response_message = await openai_service.get_response(main_message)
     except ContextLengthException as e:
         question_tokens = openai_service.get_token_count(question)
         context_tokens = openai_service.get_token_count(context)
@@ -216,7 +216,7 @@ def context_relevancy_prompt():
     return main_message
 
 
-def answer_contains_context_call(
+async def answer_contains_context_call(
     answer: str, context: str, openai_service: OpenAIService
 ) -> str:
     """Sends prompt for whether answer contains context and returns response.
@@ -241,7 +241,7 @@ def answer_contains_context_call(
     main_message += f"CONTEXT: {context}\n"
 
     try:
-        response_message = openai_service.get_response(main_message)
+        response_message = await openai_service.get_response(main_message)
     except ContextLengthException as e:
         answer_tokens = openai_service.get_token_count(answer)
         context_tokens = openai_service.get_token_count(context)
@@ -280,7 +280,7 @@ def answer_contains_context_prompt():
     return main_message
 
 
-def main_points_call(answer: str, openai_service: OpenAIService) -> str:
+async def main_points_call(answer: str, openai_service: OpenAIService) -> str:
     """Sends prompt for main points in answer to Open AI API and returns response.
 
     Parameters
@@ -302,7 +302,7 @@ def main_points_call(answer: str, openai_service: OpenAIService) -> str:
     main_message += f"\nANSWER: {answer}"
 
     try:
-        response_message = openai_service.get_response(main_message)
+        response_message = await openai_service.get_response(main_message)
     except ContextLengthException as e:
         answer_tokens = openai_service.get_token_count(answer)
         total_tokens = openai_service.get_token_count(main_message)
@@ -338,7 +338,7 @@ def main_points_prompt():
     return main_message
 
 
-def statement_derived_from_context_call(
+async def statement_derived_from_context_call(
     statement: str, context_list: List[str], openai_service: OpenAIService
 ) -> str:
     """Sends prompt for whether statement is derived from context and returns response.
@@ -367,7 +367,7 @@ def statement_derived_from_context_call(
 
     main_message = statement_derived_from_context_prompt(main_message)
     try:
-        response_message = openai_service.get_response(main_message)
+        response_message = await openai_service.get_response(main_message)
     except ContextLengthException as e:
         statement_tokens = openai_service.get_token_count(statement)
         context_tokens = 0
@@ -413,7 +413,7 @@ def statement_derived_from_context_prompt(main_message):
     return main_message
 
 
-def contains_duplicate_information(
+async def contains_duplicate_information(
     statement: str, openai_service: OpenAIService
 ) -> str:
     """Sends prompt for whether statement contains duplicate information and returns response.
@@ -437,7 +437,7 @@ def contains_duplicate_information(
     main_message += f"\n\nSTATEMENT:\n{statement}\nEND OF STATEMENT"
 
     try:
-        response_message = openai_service.get_response(main_message)
+        response_message = await openai_service.get_response(main_message)
     except ContextLengthException as e:
         statement_tokens = openai_service.get_token_count(statement)
         total_tokens = openai_service.get_token_count(main_message)
@@ -472,9 +472,7 @@ def contains_duplicate_info_prompt():
     return main_message
 
 
-def contains_hate_speech(
-    statement: str, openai_service: OpenAIService
-) -> str:
+async def contains_hate_speech(statement: str, openai_service: OpenAIService) -> str:
     """Sends prompt for whether statement contains hate speech and returns response.
 
     Parameters
@@ -496,7 +494,7 @@ def contains_hate_speech(
     main_message += f"\n\nSTATEMENT:\n{statement}\nEND OF STATEMENT"
 
     try:
-        response_message = openai_service.get_response(main_message)
+        response_message = await openai_service.get_response(main_message)
     except ContextLengthException as e:
         statement_tokens = openai_service.get_token_count(statement)
         total_tokens = openai_service.get_token_count(main_message)

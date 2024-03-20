@@ -22,12 +22,14 @@ class AugmentationPrecisionMetric(Metric):
         self.augmentation_accuracy = AugmentationAccuracyMetric()
         self.retrieval_precision = RetrievalPrecisionMetric()
 
-    def score(self, llm_response: LLMResponse, openai_service: OpenAIService) -> float:
-        retrieval_precision_score = self.retrieval_precision.calculate_metric(
+    async def score(
+        self, llm_response: LLMResponse, openai_service: OpenAIService
+    ) -> float:
+        retrieval_precision_score = await self.retrieval_precision.calculate_metric(
             llm_response, openai_service
         )
         context_relevant_list = retrieval_precision_score[1]
-        augmentation_accuracy_score = self.augmentation_accuracy.calculate_metric(
+        augmentation_accuracy_score = await self.augmentation_accuracy.calculate_metric(
             llm_response, openai_service
         )
         contains_context_list = augmentation_accuracy_score[1]

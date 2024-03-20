@@ -1,7 +1,8 @@
+from asyncio import Semaphore
+import asyncio
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
-import copy
-from typing import Callable, DefaultDict, List, Dict, Union
+from typing import Awaitable, Callable, DefaultDict, List, Dict, Union
 from tonic_validate.classes.benchmark import Benchmark, BenchmarkItem
 import logging
 from tonic_validate.classes.exceptions import LLMException
@@ -18,13 +19,16 @@ from tonic_validate.metrics.metric import Metric
 from tonic_validate.services.openai_service import OpenAIService
 import tiktoken
 from tonic_validate.utils.telemetry import Telemetry
-from tqdm import tqdm
+from tqdm.asyncio import tqdm
 import time
 
 logger = logging.getLogger()
 
 
 class ValidateScorer:
+    DEFAULT_PARALLELISM_CALLBACK = 1
+    DEFAULT_PARALLELISM_SCORING = 50
+
     def __init__(
         self,
         metrics: List[Metric] = [
@@ -69,8 +73,13 @@ class ValidateScorer:
         except Exception as _:
             logger.info("Defaulting to cl100k_base for measuring token count")
             self.encoder = tiktoken.get_encoding("cl100k_base")
+        self.openai_service = OpenAIService(
+            self.encoder, self.model_evaluator, max_retries=self.max_llm_retries
+        )
 
-    def _score_item_rundata(self, response: LLMResponse) -> RunData:
+    async def _score_item_rundata(
+        self, response: LLMResponse, semaphore: Semaphore
+    ) -> RunData:
         """
         Calculates scores for a single LLMResponse object
 
@@ -84,57 +93,55 @@ class ValidateScorer:
         RunData
             Contains the scores and other data
         """
-        scores: Dict[str, Union[float, None]] = {}
-        # We cache per response, so we need to create a new OpenAIService
-        openai_service = OpenAIService(
-            self.encoder, self.model_evaluator, max_retries=self.max_llm_retries
-        )
-        for metric in self.metrics:
-            tries = 0
-            exceptions = []
-            last_cache = copy.deepcopy(openai_service.cache)
-            while tries < self.max_parsing_retries:
-                try:
-                    scores[metric.name] = metric.score(response, openai_service)
-                    break
-                except LLMException as e:
+        async with semaphore:
+            scores: Dict[str, Union[float, None]] = {}
+            for metric in self.metrics:
+                tries = 0
+                exceptions = []
+                while tries < self.max_parsing_retries:
+                    try:
+                        scores[metric.name] = await metric.score(
+                            response, self.openai_service
+                        )
+                        break
+                    except LLMException as e:
+                        if self.fail_on_error:
+                            raise Exception("Error getting LLM response: " + str(e))
+                        scores[metric.name] = None
+                        logger.warning(
+                            f"Error getting LLM response. Setting score to None. {e}"
+                        )
+                        break
+                    except Exception as e:
+                        tries += 1
+                        logger.warning(
+                            f"Error calculating {metric.name}: {e}. Retrying..."
+                        )
+                        exceptions.append(e)
+
+                if tries == self.max_parsing_retries:
                     if self.fail_on_error:
-                        raise Exception("Error getting LLM response: " + str(e))
+                        raise Exception(
+                            f"Error calculating metric {metric.name}: "
+                            + str(exceptions)
+                        )
                     scores[metric.name] = None
                     logger.warning(
-                        f"Error getting LLM response. Setting score to None. {e}"
+                        f"Error calculating {metric.name}. Setting score to None."
                     )
-                    # We reset the cache since we failed and don't want a failing cache to be used on the next metric
-                    openai_service.cache = last_cache
-                    break
-                except Exception as e:
-                    tries += 1
-                    openai_service.cache = last_cache
-                    logger.warning(f"Error calculating {metric.name}: {e}. Retrying...")
-                    exceptions.append(e)
+            benchmark_item = response.benchmark_item
+            return RunData(
+                scores,
+                benchmark_item.question,
+                benchmark_item.answer,
+                response.llm_answer,
+                response.llm_context_list,
+            )
 
-            if tries == self.max_parsing_retries:
-                if self.fail_on_error:
-                    raise Exception(
-                        f"Error calculating metric {metric.name}: " + str(exceptions)
-                    )
-                scores[metric.name] = None
-                logger.warning(
-                    f"Error calculating {metric.name}. Setting score to None."
-                )
-                # We reset the cache since we failed and don't want a failing cache to be used on the next metric
-                openai_service.cache = last_cache
-        benchmark_item = response.benchmark_item
-        return RunData(
-            scores,
-            benchmark_item.question,
-            benchmark_item.answer,
-            response.llm_answer,
-            response.llm_context_list,
-        )
-
-    def score_responses(
-        self, responses: List[LLMResponse], parallelism: int = 1
+    async def a_score_responses(
+        self,
+        responses: List[LLMResponse],
+        parallelism: int = DEFAULT_PARALLELISM_SCORING,
     ) -> Run:
         """Calculate metric scores for a list of LLMResponse objects.
 
@@ -157,17 +164,17 @@ class ValidateScorer:
         except Exception as _:
             pass
 
-        run_data: List[RunData] = []
+        semaphore = Semaphore(parallelism)
+        tasks = [
+            self._score_item_rundata(response, semaphore) for response in responses
+        ]
 
-        with ThreadPoolExecutor(max_workers=parallelism) as executor:
-            run_data = list(
-                tqdm(
-                    executor.map(self._score_item_rundata, responses),
-                    total=len(responses),
-                    desc="Scoring responses",
-                    disable=self.quiet,
-                )
-            )
+        run_data: List[RunData] = await tqdm.gather(
+            *tasks,
+            total=len(responses),
+            desc="Scoring responses",
+            disable=self.quiet,
+        )
 
         # Used to calculate overall score
         total_scores: DefaultDict[str, float] = defaultdict(float)
@@ -185,19 +192,96 @@ class ValidateScorer:
 
         return Run(overall_scores, run_data, None)
 
+    def score_responses(
+        self,
+        responses: List[LLMResponse],
+        parallelism: int = DEFAULT_PARALLELISM_SCORING,
+    ) -> Run:
+        try:
+            asyncio.get_running_loop()
+            in_loop = True
+        except RuntimeError:
+            in_loop = False
+
+        if in_loop:
+            # Hack to get asyncio.run to work inside juptyer notebooks
+            with ThreadPoolExecutor(1) as executor:
+                return executor.submit(
+                    asyncio.run, self.a_score_responses(responses, parallelism)
+                ).result()
+        else:
+            return asyncio.run(self.a_score_responses(responses, parallelism))
+
     # TODO: For backwards compatibility, remove in the future
-    def score_run(self, responses: List[LLMResponse], parallelism: int = 1) -> Run:
+    def score_run(
+        self,
+        responses: List[LLMResponse],
+        parallelism: int = DEFAULT_PARALLELISM_SCORING,
+    ) -> Run:
         """
         Alias for score_responses. Used for backward compatibility
         """
         return self.score_responses(responses, parallelism)
 
+    async def a_score(
+        self,
+        benchmark: Benchmark,
+        callback: Callable[[str], Awaitable[CallbackLLMResponse]],
+        callback_parallelism=DEFAULT_PARALLELISM_CALLBACK,
+        scoring_parallelism=DEFAULT_PARALLELISM_SCORING,
+    ) -> Run:
+        """Calculate metric scores for a benchmark asynchronously.
+
+        Parameters
+        ----------
+        benchmark: Benchmark
+            The benchmark to be scored. Can either be a Benchmark object or a list of BenchmarkItem objects.
+        callback: Callable[[str], Awaitable[CallbackLLMResponse]]
+            An async callback function that takes a question and returns a tuple of the llm response and the retrieved context list.
+        callback_parallelism: int
+            The number of threads to use for the callback function.
+        scoring_parallelism: int
+            The number of threads to use for scoring.
+
+        Returns
+        -------
+        Run
+            The Run object containing the scores and other data.
+        """
+        responses: List[LLMResponse] = []
+
+        semaphore = Semaphore(callback_parallelism)
+
+        async def create_response(item: BenchmarkItem) -> LLMResponse:
+            async with semaphore:
+                # Time the callback
+                start_time = time.time()
+                callback_response = await callback(item.question)
+                end_time = time.time()
+                run_time = end_time - start_time
+                return LLMResponse(
+                    callback_response["llm_answer"],
+                    callback_response["llm_context_list"],
+                    item,
+                    run_time,
+                )
+
+        tasks = [create_response(item) for item in benchmark.items]
+        responses = await tqdm.gather(
+            *tasks,
+            total=len(responses),
+            desc="Retrieving responses",
+            disable=self.quiet,
+        )
+
+        return await self.a_score_responses(responses, scoring_parallelism)
+
     def score(
         self,
         benchmark: Benchmark,
         callback: Callable[[str], CallbackLLMResponse],
-        callback_parallelism=1,
-        scoring_parallelism=1,
+        callback_parallelism=DEFAULT_PARALLELISM_CALLBACK,
+        scoring_parallelism=DEFAULT_PARALLELISM_SCORING,
     ) -> Run:
         """Calculate metric scores for a benchmark.
 

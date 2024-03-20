@@ -2,8 +2,6 @@ from asyncio import Semaphore
 import asyncio
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
-import copy
-import platform
 from typing import Awaitable, Callable, DefaultDict, List, Dict, Union
 from tonic_validate.classes.benchmark import Benchmark, BenchmarkItem
 import logging
@@ -75,6 +73,9 @@ class ValidateScorer:
         except Exception as _:
             logger.info("Defaulting to cl100k_base for measuring token count")
             self.encoder = tiktoken.get_encoding("cl100k_base")
+        self.openai_service = OpenAIService(
+            self.encoder, self.model_evaluator, max_retries=self.max_llm_retries
+        )
 
     async def _score_item_rundata(
         self, response: LLMResponse, semaphore: Semaphore
@@ -94,18 +95,13 @@ class ValidateScorer:
         """
         async with semaphore:
             scores: Dict[str, Union[float, None]] = {}
-            # We cache per response, so we need to create a new OpenAIService
-            openai_service = OpenAIService(
-                self.encoder, self.model_evaluator, max_retries=self.max_llm_retries
-            )
             for metric in self.metrics:
                 tries = 0
                 exceptions = []
-                last_cache = copy.deepcopy(openai_service.cache)
                 while tries < self.max_parsing_retries:
                     try:
                         scores[metric.name] = await metric.score(
-                            response, openai_service
+                            response, self.openai_service
                         )
                         break
                     except LLMException as e:
@@ -115,12 +111,9 @@ class ValidateScorer:
                         logger.warning(
                             f"Error getting LLM response. Setting score to None. {e}"
                         )
-                        # We reset the cache since we failed and don't want a failing cache to be used on the next metric
-                        openai_service.cache = last_cache
                         break
                     except Exception as e:
                         tries += 1
-                        openai_service.cache = last_cache
                         logger.warning(
                             f"Error calculating {metric.name}: {e}. Retrying..."
                         )
@@ -136,8 +129,6 @@ class ValidateScorer:
                     logger.warning(
                         f"Error calculating {metric.name}. Setting score to None."
                     )
-                    # We reset the cache since we failed and don't want a failing cache to be used on the next metric
-                    openai_service.cache = last_cache
             benchmark_item = response.benchmark_item
             return RunData(
                 scores,

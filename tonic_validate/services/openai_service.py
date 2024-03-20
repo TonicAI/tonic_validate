@@ -2,7 +2,7 @@ import asyncio
 import logging
 import os
 import random
-from typing import Dict
+from async_lru import alru_cache
 from openai import AsyncAzureOpenAI, BadRequestError, AsyncOpenAI, RateLimitError
 from tiktoken import Encoding
 
@@ -52,11 +52,11 @@ class OpenAIService:
             )
         self.model = model
         self.encoder = encoder
-        self.cache: Dict[str, str] = {}
         self.max_retries = max_retries
         self.exp_delay_base = exp_delay_base
         self.starting_wait_time = starting_wait_time
 
+    @alru_cache(maxsize=512)
     async def get_response(self, prompt: str) -> str:
         """
         Retrieves a response from the language model
@@ -71,8 +71,6 @@ class OpenAIService:
         str
             The response from the language model.
         """
-        if prompt in self.cache:
-            return self.cache[prompt]
         num_retries = 0
         wait_time = self.starting_wait_time
         while num_retries < self.max_retries:
@@ -93,7 +91,6 @@ class OpenAIService:
                     raise Exception(
                         f"Failed to get message response from {self.model}, message does not exist"
                     )
-                self.cache[prompt] = response
                 return response
             except BadRequestError as e:
                 if e.code == "context_length_exceeded":

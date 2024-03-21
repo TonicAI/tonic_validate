@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-22.04
     needs: deploy
     steps:
-      - uses: slackapi/slack-github-action@v1.24.0
+      - uses: slackapi/slack-github-action@v1.25.0
         env:
             SLACK_WEBHOOK_URL: https://hooks.slack.com/services/${{ vars.SLACK_RELEASE_PROCESS_WEBHOOK }}
             SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK

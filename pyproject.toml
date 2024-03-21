@@ -12,6 +12,7 @@ tiktoken = ">=0.5.2,<0.7.0"
 appdirs = "^1.4.4"
 python-dotenv = "^1.0.1"
 tqdm = "^4.66.2"
+async-lru = "^2.0.4"
 
 [tool.poetry.group.dev.dependencies]
 sphinx = "^7.0.0"

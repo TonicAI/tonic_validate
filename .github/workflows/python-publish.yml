@@ -17,9 +17,7 @@ permissions:
 
 jobs:
   deploy:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python
@@ -37,3 +35,18 @@ jobs:
       with:
         user: __token__
         password: ${{ secrets.PYPI_API_TOKEN }}
+  notify_completion:
+    if: failure() || success()
+    name: "Notify Completion"
+    runs-on: ubuntu-22.04
+    needs: deploy
+    steps:
+      - uses: slackapi/slack-github-action@v1.25.0
+        env:
+            SLACK_WEBHOOK_URL: https://hooks.slack.com/services/${{ vars.SLACK_RELEASE_PROCESS_WEBHOOK }}
+            SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+        with:
+            payload: |
+                {
+                    "text": "Release of Tonic Validate Package version ${{ github.event.release.name }} was a ${{ needs.deploy.result }}: https://github.com/tonicai/${{ github.event.repository.name }}/actions/runs/${{ github.run_id }}"
+                }

@@ -1,6 +1,6 @@
 import logging
 from typing import Any, List, Optional, Dict, Union
-from dataclasses import dataclass
+from pydantic.dataclasses import dataclass
 from uuid import UUID
 
 logger = logging.getLogger()

@@ -1,4 +1,5 @@
 from typing import List, Optional, Dict
+from pydantic import ConfigDict, validate_call
 from tonic_validate.classes.benchmark import Benchmark
 from tonic_validate.classes.run import Run
 from tonic_validate.config import Config
@@ -8,6 +9,7 @@ from tonic_validate.utils.telemetry import Telemetry
 
 
 class ValidateApi:
+    @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
     def __init__(
         self,
         api_key: Optional[str] = None,
@@ -36,6 +38,7 @@ class ValidateApi:
         except Exception as _:
             pass
 
+    @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
     def upload_run(
         self, project_id: str, run: Run, run_metadata: Dict[str, str] = {}
     ) -> str:
@@ -64,6 +67,7 @@ class ValidateApi:
         )
         return run_response["id"]
 
+    @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
     def get_benchmark(self, benchmark_id: str) -> Benchmark:
         """Get a Tonic Validate benchmark by its ID.
 
@@ -85,6 +89,7 @@ class ValidateApi:
             answers += [benchmark_item_response["answer"]]
         return Benchmark(questions, answers, benchmark_response["name"])
 
+    @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
     def new_benchmark(self, benchmark: Benchmark, benchmark_name: str) -> str:
         """Create a new Tonic Validate benchmark.
 

@@ -1,5 +1,6 @@
 from typing import Iterator, List, Optional
-from dataclasses import dataclass
+from pydantic import ConfigDict, validate_call
+from pydantic.dataclasses import dataclass
 from uuid import UUID
 
 from tonic_validate.utils.telemetry import Telemetry
@@ -26,6 +27,7 @@ class BenchmarkItem:
 
 
 class Benchmark:
+    @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
     def __init__(
         self,
         questions: List[str],
@@ -55,7 +57,7 @@ class Benchmark:
         if len(questions) != len(benchmark_answers):
             raise ValueError("Questions and answers must be the same length")
         for question, answer in zip(questions, benchmark_answers):
-            self.items.append(BenchmarkItem(question, answer))
+            self.items.append(BenchmarkItem(question=question, answer=answer))
 
         try:
             self.telemetry.log_benchmark(len(questions))

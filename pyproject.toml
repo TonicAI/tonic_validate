@@ -13,6 +13,8 @@ appdirs = "^1.4.4"
 python-dotenv = "^1.0.1"
 tqdm = "^4.66.2"
 async-lru = "^2.0.4"
+pydantic = "^2.6.4"
+typing-extensions = "^4.10.0"
 
 [tool.poetry.group.dev.dependencies]
 sphinx = "^7.0.0"

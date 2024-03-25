@@ -3,6 +3,8 @@ import asyncio
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 from typing import Awaitable, Callable, DefaultDict, List, Dict, Union
+
+from pydantic import ConfigDict, TypeAdapter, validate_call
 from tonic_validate.classes.benchmark import Benchmark, BenchmarkItem
 import logging
 from tonic_validate.classes.exceptions import LLMException
@@ -24,12 +26,14 @@ from tqdm import tqdm
 import time
 
 logger = logging.getLogger()
+CallbackValidator = TypeAdapter(CallbackLLMResponse)
 
 
 class ValidateScorer:
     DEFAULT_PARALLELISM_CALLBACK = 1
     DEFAULT_PARALLELISM_SCORING = 50
 
+    @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
     def __init__(
         self,
         metrics: List[Metric] = [
@@ -78,6 +82,7 @@ class ValidateScorer:
             self.encoder, self.model_evaluator, max_retries=self.max_llm_retries
         )
 
+    @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
     async def _score_item_rundata(
         self, response: LLMResponse, semaphore: Semaphore
     ) -> RunData:
@@ -132,13 +137,14 @@ class ValidateScorer:
                     )
             benchmark_item = response.benchmark_item
             return RunData(
-                scores,
-                benchmark_item.question,
-                benchmark_item.answer,
-                response.llm_answer,
-                response.llm_context_list,
+                scores=scores,
+                reference_question=benchmark_item.question,
+                reference_answer=benchmark_item.answer,
+                llm_answer=response.llm_answer,
+                llm_context=response.llm_context_list,
             )
 
+    @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
     async def a_score_responses(
         self,
         responses: List[LLMResponse],
@@ -191,8 +197,9 @@ class ValidateScorer:
             metric: total / num_scores[metric] for metric, total in total_scores.items()
         }
 
-        return Run(overall_scores, run_data, None)
+        return Run(overall_scores=overall_scores, run_data=run_data, id=None)
 
+    @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
     def score_responses(
         self,
         responses: List[LLMResponse],
@@ -214,6 +221,7 @@ class ValidateScorer:
             return asyncio.run(self.a_score_responses(responses, parallelism))
 
     # TODO: For backwards compatibility, remove in the future
+    @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
     def score_run(
         self,
         responses: List[LLMResponse],
@@ -224,6 +232,7 @@ class ValidateScorer:
         """
         return self.score_responses(responses, parallelism)
 
+    @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
     async def a_score(
         self,
         benchmark: Benchmark,
@@ -257,13 +266,14 @@ class ValidateScorer:
                 # Time the callback
                 start_time = time.time()
                 callback_response = await callback(item.question)
+                CallbackValidator.validate_python(callback_response)
                 end_time = time.time()
                 run_time = end_time - start_time
                 return LLMResponse(
-                    callback_response["llm_answer"],
-                    callback_response["llm_context_list"],
-                    item,
-                    run_time,
+                    llm_answer=callback_response["llm_answer"],
+                    llm_context_list=callback_response["llm_context_list"],
+                    benchmark_item=item,
+                    run_time=run_time,
                 )
 
         tasks = [create_response(item) for item in benchmark.items]
@@ -276,6 +286,7 @@ class ValidateScorer:
 
         return await self.a_score_responses(responses, scoring_parallelism)
 
+    @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
     def score(
         self,
         benchmark: Benchmark,
@@ -307,13 +318,15 @@ class ValidateScorer:
             # Time the callback
             start_time = time.time()
             callback_response = callback(item.question)
+            # Validate type of callback_response
+            CallbackValidator.validate_python(callback_response)
             end_time = time.time()
             run_time = end_time - start_time
             return LLMResponse(
-                callback_response["llm_answer"],
-                callback_response["llm_context_list"],
-                item,
-                run_time,
+                llm_answer=callback_response["llm_answer"],
+                llm_context_list=callback_response["llm_context_list"],
+                benchmark_item=item,
+                run_time=run_time,
             )
 
         with ThreadPoolExecutor(max_workers=callback_parallelism) as executor:

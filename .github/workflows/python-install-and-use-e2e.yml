@@ -33,4 +33,19 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install poetry
           poetry install
-        shell: bash      
+        shell: bash
+      - name: Run simple evaluation E2E
+        run: |
+          python -c "from tonic_validate import ValidateScorer, Benchmark
+                    import os
+                    def get_llm_response(question):
+                        return {
+                            'llm_answer': 'Paris',
+                            'llm_context_list': ['Paris is the capital of France.']
+                        }
+
+                    benchmark = Benchmark(questions=['What is the capital of France?'], answers=['Paris'])
+                    scorer = ValidateScorer([AnswerMatchMetric('MustMatchParis', 'Paris')])
+                    run = scorer.score(benchmark, get_llm_response)"
+                    run.to_df().head()
+        shell: bash

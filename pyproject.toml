@@ -6,7 +6,7 @@ authors = ["Joe Ferrara <joeferrara@tonic.ai>", "Ethan Philpott <ephilpott@tonic
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.10.13,<4.0.0"
+python = ">=3.8.1,<4.0.0"
 openai = ">=1.0.0"
 tiktoken = ">=0.5.2,<0.7.0"
 appdirs = "^1.4.4"

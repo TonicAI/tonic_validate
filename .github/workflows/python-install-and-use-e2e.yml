@@ -51,5 +51,5 @@ jobs:
           benchmark = Benchmark(questions=['What is the capital of France?'], answers=['Paris'])
           scorer = ValidateScorer([AnswerMatchMetric('MustMatchParis', 'Paris')])
           run = scorer.score(benchmark, get_llm_response)
-          run.to_df().head()"
+          print(run)"
         shell: bash

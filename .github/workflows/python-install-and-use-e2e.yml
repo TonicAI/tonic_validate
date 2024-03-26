@@ -36,6 +36,8 @@ jobs:
           poetry install
         shell: bash
       - name: Run simple evaluation E2E
+        env:
+          OPENAI_API_KEY: "not_actually_used"
         run: |
           poetry run python -c \
           "from tonic_validate import ValidateScorer, Benchmark

@@ -2,11 +2,11 @@ import asyncio
 import logging
 import os
 import random
-from async_lru import alru_cache
 from openai import AsyncAzureOpenAI, BadRequestError, AsyncOpenAI, RateLimitError
 from tiktoken import Encoding
 
 from tonic_validate.classes.exceptions import ContextLengthException, LLMException
+from tonic_validate.utils.openai_cache import OpenAICache
 
 logger = logging.getLogger()
 
@@ -55,8 +55,8 @@ class OpenAIService:
         self.max_retries = max_retries
         self.exp_delay_base = exp_delay_base
         self.starting_wait_time = starting_wait_time
+        self.cache = OpenAICache()
 
-    @alru_cache(maxsize=512)
     async def get_response(self, prompt: str) -> str:
         """
         Retrieves a response from the language model
@@ -71,46 +71,55 @@ class OpenAIService:
         str
             The response from the language model.
         """
-        num_retries = 0
-        wait_time = self.starting_wait_time
-        while num_retries < self.max_retries:
-            try:
-                completion = await self.client.chat.completions.create(
-                    model=self.model,
-                    messages=[
-                        {
-                            "role": "system",
-                            "content": "You are a helpful assistant. Respond using markdown.",
-                        },
-                        {"role": "user", "content": prompt},
-                    ],
-                    temperature=0.0,
-                )
-                response = completion.choices[0].message.content
-                if response is None:
-                    raise Exception(
-                        f"Failed to get message response from {self.model}, message does not exist"
+
+        async def get_openai_response():
+            num_retries = 0
+            wait_time = self.starting_wait_time
+            while num_retries < self.max_retries:
+                try:
+                    completion = await self.client.chat.completions.create(
+                        model=self.model,
+                        messages=[
+                            {
+                                "role": "system",
+                                "content": "You are a helpful assistant. Respond using markdown.",
+                            },
+                            {"role": "user", "content": prompt},
+                        ],
+                        temperature=0.0,
                     )
-                return response
-            except BadRequestError as e:
-                if e.code == "context_length_exceeded":
-                    raise ContextLengthException(e.message)
-            except RateLimitError:
-                log_message = (
-                    "hit openai.error.RateLimitError and entered retry "
-                    f"logic, num_retries={num_retries}"
-                )
-                logger.debug(log_message)
-                await asyncio.sleep(wait_time)
-                wait_time *= self.exp_delay_base * (1 + random.random())
-            except Exception as e:
-                logger.warning(e)
-                await asyncio.sleep(wait_time)
-                wait_time *= self.exp_delay_base
-            num_retries += 1
-        raise LLMException(
-            f"Failed to get completion response from {self.model}, max retires hit"
-        )
+                    response = completion.choices[0].message.content
+                    if response is None:
+                        raise Exception(
+                            f"Failed to get message response from {self.model}, message does not exist"
+                        )
+                    return response
+                except BadRequestError as e:
+                    if e.code == "context_length_exceeded":
+                        raise ContextLengthException(e.message)
+                except RateLimitError:
+                    log_message = (
+                        "hit openai.error.RateLimitError and entered retry "
+                        f"logic, num_retries={num_retries}"
+                    )
+                    logger.debug(log_message)
+                    await asyncio.sleep(wait_time)
+                    wait_time *= self.exp_delay_base * (1 + random.random())
+                except Exception as e:
+                    logger.warning(e)
+                    await asyncio.sleep(wait_time)
+                    wait_time *= self.exp_delay_base
+                num_retries += 1
+            raise LLMException(
+                f"Failed to get completion response from {self.model}, max retires hit"
+            )
+
+        cached_response = self.cache.get(prompt)
+        if cached_response is not None:
+            return cached_response
+        response = await get_openai_response()
+        self.cache.put(prompt, response)
+        return response
 
     def get_token_count(self, text: str) -> int:
         return len(self.encoder.encode(text))

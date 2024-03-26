@@ -1,5 +1,5 @@
 import logging
-from typing import Awaitable, Callable
+from typing import Awaitable, Callable, Union
 
 from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.metrics.metric import Metric
@@ -17,7 +17,7 @@ class BinaryMetric(Metric):
     def __init__(
         self,
         name: str,
-        callback: Callable[[LLMResponse, OpenAIService], Awaitable[bool] | bool],
+        callback: Callable[[LLMResponse, OpenAIService], Union[Awaitable[bool], bool]],
     ):
         """
         Create a binary metric with a name and a callback. A binary metric returns either True (1) or False (0).
@@ -26,7 +26,7 @@ class BinaryMetric(Metric):
         ----------
         name: str
             The name of the metric that displays in the UI
-        callback: Callable[[LLMResponse, OpenAIService], Awaitable[bool] | bool]
+        callback: Callable[[LLMResponse, OpenAIService], Union[Awaitable[bool], bool]]
             The callback that takes an LLMResponse and an OpenAIService and returns a boolean.
             The callback can be either an async function or a regular function.
         """

@@ -39,6 +39,7 @@ jobs:
         run: |
           poetry run python -c \
           "from tonic_validate import ValidateScorer, Benchmark
+          from tonic_validate.metrics import AnswerMatchMetric
           import os
           def get_llm_response(question):
               return {

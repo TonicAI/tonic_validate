@@ -1,0 +1,332 @@
+[
+  {
+    "essay": "siliconvalley.txt",
+    "question": "What key components are necessary to create a technology hub according to Paul Graham?",
+    "answer": "The key components to create a technology hub are rich people and nerds.",
+    "quote": "I think you only need two kinds of people to create a technology hub: rich people and nerds."
+  },
+  {
+    "essay": "siliconvalley.txt",
+    "question": "What is the influence of geography on where great cities historically developed, and how has that changed in modern times?",
+    "answer": "Historically, great cities developed on waterways for economical trade, but in modern times, a great city can be established anywhere if it attracts the right people.",
+    "quote": "All great cities were located on waterways, because cities made money by trade, and water was the only economical way to ship. Now you could make a great city anywhere, if you could get the right people to move there."
+  },
+  {
+    "essay": "conformism.txt",
+    "question": "How are people classified according to their degree and aggressiveness of conformism?",
+    "answer": "People are classified into four types based on their degree and aggressiveness of conformism: aggressively conventional-minded, passively conventional-minded, passively independent-minded, and aggressively independent-minded.",
+    "quote": "The resulting four quadrants define four types of people. Starting in the upper left and going counter-clockwise: aggressively conventional-minded, passively conventional-minded, passively independent-minded, and aggressively independent-minded."
+  },
+  {
+    "essay": "conformism.txt",
+    "question": "What is the main danger of restricting the discussion of certain ideas?",
+    "answer": "Restricting the discussion of certain ideas is dangerous because it not only affects the topics targeted by the restrictions but also propagates back into any topic that yields implications in the forbidden areas, potentially stifling innovation and free thought.",
+    "quote": "The second reason it's dangerous to ban the discussion of ideas is that ideas are more closely related than they look. Which means if you restrict the discussion of some topics, it doesn't only affect those topics. The restrictions propagate back into any topic that yields implications in the forbidden ones."
+  },
+  {
+    "essay": "airbnb.txt",
+    "question": "What was the long-term goal of Airbnb as explained to potential investors?",
+    "answer": "Airbnb's long-term goal was to become the market in accommodation, similar to how eBay is for stuff.",
+    "quote": "Did they explain the long-term goal of being the market in accommodation the way eBay is in stuff? That seems like it would be huge."
+  },
+  {
+    "essay": "airbnb.txt",
+    "question": "In the early days, how were the Airbnb founders financing their startup?",
+    "answer": "The Airbnb founders initially funded themselves by selling breakfast cereal.",
+    "quote": "Be sure to ask about how they funded themselves with breakfast cereal."
+  },
+  {
+    "essay": "usa.txt",
+    "question": "What is the outcome of American companies letting focus groups design their cars?",
+    "answer": "American cars continue to lose market share because the customer does not truly want what they think they want, and focus groups fail to capture the essence of good design that sophisticated buyers seek.",
+    "quote": "Letting focus groups design your cars for you only wins in the short term. In the long term, it pays to bet on good design."
+  },
+  {
+    "essay": "usa.txt",
+    "question": "Why are software and movies successful in the United States despite the just do it approach?",
+    "answer": "Software and movies are malleable mediums that benefit from boldness and the ability to quickly adapt during creation, which aligns well with the American ethos of speed and innovation.",
+    "quote": "I think we get away with this in movies and software because they're both malleable mediums. Boldness pays."
+  },
+  {
+    "essay": "googles.txt",
+    "question": "What often happens to startups that turn down acquisition offers?",
+    "answer": "Startups that turn down acquisition offers usually end up doing better, often receiving a bigger offer later or going for an IPO.",
+    "quote": "From the evidence I've seen so far, startups that turn down acquisition offers usually end up doing better."
+  },
+  {
+    "essay": "googles.txt",
+    "question": "Why do venture capitalists tend to be conservative when investing in startups?",
+    "answer": "Venture capitalists are often conservative because the large size of their investments makes them cautious, they are investing other people's money which heightens their fear of making risky decisions, and many are not technical experts, so they don't fully understand the innovations behind the startups they invest in.",
+    "quote": "The large size of their investments makes them conservative. Plus they're investing other people's money, which makes them worry they'll get in trouble if they do something risky and it fails. Plus most of them are money guys rather than technical guys, so they don't understand what the startups they're investing in do."
+  },
+  {
+    "essay": "googles.txt",
+    "question": "What is the fundamental reason there aren't more companies like Google?",
+    "answer": "The fundamental reason there aren't more companies like Google is that the most innovative startups are undervalued by those with the funds, leading to a lack of sufficient early investment.",
+    "quote": "The reason there aren't more Googles is not that investors encourage innovative startups to sell out, but that they won't even fund them."
+  },
+  {
+    "essay": "gap.txt",
+    "question": "Why do some people believe that wealth should be distributed equally?",
+    "answer": "Some people believe that wealth should be distributed equally because, as children, they see wealth as something given and thus feel it should be shared out similarly, rather than created and potentially created unequally.",
+    "quote": "Because kids are unable to create wealth, whatever they have has to be given to them. And when wealth is something you're given, then of course it seems that it should be distributed equally."
+  },
+  {
+    "essay": "gap.txt",
+    "question": "How does the creation of wealth differ from the accumulation of wealth through corrupt means historically?",
+    "answer": "Historically, wealth accumulation often occurred through appropriation, whereas the creation of wealth became prominent with the rise of the middle class and the Industrial Revolution, where wealth was generated.",
+    "quote": "For most of human history the usual way to accumulate a fortune was to steal it... This started to change in Europe with the rise of the middle class... Once it became possible to get rich by creating wealth, society as a whole started to get richer very rapidly."
+  },
+  {
+    "essay": "foundervisa.txt",
+    "question": "What is the main constraint on the number of new startups in the US?",
+    "answer": "The main constraint on the number of new startups in the US is the immigration policy that doesn't allow potential startup founders to enter the country.",
+    "quote": "The biggest constraint on the number of new startups that get created in the US is not tax policy or employment law or even Sarbanes-Oxley. It's that we won't let the people who want to start them into the country."
+  },
+  {
+    "essay": "foundervisa.txt",
+    "question": "How could the government identify whether a company qualifies as a startup for the purposes of a founder visa?",
+    "answer": "The government could use investment by recognized startup investors as a benchmark to determine whether a company is a real startup.",
+    "quote": "The government could not do better than to piggyback on their expertise, and use investment by recognized startup investors as the test of whether a company was a real startup."
+  },
+  {
+    "essay": "foundervisa.txt",
+    "question": "How might allowing more startup founders into a country affect domestic employment?",
+    "answer": "It would likely lead to an increase in jobs because the companies started by these founders would hire more employees as they grow.",
+    "quote": "In fact they'd cause there to be more jobs for Americans, because the companies they started would hire more employees as they grew."
+  },
+  {
+    "essay": "credentials.txt",
+    "question": "Why are smaller organizations less concerned with credentials compared to larger ones?",
+    "answer": "In smaller organizations, actual performance is more critical and visible, as the company's survival depends on it, hence they focus less on credentials and more on what individuals can actually do.",
+    "quote": "This doesn't work in small companies. Even if your colleagues were impressed by your credentials, they'd soon be parted from you if your performance didn't match, because the company would go out of business and the people would be dispersed."
+  },
+  {
+    "essay": "college.txt",
+    "question": "What should students focus on in college to become proficient hackers?",
+    "answer": "Students should focus on getting very good at programming and learning a lot about specific, cool problems.",
+    "quote": "There are two main things you can do: become very good at programming, and learn a lot about specific, cool problems."
+  },
+  {
+    "essay": "college.txt",
+    "question": "What criteria can indicate whether a college professor's research is worth engaging with as a student?",
+    "answer": "A professor's research may be worth engaging with if it covers interesting problems and is not simply aimed at achieving novel results in less competitive, thus less significant, areas.",
+    "quote": "Professors have to publish novel results to advance their careers, but there is more competition in more interesting areas of research. So what less ambitious professors do is turn out a series of papers whose conclusions are novel because no one else cares about them."
+  },
+  {
+    "essay": "startuplessons.txt",
+    "question": "What is one reason why startups should release their products early?",
+    "answer": "To get user feedback and improve based on their reactions.",
+    "quote": "Better to release something and let them tell you."
+  },
+  {
+    "essay": "startuplessons.txt",
+    "question": "How can a startup demonstrate the value of their site to new visitors?",
+    "answer": "A startup should succinctly explain what their site is about and try to showcase impressive elements on the front page.",
+    "quote": "The most important is to explain, as concisely as possible, what the hell your site is about... If you have something impressive, try to put it on the front page."
+  },
+  {
+    "essay": "wtax.txt",
+    "question": "How does a wealth tax differ from income tax in terms of its application to assets or income?",
+    "answer": "A wealth tax is applied to the same asset repeatedly over time, while income tax is only applied to the income of that particular year.",
+    "quote": "Income tax happens every year, but only to that year's income. Whereas if you live for 60 years after acquiring some asset, a wealth tax will tax that same asset 60 times."
+  },
+  {
+    "essay": "procrastination.txt",
+    "question": "What are the three types of procrastination?",
+    "answer": "The three types of procrastination are working on (a) nothing, (b) something less important, or (c) something more important.",
+    "quote": "There are three variants of procrastination, depending on what you do instead of working on something: you could work on (a) nothing, (b) something less important, or (c) something more important."
+  },
+  {
+    "essay": "procrastination.txt",
+    "question": "How can the practice of working only on urgent small tasks be misleading in terms of productivity?",
+    "answer": "Concentrating on small, urgent tasks might feel like productivity, but it can be misleading if it keeps one from engaging with more significant or impactful work.",
+    "quote": "Any advice about procrastination that concentrates on crossing things off your to-do list is not only incomplete, but positively misleading, if it doesn't consider the possibility that the to-do list is itself a form of type-B procrastination."
+  },
+  {
+    "essay": "bronze.txt",
+    "question": "What is an example of a mistake that startup founders might make when choosing an idea for their business?",
+    "answer": "Founders may hastily choose the first idea that comes to mind without thoroughly considering if it's something that people actually need or will pay for, resulting in a poor business idea.",
+    "quote": "One reason we had such a lame idea was that it was the first thing we thought of."
+  },
+  {
+    "essay": "revolution.txt",
+    "question": "What industries do Los Angeles and New York specialize in according to Paul Graham?",
+    "answer": "Los Angeles specializes in movies, and New York specializes in finance.",
+    "quote": "Silicon Valley specializes in startups in the same way Los Angeles specializes in movies, or New York in finance."
+  },
+  {
+    "essay": "revolution.txt",
+    "question": "What factors contributed to Silicon Valley and Seattle becoming major tech centers?",
+    "answer": "Silicon Valley became a tech center because William Shockley wanted to move back to Palo Alto and the experts he lured west liked it so much they stayed, while Seattle became a tech center because Gates and Allen wanted to move back home.",
+    "quote": "Silicon Valley is where it is because William Shockley wanted to move back to Palo Alto, where he grew up, and the experts he lured west to work with him liked it so much they stayed. Seattle owes much of its position as a tech center to the same cause: Gates and Allen wanted to move home."
+  },
+  {
+    "essay": "revolution.txt",
+    "question": "Why do startups not spread as quickly and widely as industrialization did historically?",
+    "answer": "Startups do not spread as efficiently because they are more of a social phenomenon and don't rely on geography, needing a community of expertise, unlike how individual European manufacturers could import industrial techniques and they would work fine.",
+    "quote": "Startups don't seem to spread so well, partly because they're more a social than a technical phenomenon, and partly because they're not tied to geography. An individual European manufacturer could import industrial techniques and they'd work fine. This doesn't seem to work so well with startups: you need a community of expertise, as you do in the movie business."
+  },
+  {
+    "essay": "lwba.txt",
+    "question": "What prompted some readers to want to understand the specific technical advantages of using Lisp in Viaweb?",
+    "answer": "A link to \"Beating the Averages\" being posted on Slashdot incited readers' curiosity.",
+    "quote": "After a link to Beating the Averages was posted on slashdot, some readers wanted to hear in more detail about the specific technical advantages we got from using Lisp in Viaweb."
+  },
+  {
+    "essay": "lwba.txt",
+    "question": "In what month and year was the talk regarding Lisp for web-based applications given?",
+    "answer": "The talk was given in April 2001.",
+    "quote": "Lisp for Web-Based Applications April 2001"
+  },
+  {
+    "essay": "alien.txt",
+    "question": "What is meant by the concept of 'alien truth'?",
+    "answer": "'Alien truth' refers to the most general truths that humans could share with any form of intelligent life, going beyond the realms of math or physics.",
+    "quote": "If you're trying to find the most general truths short of those of math or physics, then presumably they'll be those we'd share in common with other forms of intelligent life."
+  },
+  {
+    "essay": "airbnbs.txt",
+    "question": "What do people generally refer to when they talk about \"ramen profitability\" in the context of startups?",
+    "answer": "Ramen profitability refers to a startup being able to make enough money to cover the founders' basic living expenses if they live frugally on ramen noodles.",
+    "quote": "Airbnb's goal during YC was to reach what we call ramen profitability, which means making enough money that the company can pay the founders' living expenses, if they live on ramen noodles."
+  },
+  {
+    "essay": "airbnbs.txt",
+    "question": "What was Airbnb's monthly financial goal to achieve ramen profitability during their time at Y Combinator?",
+    "answer": "Airbnb's financial goal for ramen profitability was to earn $4000 a month.",
+    "quote": "For the Airbnbs, ramen profitability was $4000 a month: $3500 for rent, and $500 for food."
+  },
+  {
+    "essay": "bubble.txt",
+    "question": "What was the fundamental economic issue that made Yahoo's valuations during the Internet Bubble period seem unreasonable?",
+    "answer": "Yahoo's valuation was inflated due to its role at the center of a Ponzi-like scheme, where capital investment in startups was rapidly funneled back into Yahoo as advertising, artificially inflating its earnings.",
+    "quote": "What made our earnings bogus was that Yahoo was, in effect, the center of a Ponzi scheme."
+  },
+  {
+    "essay": "bubble.txt",
+    "question": "What is the concept of \"retail VC\" as it relates to public markets and startups?",
+    "answer": "Retail VC is the idea of taking a company public in its early stages to raise funds from the public markets instead of seeking venture capital firms for the last round of funding.",
+    "quote": "Taking a company public at an early stage is simply retail VC: instead of going to venture capital firms for the last round of funding, you go to the public markets."
+  },
+  {
+    "essay": "founders.txt",
+    "question": "What is considered the most important quality in startup founders?",
+    "answer": "Determination is considered the most important quality in startup founders.",
+    "quote": "1. Determination This has turned out to be the most important quality in startup founders."
+  },
+  {
+    "essay": "founders.txt",
+    "question": "Why is flexibility important for those leading a startup?",
+    "answer": "Flexibility is crucial because the unpredictable nature of startups requires leaders to modify their approaches and ideas as conditions change.",
+    "quote": "The world of startups is so unpredictable that you need to be able to modify your dreams on the fly."
+  },
+  {
+    "essay": "founders.txt",
+    "question": "What type of intelligence is particularly valuable in the startup world?",
+    "answer": "Imagination is the type of intelligence that is most valuable, as it allows for the creation of surprising new ideas which may initially seem unconventional.",
+    "quote": "It seems like the type that matters most is imagination. It's not so important to be able to solve predefined problems quickly as to be able to come up with surprising new ideas."
+  },
+  {
+    "essay": "fr.txt",
+    "question": "What is the benefit of making it to \"ramen profitability\" before actively seeking investors for a startup?",
+    "answer": "Achieving \"ramen profitability\" strengthens a startup's position by showing it can succeed regardless of external funding, which makes the company more attractive to investors and reduces the appearance of desperation.",
+    "quote": "Though it sounds slightly paradoxical, if you want to raise money, the best thing you can do is get yourself to the point where you don't need to."
+  },
+  {
+    "essay": "own.txt",
+    "question": "What are the two senses in which work can be considered one's own?",
+    "answer": "Work can be considered one's own if it is being done voluntarily rather than because someone told you to do it, and if it is being done by oneself.",
+    "quote": "There turn out to be two senses in which work can be one's own: 1) that you're doing it voluntarily, rather than merely because someone told you to, and 2) that you're doing it by yourself."
+  },
+  {
+    "essay": "ronco.txt",
+    "question": "What is one attribute that has contributed to investor Ron Conway's success in the startup world?",
+    "answer": "Being genuinely good has contributed to Ron Conway's success, as it has led to numerous deal referrals.",
+    "quote": "And the reason so many people refer deals to him is that he's proven himself to be a good guy."
+  },
+  {
+    "essay": "ronco.txt",
+    "question": "How has increased transparency in the startup world affected investor behavior?",
+    "answer": "Increased transparency makes it difficult for investors to maltreat founders without it becoming known to others, which can lead to the loss of potential deals.",
+    "quote": "When an investor maltreats a founder now, it gets out. Maybe not all the way to the press, but other founders hear about it, and that investor starts to lose deals."
+  },
+  {
+    "essay": "ronco.txt",
+    "question": "Why might unpredictable conditions in an industry necessitate consistent good behavior from its professionals?",
+    "answer": "Unpredictability in an industry increases the difficulty of being inconsistent because you never know who will become important, therefore to be safe, you need to treat everyone well.",
+    "quote": "If you're going to be two-faced, you have to know who you should be nice to and who you can get away with being nasty to. In the startup world, things change so rapidly that you can't tell. The random college kid you talk to today might in a couple years be the CEO of the hottest startup in the Valley."
+  },
+  {
+    "essay": "yahoo.txt",
+    "question": "What was the primary reason Jerry Yang from Yahoo was uninterested in the Revenue Loop technology?",
+    "answer": "Jerry Yang was uninterested because advertisers were already overpaying for traffic.",
+    "quote": "The reason Yahoo didn't care about a technique that extracted the full value of traffic was that advertisers were already overpaying for it."
+  },
+  {
+    "essay": "yahoo.txt",
+    "question": "Why was it hard for Yahoo to take search seriously as a business model?",
+    "answer": "Yahoo found it difficult to focus on search because they were preoccupied with the substantial income they were receiving from banner ads.",
+    "quote": "As long as customers were writing big checks for banner ads, it was hard to take search seriously."
+  },
+  {
+    "essay": "pypar.txt",
+    "question": "What is the supposed advantage for a company to write its software in a less common programming language like Python according to Paul Graham?",
+    "answer": "The advantage is that the company can hire better programmers, because such a language attracts those who are passionate enough about programming to learn it on their own.",
+    "quote": "Hence what, for lack of a better name, I'll call the Python paradox: if a company chooses to write its software in a comparatively esoteric language, they'll be able to hire better programmers, because they'll attract only those who cared enough to learn it."
+  },
+  {
+    "essay": "equity.txt",
+    "question": "What should be the perceived improvement in a startup's average outcome for an investment to be considered beneficial when giving up 7% equity?",
+    "answer": "The investment should be considered beneficial if it improves the startup's average outcome by more than 7.5%.",
+    "quote": "So you should take the deal if you believe we can improve your average outcome by more than 7.5% If we improve your outcome by 10%, you're net ahead."
+  },
+  {
+    "essay": "equity.txt",
+    "question": "How much does Sequoia Capital typically invest in a company in terms of percentage?",
+    "answer": "Sequoia Capital typically invests about 30% in a company.",
+    "quote": "Greg Mcadoo from Sequoia recently said at a YC dinner that when Sequoia invests alone they like to take about 30% of a company."
+  },
+  {
+    "essay": "think.txt",
+    "question": "What is a quality that successful scientists and investors share?",
+    "answer": "Successful scientists and investors both need to have ideas that are correct and novel.",
+    "quote": "To be a successful scientist, for example, it's not enough just to be correct. Your ideas have to be both correct and novel."
+  },
+  {
+    "essay": "softwarepatents.txt",
+    "question": "What is the main reason startups are advised not to worry about infringing patents?",
+    "answer": "Startups are too poor to be worth suing for money, and established competitors rarely sue them.",
+    "quote": "We tell the startups we fund not to worry about infringing patents, because startups rarely get sued for patent infringement. There are only two reasons someone might sue you: for money, or to prevent you from competing with them. Startups are too poor to be worth suing for money."
+  },
+  {
+    "essay": "swan.txt",
+    "question": "What are the two most important things to understand about startup investing?",
+    "answer": "The two most important things to understand are that almost all returns are concentrated in a few big winners and that the best ideas initially look like bad ideas.",
+    "quote": "The two most important things to understand about startup investing, as a business, are (1) that effectively all the returns are concentrated in a few big winners, and (2) that the best ideas look initially like bad ideas."
+  },
+  {
+    "essay": "swan.txt",
+    "question": "Why is it difficult for investors to grasp the magnitude of success possible with startups?",
+    "answer": "It is difficult because the big winners in startup investing can be big to a degree that violates our normal expectations about variation, leading to 1000x variation in outcomes, which most people are not prepared for.",
+    "quote": "In startups, the big winners are big to a degree that violates our expectations about variation. I don't know whether these expectations are innate or learned, but whatever the cause, we are just not prepared for the 1000x variation in outcomes that one finds in startup investing."
+  },
+  {
+    "essay": "webstartups.txt",
+    "question": "What is the main reason for the increasing number of startups according to Paul Graham?",
+    "answer": "The main reason for the increasing number of startups is that it has become cheaper to start web startups.",
+    "quote": "It's so cheap to start web startups that orders of magnitudes more will be started."
+  },
+  {
+    "essay": "webstartups.txt",
+    "question": "How might the attitude of big companies towards acquisitions change in the future?",
+    "answer": "Big companies might start to develop standardized procedures making acquisitions almost as simple as hiring someone.",
+    "quote": "As the volume of startups increases, big companies will start to develop standardized procedures that make acquisitions little more work than hiring someone."
+  },
+  {
+    "essay": "webstartups.txt",
+    "question": "What change in founders' behavior might occur if it becomes more common to start a startup immediately after college?",
+    "answer": "Students may focus on collaborating with peers they want as cofounders instead of securing internships at established companies.",
+    "quote": "Instead of focusing on getting internships at companies they want to work for, they may start to focus on working with other students they want as cofounders."
+  }
+]

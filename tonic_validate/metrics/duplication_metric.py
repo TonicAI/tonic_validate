@@ -1,5 +1,4 @@
 import logging
-import re
 
 from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.metrics.binary_metric import BinaryMetric

@@ -19,8 +19,14 @@ typing-extensions = "^4.10.0"
 sphinx = "^7.0.0"
 sphinx-rtd-theme = ">=1.2,<3.0"
 ruff = ">=0.1.15,<0.4.0"
+tonic-textual = "^1.0.5"
+pytest = "^8.1.1"
+pytest-asyncio = "^0.23.6"
 
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"

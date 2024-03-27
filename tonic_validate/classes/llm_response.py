@@ -1,5 +1,6 @@
-from dataclasses import dataclass
-from typing import List, Optional, TypedDict
+from pydantic.dataclasses import dataclass
+from typing import List, Optional
+from typing_extensions import TypedDict
 
 from tonic_validate.classes.benchmark import BenchmarkItem
 

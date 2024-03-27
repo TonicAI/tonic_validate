@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-
+    - name: Python SDK E2E
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false

@@ -8,40 +8,40 @@ on:
 
 jobs:
   build:
-
+    name: Python ${{ matrix.python-version.version }} SDK E2E Test
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+        python-version: [
+          {version: "3.8", versionName: "py38"},
+          {version: "3.9", versionName: "py39"},
+          {version: "3.10", versionName: "py310"},
+          {version: "3.11", versionName: "py311"},
+          {version: "3.12", versionName: "py312"}
+        ]
 
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python ${{ matrix.python-version.version }}
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: ${{ matrix.python-version.version }}
       - name: Install Dependencies via Poetry
         run: |
           python -m pip install --upgrade pip
           python -m pip install poetry
-          poetry install
+          poetry install --with dev
         shell: bash
+      - name: Lint with Ruff  
+        run: |  
+          pip install ruff  
+          ruff check . --target-version=${{ matrix.python-version.versionName }}
+        continue-on-error: true  
       - name: Run simple evaluation E2E
         env:
-          OPENAI_API_KEY: "not_actually_used"
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          TONIC_TEXTUAL_API_KEY: ${{ secrets.TONIC_TEXTUAL_API_KEY }}
         run: |
-          poetry run python -c \
-          "from tonic_validate import ValidateScorer, Benchmark
-          from tonic_validate.metrics import AnswerMatchMetric
-          import os
-          def get_llm_response(question):
-              return {
-                  'llm_answer': 'Paris',
-                  'llm_context_list': ['Paris is the capital of France.']
-              }
-          benchmark = Benchmark(questions=['What is the capital of France?'], answers=['Paris'])
-          scorer = ValidateScorer([AnswerMatchMetric('MustMatchParis', 'Paris')])
-          run = scorer.score(benchmark, get_llm_response)
-          print(run)"
+          poetry run pytest
         shell: bash

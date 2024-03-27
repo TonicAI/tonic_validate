@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Python ${{ matrix.python-version.version }} E2E
+    name: Python ${{ matrix.python-version.version }} SDK E2E Test
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false

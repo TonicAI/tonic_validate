@@ -36,7 +36,7 @@ jobs:
       - name: Lint with Ruff  
         run: |  
           pip install ruff  
-          ruff check . --target-version={{ matrix.python-version.versionName }}
+          ruff check . --target-version=${{ matrix.python-version.versionName }}
         continue-on-error: true  
       - name: Run simple evaluation E2E
         env:

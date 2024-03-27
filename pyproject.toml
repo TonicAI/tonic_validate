@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tonic-validate"
-version = "4.0.3"
+version = "4.0.4"
 description = "RAG evaluation metrics."
 authors = ["Joe Ferrara <joeferrara@tonic.ai>", "Ethan Philpott <ephilpott@tonic.ai>", "Adam Kamor <adam@tonic.ai>"]
 readme = "README.md"

@@ -29,19 +29,8 @@ jobs:
         shell: bash
       - name: Run simple evaluation E2E
         env:
-          OPENAI_API_KEY: "not_actually_used"
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          TONIC_TEXTUAL_API_KEY: ${{ secrets.TONIC_TEXTUAL_API_KEY }}
         run: |
-          poetry run python -c \
-          "from tonic_validate import ValidateScorer, Benchmark
-          from tonic_validate.metrics import AnswerMatchMetric
-          import os
-          def get_llm_response(question):
-              return {
-                  'llm_answer': 'Paris',
-                  'llm_context_list': ['Paris is the capital of France.']
-              }
-          benchmark = Benchmark(questions=['What is the capital of France?'], answers=['Paris'])
-          scorer = ValidateScorer([AnswerMatchMetric('MustMatchParis', 'Paris')])
-          run = scorer.score(benchmark, get_llm_response)
-          print(run)"
+          poetry run pytest"
         shell: bash

@@ -8,19 +8,25 @@ on:
 
 jobs:
   build:
-    name: Python ${{ matrix.python-version }} E2E
+    name: Python ${{ matrix.python-version.version }} E2E
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+        python-version: [
+          {version: "3.8", versionName: "py38"},
+          {version: "3.9", versionName: "py39"},
+          {version: "3.10", versionName: "py310"},
+          {version: "3.11", versionName: "py311"},
+          {version: "3.12", versionName: "py312"}
+        ]
 
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python ${{ matrix.python-version.version }}
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: ${{ matrix.python-version.version }}
       - name: Install Dependencies via Poetry
         run: |
           python -m pip install --upgrade pip
@@ -30,7 +36,7 @@ jobs:
       - name: Lint with Ruff  
         run: |  
           pip install ruff  
-          ruff --target-version=py38 .
+          ruff check . --target-version={{ matrix.python-version.versionName }}
         continue-on-error: true  
       - name: Run simple evaluation E2E
         env:

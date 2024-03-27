@@ -43,7 +43,7 @@ class AnswerContainsPiiMetric(BinaryMetric):
         self, llm_response: LLMResponse, openai_service: OpenAIService
     ) -> bool:
         try:
-            response = self.textual.redact("\n".join(llm_response.llm_context_list))
+            response = self.textual.redact(llm_response.llm_answer)
             for d in response.de_identify_results:
                 if d.label.lower() in self.pii_types:
                     return True

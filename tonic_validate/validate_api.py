@@ -1,4 +1,4 @@
-from typing import List, Optional, Dict
+from typing import Any, List, Optional, Dict
 from pydantic import ConfigDict, validate_call
 from tonic_validate.classes.benchmark import Benchmark
 from tonic_validate.classes.run import Run
@@ -40,7 +40,7 @@ class ValidateApi:
 
     @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
     def upload_run(
-        self, project_id: str, run: Run, run_metadata: Dict[str, str] = {}
+        self, project_id: str, run: Run, run_metadata: Optional[Dict[str, Any]] = {}, tags: Optional[List[str]] = []
     ) -> str:
         """Upload a run to a Tonic Validate project.
 
@@ -50,18 +50,17 @@ class ValidateApi:
             The ID of the project to upload the run to.
         run : Run
             The run to upload.
-        run_metadata : Dict[str, str]
+        run_metadata : Optional[Dict[str, Any]]
             Metadata to attach to the run. If the values are not strings, then they are
             converted to strings before making the request.
+        tags : Optional[List[str]]
+            A list of tags which can be used to identify this run.  Tags will be rendered in the UI and can also make run searchable.
         """
-        # ensure run_metadata is Dict[str, str]
-        processed_run_metadata = {
-            str(key): str(value) for key, value in run_metadata.items()
-        }
         run_response = self.client.http_post(
             f"/projects/{project_id}/runs/with_data",
             data={
-                "run_metadata": processed_run_metadata,
+                "run_metadata": run_metadata,
+                "tags": tags,
                 "data": [run_data.to_dict() for run_data in run.run_data],
             },
         )

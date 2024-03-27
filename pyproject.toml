@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "tonic-validate"
-version = "4.0.2"
+version = "4.0.3"
 description = "RAG evaluation metrics."
-authors = ["Joe Ferrara <joeferrara@tonic.ai>", "Ethan Philpott <ephilpott@tonic.ai>"]
+authors = ["Joe Ferrara <joeferrara@tonic.ai>", "Ethan Philpott <ephilpott@tonic.ai>", "Adam Kamor <adam@tonic.ai>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -12,7 +12,6 @@ tiktoken = ">=0.5.2,<0.7.0"
 appdirs = "^1.4.4"
 python-dotenv = "^1.0.1"
 tqdm = "^4.66.2"
-async-lru = "^2.0.4"
 pydantic = "^2.6.4"
 typing-extensions = "^4.10.0"
 

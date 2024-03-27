@@ -30,12 +30,12 @@ jobs:
       - name: Lint with Ruff  
         run: |  
           pip install ruff  
-          ruff --format=github --target-version=py38 .
+          ruff --target-version=py38 .
         continue-on-error: true  
       - name: Run simple evaluation E2E
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           TONIC_TEXTUAL_API_KEY: ${{ secrets.TONIC_TEXTUAL_API_KEY }}
         run: |
-          poetry run pytest"
+          poetry run pytest
         shell: bash

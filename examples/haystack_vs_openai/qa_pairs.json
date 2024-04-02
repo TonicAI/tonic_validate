@@ -1,0 +1,127 @@
+[
+    {
+        "question": "What realization did Paul Graham have about the value of reading books, even if he doesn't remember their details?",
+        "answer": "Paul Graham realized that the true value of reading books isn't necessarily in remembering all the details but in how those readings shape and train his mental model of the world. Even if the specific knowledge is forgotten over time, its impact on his understanding and perspective remains, enhancing his cognition and worldview. This insight helped him appreciate the enduring worth of reading beyond the immediate recall of facts.",
+        "reference_article": "know.txt"
+    },
+    {
+        "question": "Why does the author believe Twitter is considered a significant innovation? ",
+        "answer": "The author believes Twitter is considered a significant innovation because it introduces a new messaging protocol where recipients are not pre-specified, which is a rarity among protocols, especially those that gain widespread use. Moreover, the fact that Twitter is owned by a private company, yet has not been heavily monetized early on, has allowed it to feel more like a universal protocol rather than a controlled service, facilitating its widespread adoption.",
+        "reference_article": "twitter.txt"
+    },
+    {
+        "question": "What distinguishes an intentional moderate from an accidental moderate in political views according to Paul Graham?",
+        "answer": "An intentional moderate chooses a position mid-way between extremes intentionally, often having opinions near the center for every issue, whereas an accidental moderate forms opinions independently on various matters, leading their viewpoints to scatter across a broad range but average in the middle. Accidental moderates choose their own answers and questions, not strictly adhering to the established importance of issues by the left or right.",
+        "reference_article": "mod.txt"
+    },
+    {
+        "question": "What is the purpose of the patent pledge proposed by Paul Graham?",
+        "answer": "The purpose of the patent pledge proposed by Paul Graham is to decrease the misuse of patents by established companies with bad products who use patents to suppress small competitors with good products, without having to go through government-led patent reform. The pledge encourages technology companies not to initiate the use of software patents against companies with fewer than 25 people, aiming to foster innovation and deter companies from competing through litigation rather than by developing and improving products.",
+        "reference_article": "patentpledge.txt"
+    },
+    {
+        "question": "What main advantage does Paul Graham identify in using the list of n things format for essays, especially for beginning writers?",
+        "answer": "Paul Graham identifies that the main advantage of using the list of n things format for essays is its simplicity and structure, which makes it a good starting point for beginning writers. It offers a clear, straightforward structure by presenting a collection of points of roughly equal importance, thus limiting the damage a bad writer can do and providing a form that is easier to follow and understand for both the writer and the reader. This format also helps in managing writer's block and simplifies the process of essay writing by making it more approachable for novices.",
+        "reference_article": "nthings.txt"
+    },
+    {
+        "question": "What are the three components of independent-mindedness as described by Paul Graham in \"How to Think for Yourself\"?",
+        "answer": "The three components of independent-mindedness described by Paul Graham are fastidiousness about truth, resistance to being told what to think, and curiosity.",
+        "reference_article": "think.txt"
+    },
+    {
+        "question": "How does Paul Graham compare the RIAA and MPAA's accusations of stealing music and movies to a historical anecdote?",
+        "answer": "Paul Graham compares the RIAA and MPAA's accusations of stealing music and movies to a story about Ooka Tadasuke, a judge in eighteenth-century Japan, where a food shop owner wanted a poor student to pay for enjoying the smell of his food. Graham suggests that treating smells or, by extension, digital content as traditional physical property might not always be appropriate or feasible, likening it to the absurdity of paying for smells. This comparison highlights the challenges in defining what constitutes property in the digital age.",
+        "reference_article": "property.txt"
+    },
+    {
+        "question": "Why does Paul Graham argue that the concept of \"taste is subjective\" is not accurate, especially in the context of art?",
+        "answer": "Paul Graham argues that the concept of \"taste is subjective\" is not accurate in the context of art because if taste were purely subjective, it would imply there is no such thing as good art or good taste. He explains that good art has an objective element since it succeeds in engaging its human audience, and humans have a lot in common regarding what engages them. Therefore, good taste can be seen as the ability to recognize art that effectively interests its intended audience, challenging the idea that all preferences are equally valid without a basis for comparison.",
+        "reference_article": "goodart.txt"
+    },
+    {
+        "question": "According to Paul Graham, why should programmers consider learning \"weird\" programming languages?",
+        "answer": "According to Paul Graham, programmers should consider learning \"weird\" programming languages because they offer opportunities to learn and explore techniques and concepts that go beyond conventional programming, such as the gluing together of library calls. Weird languages, especially the good ones, often introduce programming paradigms that are not found in the intersection of popular languages, like Lisp macros, which enable problem-solving by creating a language for a specific type of problems before writing the application. Learning these languages can expand a programmer's concept of what programming can be and enhance their ability to think in new ways.",
+        "reference_article": "weird.txt"
+    },
+    {
+        "question": "What does Paul Graham argue is the main reason for variation in income, according to his essay \"Mind the Gap\"?",
+        "answer": "Paul Graham argues that the main reason for variation in income is the same as the root cause of variation in every other human skill, suggesting that people who create more wealth are usually better at doing what other people want.",
+        "reference_article": "gap.txt"
+    },
+    {
+        "question": "How does Paul Graham describe the nature of startup investing in \"Black Swan Farming\"?",
+        "answer": "Paul Graham describes startup investing as highly counterintuitive, emphasizing that nearly all returns are concentrated in a few big winners and that the best startup ideas often initially seem like bad ideas. He shares his experience with Y Combinator (YC) to illustrate how a small number of companies, like Dropbox and Airbnb, can account for a disproportionate share of the total value of all companies funded by YC. Graham explains that the extreme variation in startup success rates makes startup investing unpredictable and challenges conventional expectations. He also remarks on the difficulty of recognizing potentially huge successes since they typically don't seem promising at first glance.",
+        "reference_article": "swan.txt"
+    },
+    {
+        "question": "What significant concept introduced by Richard Dawkins does Paul Graham mention in his discussion on viewing humanity from a broader perspective?",
+        "answer": "Paul Graham mentions the significant concept of the \"selfish gene\" introduced by Richard Dawkins as a step towards viewing humanity from a broader perspective.",
+        "reference_article": "randomness.txt"
+    },
+    {
+        "question": "What strategy did Paul Graham find effective in reducing internet distractions while working? ",
+        "answer": "Paul Graham found it effective to use a separate computer for internet activities, keeping his main computer disconnected from the internet except for specific tasks like transferring files or editing web pages. This physical separation made him more aware of the time he spent online and significantly reduced his internet distractions, allowing his main computer to be solely dedicated to work.",
+        "reference_article": "distraction.txt"
+    },
+    {
+        "question": "What is the main difference between a fanboy and a hater as described by Paul Graham in his essay \"Haters\"?",
+        "answer": "The main difference between a fanboy and a hater, as described by Paul Graham in his essay \"Haters,\" is that a fanboy is obsessively and uncritically supportive, seeing everything the famous person does as good, while a hater is obsessively and uncritically negative, viewing everything the famous person does as bad.",
+        "reference_article": "fh.txt"
+    },
+    {
+        "question": "What method does Paul Graham suggest for ensuring the truthfulness and novelty of the ideas in an essay?",
+        "answer": "Paul Graham suggests a method learned from his friend Robert Morris, which is not to say anything unless he's sure it's worth hearing. This approach involves deleting bad sentences, abandoning whole paragraphs or even entire essays if they do not meet the standards of good ideas, and only publishing content that is assuredly good, thus ensuring the truthfulness and novelty of the ideas presented.",
+        "reference_article": "useful.txt"
+    },
+    {
+        "question": "What is the primary mechanism by which Paul Graham's proposed auto-retrieving spam filters are intended to combat spam, according to the text?",
+        "answer": "The primary mechanism by which Paul Graham's proposed auto-retrieving spam filters intend to combat spam is by significantly increasing the spammers' costs and reducing their sales. This is achieved by auto-retrieving every URL found in suspected spam emails, which would in turn increase the bandwidth usage of the spammers' servers to unsustainable levels, potentially causing their servers to crash under the load. This increased load would make the servers unavailable to potential customers, therefore mitigating the effectiveness of the spam.",
+        "reference_article": "ffb.txt"
+    },
+    {
+        "question": "What does Paul Graham identify as the most damaging thing learned in school, and how did it affect him personally?",
+        "answer": "Paul Graham identifies learning to get good grades as the most damaging thing learned in school. This emphasis on grades dominated his actual learning experience in college, leading him to work hardest when studying for tests, despite genuinely being interested in his classes and working hard overall.",
+        "reference_article": "lesson.txt"
+    },
+    {
+        "question": "What is the core issue Paul Graham identifies with Apple's App Store approval process as of November 2009?",
+        "answer": "The core issue Paul Graham identifies with Apple's App Store approval process is that it is broken and significantly damages Apple's reputation among programmers. He argues that Apple treats software too much like music or books, not recognizing that software's complexity and the need for continual updates make it ill-suited for such a tightly controlled distribution model. This leads to long, random delays for app updates, resulting in the App Store being filled with outdated and buggy versions, which frustrates both developers and users.",
+        "reference_article": "apple.txt"
+    },
+    {
+        "question": "What are the key factors identified by Paul Graham that contribute to the success of startups in America?",
+        "answer": "Paul Graham identifies several key factors contributing to the success of startups in America, including the country's openness to immigration, its wealth and infrastructure, the absence of a police state, the quality of American universities, flexible employment laws that allow for easy hiring and firing, an economic model where work is less identified with employment, a less fussy regulatory environment for small businesses, a large domestic market, availability of venture funding, and a dynamic approach to career development.",
+        "reference_article": "america.txt"
+    },
+    {
+        "question": "What is the main reason Paul Graham dislikes the term \"computer science\"? ",
+        "answer": "Paul Graham dislikes the term \"computer science\" primarily because he believes there is no such thing, describing it as a grab bag of tenuously related areas grouped together by an accident of history. He also criticizes the blending of distinct disciplines such as mathematics, natural history of computers, and hacking under this umbrella, which he finds intellectually confusing.",
+        "reference_article": "hp.txt"
+    },
+    {
+        "question": "Who are considered accredited investors according to the SEC, and why is it important for a startup to have accredited investors? ",
+        "answer": "The SEC defines an \"accredited investor\" as someone with over a million dollars in liquid assets or an income of over $200,000 a year. It is important for a startup to have accredited investors because the regulatory burden is much lower if a company's shareholders are all accredited investors. Once a startup takes money from the general public, they are more restricted in what they can do, and having non-accredited investors could complicate the startup's life legally, potentially affecting actions like an IPO due to the need for immediate action to cure any past violations of securities laws.",
+        "reference_article": "startupfunding.txt"
+    },
+    {
+        "question": "What reasons did Paul Graham identify for hackers' renewed interest in Mac computers by 2005?",
+        "answer": "Paul Graham identified several reasons for hackers' renewed interest in Mac computers by 2005, including the introduction of OS X, which runs FreeBSD and is noted for its powerful capabilities and beautiful design. The shift back to Macs was not only due to their technical specifications but also their aesthetic appeal and the allure of well-designed hardware, reflecting a return to values that aligned with the canonical hacker's computer of the past. This trend indicated a broader acceptance of Macs among hardcore OS hackers and tech enthusiasts who prioritize both form and function in their computing devices.",
+        "reference_article": "mac.txt"
+    },
+    {
+        "question": "What significant change in the startup funding landscape did Paul Graham discuss in his August 2010 essay, \"The Future of Startup Funding\"?",
+        "answer": "Paul Graham discussed the significant change of a growing disconnect between traditional venture capitalists (VCs), who invest large amounts, and a large class of startups that need less funding than before. He observed that increasingly, startups were seeking a couple hundred thousand dollars, not a couple million, leading to a rise in smaller, angel-sized investments from both VCs and a new type of investor, the super-angel. This shift represents a move towards more flexible, founder-friendly funding models.",
+        "reference_article": "future.txt"
+    },
+    {
+        "question": "What is the method proposed by Paul Graham to detect bias in selection processes, and how does it work?",
+        "answer": "Paul Graham proposes a method to detect bias in selection processes without needing detailed information about the entire applicant pool. This method can be applied when there is at least a random sample of selected applicants available, their subsequent performance is measurable, and the groups being compared have a roughly similar distribution of abilities. The concept revolves around the understanding that bias makes it harder for certain types of applicants to be selected, meaning those who are selected despite the bias are likely to be exceptionally competent. Thus, if these selected individuals outperform their peers, it could indicate the presence of bias in the selection process. The method's validity relies on the performance test being unaffected by the bias being investigated. For instance, detecting bias against female founders in venture capital could involve examining if startups with female founders perform better than those without. Graham illustrates this with the example of First Round Capital, which inadvertently showed such bias by reporting that startups with female founders performed better than those without by 63%. This approach does not just help detect bias but also offers a tangible definition of what bias entails in selection processes.",
+        "reference_article": "bias.txt"
+    },
+    {
+        "question": "What is the primary advice Paul Graham gives when it comes to choosing what to imitate in the process of learning and creating?",
+        "answer": "Paul Graham advises only copying what you genuinely like to avoid the mistake of imitating the wrong aspects of any field, suggesting that personal enjoyment and interest should guide what one chooses to imitate.",
+        "reference_article": "copy.txt"
+    }
+]

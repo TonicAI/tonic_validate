@@ -18,7 +18,13 @@ logger = logging.getLogger()
 
 class AnswerConsistencyMetric(Metric):
     name: str = "answer_consistency"
-    prompt: str = f'-------------------\n{main_points_prompt()}\n-------------------\n{statement_derived_from_context_prompt(statement="EXAMPLE STATEMENT", context_list=[])}\n-------------------\n'
+    prompt: str = (
+        "-------------------\n"
+        f"{main_points_prompt()}\n"
+        "-------------------\n"
+        f"{statement_derived_from_context_prompt(statement='EXAMPLE STATEMENT', context_list=[])}\n"
+        "-------------------\n"
+    )
 
     def __init__(self):
         """

@@ -10,6 +10,7 @@ logger = logging.getLogger()
 
 class AnswerConsistencyBinaryMetric(BinaryMetric):
     name: str = "answer_consistency_binary"
+    prompt: str = context_consistency_prompt()
 
     def __init__(self):
         """
@@ -17,7 +18,6 @@ class AnswerConsistencyBinaryMetric(BinaryMetric):
         Returns either 1 (consistent) or 0 (inconsistent).
         """
         super().__init__(self.name, self.metric_callback)
-        self.prompt = context_consistency_prompt()
 
     async def metric_callback(
         self, llm_response: LLMResponse, openai_service: OpenAIService

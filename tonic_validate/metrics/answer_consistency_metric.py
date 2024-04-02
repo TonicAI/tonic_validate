@@ -18,14 +18,14 @@ logger = logging.getLogger()
 
 class AnswerConsistencyMetric(Metric):
     name: str = "answer_consistency"
+    prompt: str = f'-------------------\n{main_points_prompt()}\n-------------------\n{statement_derived_from_context_prompt(statement="EXAMPLE STATEMENT", context_list=[])}\n-------------------\n'
 
     def __init__(self):
         """
         Metric that checks whether the LLM answer contains information that does not come from the context.
         Returns a float between 0 and 1, where 1 is completely consistent and 0 is completely inconsistent.
         """
-        self.prompt = f'-------------------\n{main_points_prompt()}\n-------------------\n'
-        self.prompt += f'{statement_derived_from_context_prompt(statement="EXAMPLE STATEMENT", context_list=[])}\n-------------------\n'
+        pass
 
     async def score(
         self, llm_response: LLMResponse, openai_service: OpenAIService

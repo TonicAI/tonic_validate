@@ -9,13 +9,14 @@ logger = logging.getLogger()
 
 class AnswerSimilarityMetric(Metric):
     name: str = "answer_similarity"
+    prompt: str = similarity_score_prompt()
 
     def __init__(self) -> None:
         """
         Metric that checks how well the reference answer matches the LLM answer.
         Returns a float between 0 and 5, where 5 is the most similar and 0 is the least similar.
         """
-        self. prompt = similarity_score_prompt()
+        pass
 
     async def score(
         self, llm_response: LLMResponse, openai_service: OpenAIService

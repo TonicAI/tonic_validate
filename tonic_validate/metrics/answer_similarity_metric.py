@@ -2,7 +2,7 @@ import logging
 from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.metrics.metric import Metric
 from tonic_validate.services.openai_service import OpenAIService
-from tonic_validate.utils.llm_calls import similarity_score_call
+from tonic_validate.utils.llm_calls import similarity_score_call, similarity_score_prompt
 
 logger = logging.getLogger()
 
@@ -15,7 +15,7 @@ class AnswerSimilarityMetric(Metric):
         Metric that checks how well the reference answer matches the LLM answer.
         Returns a float between 0 and 5, where 5 is the most similar and 0 is the least similar.
         """
-        pass
+        self. prompt = similarity_score_prompt()
 
     async def score(
         self, llm_response: LLMResponse, openai_service: OpenAIService

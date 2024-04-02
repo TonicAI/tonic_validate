@@ -4,7 +4,7 @@ from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.metrics.metric import Metric
 from tonic_validate.utils.metrics_util import parse_boolean_response
 from tonic_validate.services.openai_service import OpenAIService
-from tonic_validate.utils.llm_calls import answer_contains_context_call
+from tonic_validate.utils.llm_calls import answer_contains_context_call, answer_contains_context_prompt
 
 logger = logging.getLogger()
 
@@ -17,7 +17,7 @@ class AugmentationAccuracyMetric(Metric):
         Metric that checks whether the LLM answer includes all of the context.
         Returns a float between 0 and 1. 1 indicates that the answer contains all of the context. 0 indicates that it contains none of the context.
         """
-        pass
+        self.prompt = answer_contains_context_prompt()
 
     async def score(
         self, llm_response: LLMResponse, openai_service: OpenAIService

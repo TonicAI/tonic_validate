@@ -3,7 +3,7 @@ from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.metrics.binary_metric import BinaryMetric
 from tonic_validate.utils.metrics_util import parse_boolean_response
 from tonic_validate.services.openai_service import OpenAIService
-from tonic_validate.utils.llm_calls import answer_consistent_with_context_call
+from tonic_validate.utils.llm_calls import answer_consistent_with_context_call, context_consistency_prompt
 
 logger = logging.getLogger()
 
@@ -17,6 +17,7 @@ class AnswerConsistencyBinaryMetric(BinaryMetric):
         Returns either 1 (consistent) or 0 (inconsistent).
         """
         super().__init__(self.name, self.metric_callback)
+        self.prompt = context_consistency_prompt()
 
     async def metric_callback(
         self, llm_response: LLMResponse, openai_service: OpenAIService

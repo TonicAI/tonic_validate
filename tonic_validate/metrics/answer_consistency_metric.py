@@ -9,6 +9,8 @@ from tonic_validate.services.openai_service import OpenAIService
 from tonic_validate.utils.llm_calls import (
     main_points_call,
     statement_derived_from_context_call,
+    statement_derived_from_context_prompt,
+    main_points_prompt,
 )
 
 logger = logging.getLogger()
@@ -22,7 +24,7 @@ class AnswerConsistencyMetric(Metric):
         Metric that checks whether the LLM answer contains information that does not come from the context.
         Returns a float between 0 and 1, where 1 is completely consistent and 0 is completely inconsistent.
         """
-        pass
+        self.prompt = f'-------------------\n{main_points_prompt()}\n-------------------\n'
 
     async def score(
         self, llm_response: LLMResponse, openai_service: OpenAIService
@@ -33,6 +35,7 @@ class AnswerConsistencyMetric(Metric):
         main_point_list = parse_bullet_list_response(main_points_response)
         main_point_derived_from_context_list = []
         for main_point in main_point_list:
+            self.prompt += f'{statement_derived_from_context_prompt(statement=main_point, context_list=llm_response.llm_context_list)}\n-------------------\n'
             statement_derived_from_context_response = (
                 await statement_derived_from_context_call(
                     main_point, llm_response.llm_context_list, openai_service

@@ -4,7 +4,7 @@ from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.metrics.metric import Metric
 from tonic_validate.utils.metrics_util import parse_boolean_response
 from tonic_validate.services.openai_service import OpenAIService
-from tonic_validate.utils.llm_calls import context_relevancy_call
+from tonic_validate.utils.llm_calls import context_relevancy_call, context_relevancy_prompt
 
 logger = logging.getLogger()
 
@@ -17,7 +17,7 @@ class RetrievalPrecisionMetric(Metric):
         Metric that checks whether the retrieved context is relevant to answer the given question.
         Returns a float between 0 and 1. 1 indicates that all of the context is relevant. 0 indicates that none of the context is relevant.
         """
-        pass
+        self.prompt = context_relevancy_prompt()
 
     async def score(
         self, llm_response: LLMResponse, openai_service: OpenAIService

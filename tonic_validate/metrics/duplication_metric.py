@@ -11,6 +11,7 @@ logger = logging.getLogger()
 
 class DuplicationMetric(BinaryMetric):
     name: str = "duplication_metric"
+    prompt: str = contains_duplicate_info_prompt()
 
     def __init__(self):
         """
@@ -18,7 +19,6 @@ class DuplicationMetric(BinaryMetric):
         Returns 1 (True) if the response contains duplicate information. Returns 0 (False) if it does not contain duplicate information.
         """
         super().__init__(self.name, self.metric_callback)
-        self.prompt = contains_duplicate_info_prompt()
 
     async def metric_callback(
         self, llm_response: LLMResponse, openai_service: OpenAIService

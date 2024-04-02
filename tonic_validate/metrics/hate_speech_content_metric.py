@@ -11,6 +11,7 @@ logger = logging.getLogger()
 
 class HateSpeechContentMetric(BinaryMetric):
     name: str = "hate_speech_content"
+    prompt: str = contains_hate_speech_prompt()
 
     def __init__(self):
         """
@@ -18,7 +19,6 @@ class HateSpeechContentMetric(BinaryMetric):
         Returns 1 (True) if the response contains hate speech. Returns 0 (False) if it does not contain hate speech.
         """
         super().__init__(self.name, self.metric_callback)
-        self.prompt = contains_hate_speech_prompt()
 
     async def metric_callback(
         self, llm_response: LLMResponse, openai_service: OpenAIService

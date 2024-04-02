@@ -404,7 +404,7 @@ def statement_derived_from_context_prompt(statement: str, context_list: List[str
 
     """
     if not context_list:
-        context_list = ["No context provided"]
+        context_list = ["EXAMPLE CONTEXT"]
 
     main_message = "Considering the following statement and list of context(s)"
     main_message += f"\n\nSTATEMENT:\n{statement}\nEND OF STATEMENT"

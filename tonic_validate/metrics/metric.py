@@ -6,17 +6,16 @@ from tonic_validate.services.openai_service import OpenAIService
 
 
 class Metric(ABC):
+    """Abstract class for a metric that can be calculated on an LLM response."""
+
+    """Prompt for the metric. Can be overridden by subclasses if a specific prompt is needed."""
+    prompt: Optional[str] = None
+
     @property
     @abstractmethod
     def name(self) -> str:
         """Metric name for the UI"""
         pass
-
-    @property
-    def prompt(self) -> Optional[str]:
-        """Prompt for the metric. Can be overridden by subclasses if a specific prompt is needed."""
-        return None  # Default implementation that can be overridden
-
 
     @abstractmethod
     async def score(

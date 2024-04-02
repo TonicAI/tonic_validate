@@ -9,6 +9,8 @@ from tonic_validate.services.openai_service import OpenAIService
 from tonic_validate.utils.llm_calls import (
     main_points_call,
     statement_derived_from_context_call,
+    statement_derived_from_context_prompt,
+    main_points_prompt,
 )
 
 logger = logging.getLogger()
@@ -16,6 +18,13 @@ logger = logging.getLogger()
 
 class AnswerConsistencyMetric(Metric):
     name: str = "answer_consistency"
+    prompt: str = (
+        "-------------------\n"
+        f"{main_points_prompt()}\n"
+        "-------------------\n"
+        f"{statement_derived_from_context_prompt(statement='EXAMPLE STATEMENT', context_list=[])}\n"
+        "-------------------\n"
+    )
 
     def __init__(self):
         """

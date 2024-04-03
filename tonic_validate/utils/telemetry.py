@@ -2,6 +2,7 @@ import json
 import os
 from typing import List, Optional
 import uuid
+import tomlib
 from tonic_validate.classes.user_info import UserInfo
 from tonic_validate.config import Config
 from tonic_validate.utils.http_client import HttpClient
@@ -66,7 +67,7 @@ class Telemetry:
                 return True
         return False
 
-    def log_run(self, num_of_questions: int, metrics: List[str]):
+    def log_run(self, num_of_questions: int, metrics: List[str], run_time: float):
         """
         Logs a run to the Tonic Validate server
 
@@ -79,6 +80,13 @@ class Telemetry:
         """
         if self.config.TONIC_VALIDATE_DO_NOT_TRACK:
             return
+        try:
+            with open('pyproject.toml', 'rb') as toml_file:
+                data = tomlib.load(toml_file)
+            sdk_version = data['tool']['poetry']['version']
+        except Exception:
+            sdk_version = "unknown"
+
         user_id = self.get_user()["user_id"]
         self.http_client.http_post(
             "/runs",
@@ -86,6 +94,8 @@ class Telemetry:
                 "user_id": user_id,
                 "num_of_questions": num_of_questions,
                 "metrics": metrics,
+                "run_time": run_time,
+                "sdk_version": sdk_version,
                 "is_ci": self.__is_ci(),
                 "validate_gh_action": self.config.TONIC_VALIDATE_GITHUB_ACTION,
             },

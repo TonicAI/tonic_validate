@@ -441,7 +441,9 @@ Tonic Validate collects minimal telemetry to help us figure out what users want 
 
 * What metrics were used for a run
 * Number of questions in a run
+* Time taken for a run to be evaluated
 * Number of questions in a benchmark
+* SDK Version being used
 
 We do **NOT** track things such as the contents of the questions / answers, your scores, or any other sensitive information. For detecting CI/CD, we only check for common environment variables in different CI/CD environments. We do not log the values of these environment variables.
 

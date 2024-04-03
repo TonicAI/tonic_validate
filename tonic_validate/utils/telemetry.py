@@ -77,6 +77,8 @@ class Telemetry:
             The number of questions asked
         metrics: List[str]
             The metrics that were used to evaluate the run
+        run_time: float
+            The time taken to evaluate the run
         """
         if self.config.TONIC_VALIDATE_DO_NOT_TRACK:
             return

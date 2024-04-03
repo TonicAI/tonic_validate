@@ -206,7 +206,7 @@ class ValidateScorer:
         except Exception as _:
             pass
 
-        return Run(overall_scores=overall_scores, run_data=run_data, id=None)
+        return Run(overall_scores=overall_scores, run_data=run_data, llm_evaluator=self.model_evaluator, id=None)
 
     @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
     def score_responses(

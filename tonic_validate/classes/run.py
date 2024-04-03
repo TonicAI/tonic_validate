@@ -58,12 +58,15 @@ class Run:
         The overall scores for the run
     run_data: List[RunData]
         The run data
+    llm_evaluator: Optional[str]
+        The name of the language model evaluator
     id: Optional[UUID]
         The identifier of the run
     """
 
     overall_scores: Dict[str, float]
     run_data: List[RunData]
+    llm_evaluator: Optional[str]
     id: Optional[UUID]
 
     def to_df(self):

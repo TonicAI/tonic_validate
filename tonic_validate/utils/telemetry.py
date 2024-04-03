@@ -2,11 +2,12 @@ import json
 import os
 from typing import List, Optional
 import uuid
-import tomlib
+import pkg_resources
 from tonic_validate.classes.user_info import UserInfo
 from tonic_validate.config import Config
 from tonic_validate.utils.http_client import HttpClient
 from appdirs import user_data_dir
+
 
 APP_DIR_NAME = "tonic-validate"
 
@@ -83,9 +84,7 @@ class Telemetry:
         if self.config.TONIC_VALIDATE_DO_NOT_TRACK:
             return
         try:
-            with open('pyproject.toml', 'rb') as toml_file:
-                data = tomlib.load(toml_file)
-            sdk_version = data['tool']['poetry']['version']
+            sdk_version = pkg_resources.get_distribution("tonic-validate")
         except Exception:
             sdk_version = "unknown"
 

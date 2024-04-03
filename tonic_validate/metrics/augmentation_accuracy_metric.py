@@ -4,13 +4,14 @@ from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.metrics.metric import Metric
 from tonic_validate.utils.metrics_util import parse_boolean_response
 from tonic_validate.services.openai_service import OpenAIService
-from tonic_validate.utils.llm_calls import answer_contains_context_call
+from tonic_validate.utils.llm_calls import answer_contains_context_call, answer_contains_context_prompt
 
 logger = logging.getLogger()
 
 
 class AugmentationAccuracyMetric(Metric):
     name: str = "augmentation_accuracy"
+    prompt: str = answer_contains_context_prompt()
 
     def __init__(self):
         """

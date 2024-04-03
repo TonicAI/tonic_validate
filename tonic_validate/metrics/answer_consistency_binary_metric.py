@@ -3,13 +3,14 @@ from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.metrics.binary_metric import BinaryMetric
 from tonic_validate.utils.metrics_util import parse_boolean_response
 from tonic_validate.services.openai_service import OpenAIService
-from tonic_validate.utils.llm_calls import answer_consistent_with_context_call
+from tonic_validate.utils.llm_calls import answer_consistent_with_context_call, context_consistency_prompt
 
 logger = logging.getLogger()
 
 
 class AnswerConsistencyBinaryMetric(BinaryMetric):
     name: str = "answer_consistency_binary"
+    prompt: str = context_consistency_prompt()
 
     def __init__(self):
         """

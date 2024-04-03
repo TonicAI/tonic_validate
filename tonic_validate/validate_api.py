@@ -56,6 +56,8 @@ class ValidateApi:
         tags : Optional[List[str]]
             A list of tags which can be used to identify this run.  Tags will be rendered in the UI and can also make run searchable.
         """
+        if "llm_evaluator" not in run_metadata:
+            run_metadata["llm_evaluator"] = run.llm_evaluator
         run_response = self.client.http_post(
             f"/projects/{project_id}/runs/with_data",
             data={

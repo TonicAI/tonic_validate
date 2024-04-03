@@ -360,12 +360,9 @@ async def statement_derived_from_context_call(
     logger.debug(
         f"Asking {openai_service.model} whether statement is derived from context"
     )
-    main_message = "Considering the following statement and list of context(s)"
-    main_message += f"\n\nSTATEMENT:\n{statement}\nEND OF STATEMENT"
-    for i, context in enumerate(context_list):
-        main_message += f"\n\nCONTEXT {i}:\n{context}\nEND OF CONTEXT {i}"
 
-    main_message = statement_derived_from_context_prompt(main_message)
+    main_message = statement_derived_from_context_prompt(statement, context_list)
+
     try:
         response_message = await openai_service.get_response(main_message)
     except ContextLengthException as e:
@@ -391,18 +388,28 @@ async def statement_derived_from_context_call(
     return response_message
 
 
-def statement_derived_from_context_prompt(main_message):
+def statement_derived_from_context_prompt(statement: str, context_list: List[str]):
     """
 
     Parameters
     ----------
-    main_message : The main message to which additional instructions will be added.
+    statement: str
+        The statement to be checked.
+    context_list: List[str]
+        List of retrieved context.
 
     Returns
     -------
     prompt message for determining if a statement can be derived from context.
 
     """
+    if not context_list:
+        context_list = ["EXAMPLE CONTEXT"]
+
+    main_message = "Considering the following statement and list of context(s)"
+    main_message += f"\n\nSTATEMENT:\n{statement}\nEND OF STATEMENT"
+    for i, context in enumerate(context_list):
+        main_message += f"\n\nCONTEXT {i}:\n{context}\nEND OF CONTEXT {i}"
     main_message += (
         "\n\nDetermine whether the listed statement above can be derived from the "
         "context listed above. If the statement can "

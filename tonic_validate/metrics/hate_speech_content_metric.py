@@ -3,7 +3,7 @@ import logging
 from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.metrics.binary_metric import BinaryMetric
 from tonic_validate.services.openai_service import OpenAIService
-from tonic_validate.utils.llm_calls import contains_hate_speech
+from tonic_validate.utils.llm_calls import contains_hate_speech, contains_hate_speech_prompt
 from tonic_validate.utils.metrics_util import parse_boolean_response
 
 logger = logging.getLogger()
@@ -11,6 +11,7 @@ logger = logging.getLogger()
 
 class HateSpeechContentMetric(BinaryMetric):
     name: str = "hate_speech_content"
+    prompt: str = contains_hate_speech_prompt()
 
     def __init__(self):
         """

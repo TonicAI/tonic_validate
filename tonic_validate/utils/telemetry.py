@@ -84,7 +84,8 @@ class Telemetry:
         if self.config.TONIC_VALIDATE_DO_NOT_TRACK:
             return
         try:
-            sdk_version = pkg_resources.get_distribution("tonic-validate")
+            import pkg_resources
+            sdk_version = pkg_resources.get_distribution("tonic-validate").version
         except Exception:
             sdk_version = "unknown"
 

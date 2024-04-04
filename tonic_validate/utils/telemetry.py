@@ -2,7 +2,7 @@ import json
 import os
 from typing import List, Optional
 import uuid
-import pkg_resources
+from importlib.metadata import version
 from tonic_validate.classes.user_info import UserInfo
 from tonic_validate.config import Config
 from tonic_validate.utils.http_client import HttpClient
@@ -84,8 +84,8 @@ class Telemetry:
         if self.config.TONIC_VALIDATE_DO_NOT_TRACK:
             return
         try:
-            import pkg_resources
-            sdk_version = pkg_resources.get_distribution("tonic-validate").version
+            from importlib.metadata import version
+            sdk_version = version('tonic-validate')
         except Exception:
             sdk_version = "unknown"
 

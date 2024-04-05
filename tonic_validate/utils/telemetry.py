@@ -98,6 +98,7 @@ class Telemetry:
                 "sdk_version": sdk_version,
                 "is_ci": self.__is_ci(),
                 "validate_gh_action": self.config.TONIC_VALIDATE_GITHUB_ACTION,
+                "backend": "validate"
             },
             timeout=5,
         )
@@ -121,6 +122,7 @@ class Telemetry:
                 "num_of_questions": num_of_questions,
                 "is_ci": self.__is_ci(),
                 "validate_gh_action": self.config.TONIC_VALIDATE_GITHUB_ACTION,
+                "backend": "validate"
             },
             timeout=5,
         )

@@ -2,7 +2,6 @@ import json
 import os
 from typing import List, Optional
 import uuid
-from importlib.metadata import version
 from tonic_validate.classes.user_info import UserInfo
 from tonic_validate.config import Config
 from tonic_validate.utils.http_client import HttpClient

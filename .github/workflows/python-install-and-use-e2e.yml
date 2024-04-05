@@ -42,7 +42,7 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           TONIC_TEXTUAL_API_KEY: ${{ secrets.TONIC_TEXTUAL_API_KEY }}
-          TONIC_VALIDATE_DO_NOT_TRACK: true
+          TONIC_VALIDATE_DO_NOT_TRACK: 'true'
         run: |
           poetry run pytest
         shell: bash

@@ -43,5 +43,5 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           TONIC_TEXTUAL_API_KEY: ${{ secrets.TONIC_TEXTUAL_API_KEY }}
         run: |
-          poetry run pytest
+          poetry run pytest -s
         shell: bash

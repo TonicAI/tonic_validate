@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+      max-parallel: 1
       matrix:
         python-version: [
           {version: "3.8", versionName: "py38"},

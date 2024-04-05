@@ -165,12 +165,10 @@ class ValidateScorer:
             The Run object containing the scores and other data.
         """
         try:
-            self.telemetry.log_run(
-                len(responses), [metric.name for metric in self.metrics]
-            )
+            start_time = time.time()
         except Exception as _:
-            pass
-
+            start_time = -1
+        
         semaphore = Semaphore(parallelism)
         tasks = [
             self._score_item_rundata(response, semaphore) for response in responses
@@ -196,6 +194,18 @@ class ValidateScorer:
         overall_scores: Dict[str, float] = {
             metric: total / num_scores[metric] for metric, total in total_scores.items()
         }
+        try:
+            end_time = time.time()
+            run_time = end_time - start_time
+        except Exception as _:
+            run_time = -1
+
+        try:
+            self.telemetry.log_run(
+                len(responses), [metric.name for metric in self.metrics], run_time
+            )
+        except Exception as _:
+            pass
 
         return Run(overall_scores=overall_scores, run_data=run_data, llm_evaluator=self.model_evaluator, id=None)
 

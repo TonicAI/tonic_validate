@@ -66,7 +66,7 @@ class Telemetry:
                 return True
         return False
 
-    def log_run(self, num_of_questions: int, metrics: List[str]):
+    def log_run(self, num_of_questions: int, metrics: List[str], run_time: float):
         """
         Logs a run to the Tonic Validate server
 
@@ -76,9 +76,17 @@ class Telemetry:
             The number of questions asked
         metrics: List[str]
             The metrics that were used to evaluate the run
+        run_time: float
+            The time taken to evaluate the run            
         """
         if self.config.TONIC_VALIDATE_DO_NOT_TRACK:
             return
+        try:
+            from importlib.metadata import version
+            sdk_version = version('tonic-validate')
+        except Exception:
+            sdk_version = "unknown"
+        
         user_id = self.get_user()["user_id"]
         self.http_client.http_post(
             "/runs",
@@ -86,6 +94,8 @@ class Telemetry:
                 "user_id": user_id,
                 "num_of_questions": num_of_questions,
                 "metrics": metrics,
+                "run_time": run_time,
+                "sdk_version": sdk_version,
                 "is_ci": self.__is_ci(),
                 "validate_gh_action": self.config.TONIC_VALIDATE_GITHUB_ACTION,
                 "backend": "validate"

@@ -40,7 +40,11 @@ class ValidateApi:
 
     @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
     def upload_run(
-        self, project_id: str, run: Run, run_metadata: Optional[Dict[str, Any]] = {}, tags: Optional[List[str]] = []
+        self,
+        project_id: str,
+        run: Run,
+        run_metadata: Optional[Dict[str, Any]] = {},
+        tags: Optional[List[str]] = [],
     ) -> str:
         """Upload a run to a Tonic Validate project.
 
@@ -56,7 +60,7 @@ class ValidateApi:
         tags : Optional[List[str]]
             A list of tags which can be used to identify this run.  Tags will be rendered in the UI and can also make run searchable.
         """
-        if "llm_evaluator" not in run_metadata:
+        if run_metadata and "llm_evaluator" not in run_metadata:
             run_metadata["llm_evaluator"] = run.llm_evaluator
         run_response = self.client.http_post(
             f"/projects/{project_id}/runs/with_data",

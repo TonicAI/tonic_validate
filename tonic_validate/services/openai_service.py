@@ -16,8 +16,8 @@ class OpenAIService:
         self,
         encoder: Encoding,
         model: str = "gpt-4-1106-preview",
-        starting_wait_time: float = 0.1,
-        max_retries: int = 12,
+        starting_wait_time: float = 1.0,
+        max_retries: int = 10,
         exp_delay_base: int = 2,
     ) -> None:
         """
@@ -76,6 +76,8 @@ class OpenAIService:
             num_retries = 0
             wait_time = self.starting_wait_time
             while num_retries < self.max_retries:
+                random_value = random.randrange(0, 20) * 0.01
+                wait_time_multiplier = self.exp_delay_base * (1 + random_value)
                 try:
                     completion = await self.client.chat.completions.create(
                         model=self.model,
@@ -104,11 +106,11 @@ class OpenAIService:
                     )
                     logger.debug(log_message)
                     await asyncio.sleep(wait_time)
-                    wait_time *= self.exp_delay_base * (1 + random.random())
+                    wait_time *= wait_time_multiplier
                 except Exception as e:
                     logger.warning(e)
                     await asyncio.sleep(wait_time)
-                    wait_time *= self.exp_delay_base
+                    wait_time *= wait_time_multiplier
                 num_retries += 1
             raise LLMException(
                 f"Failed to get completion response from {self.model}, max retires hit"

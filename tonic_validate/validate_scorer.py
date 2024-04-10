@@ -43,7 +43,7 @@ class ValidateScorer:
         ],
         model_evaluator: str = "gpt-4-turbo-preview",
         max_parsing_retries: int = 3,
-        max_llm_retries: int = 12,
+        max_llm_retries: int = 10,
         fail_on_error: bool = False,
         quiet: bool = False,
     ):
@@ -207,7 +207,12 @@ class ValidateScorer:
         except Exception as _:
             pass
 
-        return Run(overall_scores=overall_scores, run_data=run_data, llm_evaluator=self.model_evaluator, id=None)
+        return Run(
+            overall_scores=overall_scores,
+            run_data=run_data,
+            llm_evaluator=self.model_evaluator,
+            id=None,
+        )
 
     @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
     def score_responses(

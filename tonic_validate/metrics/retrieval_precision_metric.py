@@ -1,10 +1,11 @@
 import logging
-from typing import List, Tuple
+from typing import List, Tuple, Union
 from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.metrics.metric import Metric
 from tonic_validate.utils.metrics_util import parse_boolean_response
 from tonic_validate.services.openai_service import OpenAIService
 from tonic_validate.utils.llm_calls import context_relevancy_call, context_relevancy_prompt
+from tonic_validate.services.litellm_service import LiteLLMService
 
 logger = logging.getLogger()
 
@@ -21,12 +22,12 @@ class RetrievalPrecisionMetric(Metric):
         pass
 
     async def score(
-        self, llm_response: LLMResponse, openai_service: OpenAIService
+        self, llm_response: LLMResponse, llm_service: Union[LiteLLMService, OpenAIService]
     ) -> float:
-        return (await self.calculate_metric(llm_response, openai_service))[0]
+        return (await self.calculate_metric(llm_response, llm_service))[0]
 
     async def calculate_metric(
-        self, llm_response: LLMResponse, openai_service: OpenAIService
+        self, llm_response: LLMResponse, llm_service: Union[LiteLLMService, OpenAIService]
     ) -> Tuple[float, List[bool]]:
         if len(llm_response.llm_context_list) == 0:
             raise ValueError(
@@ -35,7 +36,7 @@ class RetrievalPrecisionMetric(Metric):
         context_relevant_list: List[bool] = []
         for context in llm_response.llm_context_list:
             relevance_response = await context_relevancy_call(
-                llm_response.benchmark_item.question, context, openai_service
+                llm_response.benchmark_item.question, context, llm_service
             )
             context_relevant_list.append(parse_boolean_response(relevance_response))
 

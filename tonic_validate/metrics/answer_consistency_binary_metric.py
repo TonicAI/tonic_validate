@@ -1,8 +1,10 @@
 import logging
+from typing import Union
 from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.metrics.binary_metric import BinaryMetric
 from tonic_validate.utils.metrics_util import parse_boolean_response
 from tonic_validate.services.openai_service import OpenAIService
+from tonic_validate.services.litellm_service import LiteLLMService
 from tonic_validate.utils.llm_calls import answer_consistent_with_context_call, context_consistency_prompt
 
 logger = logging.getLogger()
@@ -20,7 +22,7 @@ class AnswerConsistencyBinaryMetric(BinaryMetric):
         super().__init__(self.name, self.metric_callback)
 
     async def metric_callback(
-        self, llm_response: LLMResponse, openai_service: OpenAIService
+        self, llm_response: LLMResponse, llm_service: Union[LiteLLMService, OpenAIService]
     ) -> bool:
         """Check if answer is consistent with context.
 
@@ -37,6 +39,6 @@ class AnswerConsistencyBinaryMetric(BinaryMetric):
             True if answer is consistent with context, False otherwise.
         """
         hallucination_response = await answer_consistent_with_context_call(
-            llm_response.llm_answer, llm_response.llm_context_list, openai_service
+            llm_response.llm_answer, llm_response.llm_context_list, llm_service
         )
         return parse_boolean_response(hallucination_response)

@@ -299,6 +299,28 @@ os.environ["AZURE_OPENAI_KEY"] = "put-your-azure-openai-api-key-here"
 os.environ["AZURE_OPENAI_ENDPOINT"] = "put-your-azure-endpoint-here"
 ```
 
+#### Using Gemini
+If you already have the `GEMINI_API_KEY` set in your system's environment variables then you can skip this step. Otherwise, please set the environment variable before proceeding.
+```python
+import os
+os.environ["GEMINI_API_KEY"] = "put-your-gemini-api-key-here"
+```
+_Note that to use gemini, your Python version must be 3.9 or higher._
+
+#### Using Palm
+If you already have the `PALM_API_KEY` set in your system's environment variables then you can skip this step. Otherwise, please set the environment variable before proceeding.
+```python
+import os
+os.environ["PALM_API_KEY"] = "put-your-palm-api-key-here"
+```
+
+#### Using Claude
+If you already have the `ANTHROPIC_API_KEY` set in your system's environment variables then you can skip this step. Otherwise, please set the environment variable before proceeding.
+```python
+import os
+os.environ["ANTHROPIC_API_KEY"] = "put-your-anthropic-api-key-here"
+```
+
 
 #### Setting up the Tonic Validate Scorer
 To use metrics, instantiate an instance of ValidateScorer.
@@ -319,6 +341,16 @@ scorer = ValidateScorer([
 ], model_evaluator="gpt-3.5-turbo")
 ```
 
+You can also pass in other models like Google Gemini, PaLM, or Claude by setting the `model_evaluator` argument to the model name like so
+```python
+scorer = ValidateScorer(model_evaluator="gemini/gemini-1.5-pro")
+```
+```python
+scorer = ValidateScorer(model_evaluator="palm/chat-bison")
+```
+```python
+scorer = ValidateScorer(model_evaluator="claude-3")
+```
 If an error occurs while scoring an item's metric, the score for that metric will be set to `None`. If you instead wish to have Tonic Validate throw an exception when there's an error scoring, then set `fail_on_error` to `True` in the constructor
 
 ```python
@@ -461,13 +493,11 @@ If you wish to opt out of telemetry, you only need to set the `TONIC_VALIDATE_DO
 
 #### What models can I use an LLM evaluator?
 
-We currently allow the family of chat completion models from Open AI.
-
-This restriction makes it easy to follow the logic for the definition of the metrics in this package. It also ensures that this package does not depend on langchain, which also makes the logic of the package easier to follow.
+We currently allow the family of chat completion models from Open AI, Google, Anthropic, and more.  We are always looking to add more models to our evaluator.  If you have a model you would like to see added, please file an issue against this repository.
 
 We'd like to add more models as choices for the LLM evaluator without adding to the complexity of the package too much.
 
-The default model used for scoring metrics is GPT 4 Turbo. To change the OpenAI model, pass the OpenAI model name into the `model` argument for `ValidateScorer`
+The default model used for scoring metrics is GPT 4 Turbo. To change the model, pass the model name into the `model` argument for `ValidateScorer`
 
 ```python
 scorer = ValidateScorer([

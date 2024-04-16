@@ -231,7 +231,6 @@ def test_augmentation_precision_metric(answer, expected_score):
     [("N/A", lambda x, y: True, 1.0), ("N/A", lambda x, y: False, 0.0)],
 )
 def test_binary_metric(answer, callback, expected_score):
-    # TODO: Fix checking for callback params
     metric = BinaryMetric("Binary Metric", callback)
     benchmark = Benchmark(
         questions=["What is the name of Ryan's dog?"],

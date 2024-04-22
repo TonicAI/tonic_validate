@@ -1243,13 +1243,13 @@ files = [
 
 [[package]]
 name = "tonic-textual"
-version = "1.0.5"
+version = "1.2.1"
 description = "Wrappers around the Tonic Textual API"
 optional = false
-python-versions = ">=3.7,<4.0"
+python-versions = "<4.0,>=3.7"
 files = [
-    {file = "tonic_textual-1.0.5-py3-none-any.whl", hash = "sha256:e5e186234940d7919957fa622ed284c3fc8fb26133d711a3b6ba64b87c2fc5d4"},
-    {file = "tonic_textual-1.0.5.tar.gz", hash = "sha256:769930f3def70f6d1c5902b76d6727520b2b21d884a5e4b10bd876dfca04238b"},
+    {file = "tonic_textual-1.2.1-py3-none-any.whl", hash = "sha256:9890b7a705da24568aca24bc8fdf9c5cd93970fbd6db94c06bf41f72fcf947df"},
+    {file = "tonic_textual-1.2.1.tar.gz", hash = "sha256:d8daae1738716fc4a1b59decce8b9ac6034de36da805856321a09b0f31dab331"},
 ]
 
 [package.dependencies]

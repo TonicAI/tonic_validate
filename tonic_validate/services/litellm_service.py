@@ -1,7 +1,7 @@
 import asyncio
 import logging
 import os
-from litellm import acompletion
+from litellm import acompletion, ModelResponse, Choices
 from tiktoken import Encoding
 
 from tonic_validate.classes.exceptions import LLMException
@@ -92,7 +92,17 @@ class LiteLLMService:
                         messages=messages,
                         temperature=0.0,
                     )
-                    response_content = response.choices[0].message.content
+                    # Check that type is ModelResponse
+                    if not isinstance(response, ModelResponse):
+                        raise Exception(
+                            f"Failed to get response from {self.model}, response is not a ModelResponse"
+                        )
+                    choice = response.choices[0]
+                    if not isinstance(choice, Choices):
+                        raise Exception(
+                            f"Failed to get response from {self.model}, choice is not a Choices object"
+                        )
+                    response_content = choice.message.content
                     if response_content is None:
                         raise Exception(
                             "Failed to get a response, message does not exist"

@@ -6,7 +6,7 @@ from openai import AsyncAzureOpenAI, BadRequestError, AsyncOpenAI, RateLimitErro
 from tiktoken import Encoding
 
 from tonic_validate.classes.exceptions import ContextLengthException, LLMException
-from tonic_validate.utils.openai_cache import OpenAICache
+from tonic_validate.utils.llm_cache import LLMCache
 
 logger = logging.getLogger()
 
@@ -55,7 +55,7 @@ class OpenAIService:
         self.max_retries = max_retries
         self.exp_delay_base = exp_delay_base
         self.starting_wait_time = starting_wait_time
-        self.cache = OpenAICache()
+        self.cache = LLMCache()
 
     async def get_response(self, prompt: str) -> str:
         """

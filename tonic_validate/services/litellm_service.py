@@ -58,6 +58,7 @@ class LiteLLMService:
                 raise Exception(
                     "ANTHROPIC_API_KEY must be set in the environment when using Claude"
                 )
+        raise Exception("Model not supported. Please check the model name.")
 
     async def get_response(self, prompt: str) -> str:
         """

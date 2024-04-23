@@ -15,6 +15,7 @@ tqdm = "^4.66.2"
 pydantic = "^2.6.4"
 typing-extensions = "^4.10.0"
 litellm = "^1.35.8"
+google-generativeai = { version = "^0.5.2", python = ">=3.9" }
 
 [tool.poetry.group.dev.dependencies]
 sphinx = "^7.0.0"

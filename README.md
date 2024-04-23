@@ -336,7 +336,7 @@ scorer = ValidateScorer([
 
 You can also pass in other models like Google Gemini or Claude by setting the `model_evaluator` argument to the model name like so
 ```python
-scorer = ValidateScorer(model_evaluator="gemini/gemini-1.5-pro")
+scorer = ValidateScorer(model_evaluator="gemini/gemini-1.5-pro-latest")
 ```
 ```python
 scorer = ValidateScorer(model_evaluator="claude-3")

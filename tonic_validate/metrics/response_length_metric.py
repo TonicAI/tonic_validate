@@ -1,9 +1,10 @@
 import logging
-from typing import Optional
+from typing import Optional, Union
 
 from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.metrics.binary_metric import BinaryMetric
 from tonic_validate.services.openai_service import OpenAIService
+from tonic_validate.services.litellm_service import LiteLLMService
 
 logger = logging.getLogger()
 
@@ -33,7 +34,7 @@ class ResponseLengthMetric(BinaryMetric):
         self.max_length = max_length
 
     def metric_callback(
-        self, llm_response: LLMResponse, openai_service: OpenAIService
+        self, llm_response: LLMResponse, llm_service: Union[LiteLLMService, OpenAIService]
     ) -> bool:
         if self.min_length and len(llm_response.llm_answer) < self.min_length:
             return False

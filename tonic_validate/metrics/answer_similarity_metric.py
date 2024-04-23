@@ -1,7 +1,9 @@
 import logging
+from typing import Union
 from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.metrics.metric import Metric
 from tonic_validate.services.openai_service import OpenAIService
+from tonic_validate.services.litellm_service import LiteLLMService
 from tonic_validate.utils.llm_calls import similarity_score_call, similarity_score_prompt
 
 logger = logging.getLogger()
@@ -19,7 +21,7 @@ class AnswerSimilarityMetric(Metric):
         pass
 
     async def score(
-        self, llm_response: LLMResponse, openai_service: OpenAIService
+        self, llm_response: LLMResponse, llm_service: Union[LiteLLMService, OpenAIService]
     ) -> float:
         # Check that the benchmark item has an answer
         if llm_response.benchmark_item.answer is None:
@@ -29,7 +31,7 @@ class AnswerSimilarityMetric(Metric):
             llm_response.benchmark_item.question,
             llm_response.benchmark_item.answer,
             llm_response.llm_answer,
-            openai_service,
+            llm_service,
         )
         try:
             similarity_score = float(similarity_score_response)

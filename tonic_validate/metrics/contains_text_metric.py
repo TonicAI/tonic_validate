@@ -4,6 +4,7 @@ from typing import List, Optional, Union
 from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.metrics.binary_metric import BinaryMetric
 from tonic_validate.services.openai_service import OpenAIService
+from tonic_validate.services.litellm_service import LiteLLMService
 
 logger = logging.getLogger()
 
@@ -35,7 +36,7 @@ class ContainsTextMetric(BinaryMetric):
         self.case_sensitive = case_sensitive
 
     def metric_callback(
-        self, llm_response: LLMResponse, openai_service: OpenAIService
+        self, llm_response: LLMResponse, llm_service: Union[LiteLLMService, OpenAIService]
     ) -> bool:
         if isinstance(self.text, list):
             return all(self.contains_text(llm_response, text) for text in self.text)

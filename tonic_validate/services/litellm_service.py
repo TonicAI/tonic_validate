@@ -2,26 +2,27 @@ import asyncio
 import logging
 import os
 import random
-from openai import AsyncAzureOpenAI, BadRequestError, AsyncOpenAI, RateLimitError
+from litellm import acompletion, ModelResponse, Choices
+from openai import APIConnectionError, BadRequestError, RateLimitError
 from tiktoken import Encoding
 
-from tonic_validate.classes.exceptions import ContextLengthException, LLMException
+from tonic_validate.classes.exceptions import LLMException, ContextLengthException
 from tonic_validate.utils.llm_cache import LLMCache
 
 logger = logging.getLogger()
 
 
-class OpenAIService:
+class LiteLLMService:
     def __init__(
         self,
         encoder: Encoding,
-        model: str = "gpt-4-1106-preview",
-        starting_wait_time: float = 1.0,
-        max_retries: int = 10,
+        model: str = "gemini/gemini-1.5-pro-latest",
+        starting_wait_time: float = 1.5,
+        max_retries: int = 12,
         exp_delay_base: int = 2,
     ) -> None:
         """
-        The OpenAIService class is a wrapper around the OpenAI and AzureOpenAI clients.
+        The LiteLLMService class is a wrapper around LiteLLM client for async operations using different LLMs.
 
         Parameters
         ----------
@@ -36,26 +37,31 @@ class OpenAIService:
         exp_delay_base: int
             Base for exponential back off delay between retries.
         """
-
-        # Check if AZURE_OPENAI_API_KEY is set and if so then use AzureOpenAI
-        if "AZURE_OPENAI_API_KEY" in os.environ:
-            if "AZURE_OPENAI_ENDPOINT" not in os.environ:
-                raise Exception(
-                    "AZURE_OPENAI_ENDPOINT must be set in the environment when using AzureOpenAI"
-                )
-            self.client = AsyncAzureOpenAI(api_version="2023-12-01-preview")
-        elif "OPENAI_API_KEY" in os.environ:
-            self.client = AsyncOpenAI()
-        else:
-            raise Exception(
-                "OPENAI_API_KEY or AZURE_OPENAI_API_KEY must be set in the environment"
-            )
+        try:
+            self.check_environment(model)
+        except Exception as e:
+            logger.error(f"Error: {str(e)}")
+            raise e
         self.model = model
         self.encoder = encoder
         self.max_retries = max_retries
         self.exp_delay_base = exp_delay_base
         self.starting_wait_time = starting_wait_time
         self.cache = LLMCache()
+
+    def check_environment(self, model: str) -> None:
+        if "gemini" in model:
+            if "GEMINI_API_KEY" not in os.environ:
+                raise Exception(
+                    "GEMINI_API_KEY must be set in the environment when using Gemini"
+                )
+        elif "claude" in model:
+            if "ANTHROPIC_API_KEY" not in os.environ:
+                raise Exception(
+                    "ANTHROPIC_API_KEY must be set in the environment when using Claude"
+                )
+        else:
+            raise Exception("Model not supported. Please check the model name.")
 
     async def get_response(self, prompt: str) -> str:
         """
@@ -72,33 +78,46 @@ class OpenAIService:
             The response from the language model.
         """
 
-        async def get_openai_response():
+        async def get_litellm_response():
             num_retries = 0
             wait_time = self.starting_wait_time
             while num_retries < self.max_retries:
                 random_value = random.randrange(0, 20) * 0.01
                 wait_time_multiplier = self.exp_delay_base * (1 + random_value)
                 try:
-                    completion = await self.client.chat.completions.create(
+                    messages = [
+                        {
+                            "role": "system",
+                            "content": "You are a helpful assistant. Respond using markdown.",
+                        },
+                        {"role": "user", "content": prompt},
+                    ]
+                    response = await acompletion(
                         model=self.model,
-                        messages=[
-                            {
-                                "role": "system",
-                                "content": "You are a helpful assistant. Respond using markdown.",
-                            },
-                            {"role": "user", "content": prompt},
-                        ],
+                        messages=messages,
                         temperature=0.0,
                     )
-                    response = completion.choices[0].message.content
-                    if response is None:
+                    # Check that type is ModelResponse
+                    if not isinstance(response, ModelResponse):
+                        raise Exception(
+                            f"Failed to get response from {self.model}, response is not a ModelResponse"
+                        )
+                    choice = response.choices[0]
+                    if not isinstance(choice, Choices):
+                        raise Exception(
+                            f"Failed to get response from {self.model}, choice is not a Choices object"
+                        )
+                    response_content = choice.message.content
+                    if response_content is None:
                         raise Exception(
                             f"Failed to get message response from {self.model}, message does not exist"
                         )
-                    return response
+                    return response_content
                 except BadRequestError as e:
                     if e.code == "context_length_exceeded":
                         raise ContextLengthException(e.message)
+                except APIConnectionError as e:
+                    raise LLMException(e.message)
                 except RateLimitError:
                     log_message = (
                         "hit openai.error.RateLimitError and entered retry "
@@ -119,9 +138,22 @@ class OpenAIService:
         cached_response = self.cache.get(prompt)
         if cached_response is not None:
             return cached_response
-        response = await get_openai_response()
+        response = await get_litellm_response()
         self.cache.put(prompt, response)
         return response
 
     def get_token_count(self, text: str) -> int:
+        """
+        Gets the token count for the given text using the specified encoder.
+
+        Parameters
+        ----------
+        text: str
+            The text to get the token count for.
+
+        Returns
+        -------
+        int
+            The number of tokens in the text.
+        """
         return len(self.encoder.encode(text))

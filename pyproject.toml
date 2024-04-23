@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tonic-validate"
-version = "4.0.6"
+version = "4.0.7"
 description = "RAG evaluation metrics."
 authors = ["Joe Ferrara <joeferrara@tonic.ai>", "Ethan Philpott <ephilpott@tonic.ai>", "Adam Kamor <adam@tonic.ai>"]
 readme = "README.md"
@@ -14,6 +14,8 @@ python-dotenv = "^1.0.1"
 tqdm = "^4.66.2"
 pydantic = "^2.6.4"
 typing-extensions = "^4.10.0"
+litellm = "^1.35.8"
+google-generativeai = { version = "^0.5.2", python = ">=3.9" }
 
 [tool.poetry.group.dev.dependencies]
 sphinx = "^7.0.0"

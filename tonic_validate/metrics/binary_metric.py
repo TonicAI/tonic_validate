@@ -4,6 +4,7 @@ from typing import Awaitable, Callable, Union
 from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.metrics.metric import Metric
 from tonic_validate.services.openai_service import OpenAIService
+from tonic_validate.services.litellm_service import LiteLLMService
 import inspect
 
 logger = logging.getLogger()
@@ -17,7 +18,7 @@ class BinaryMetric(Metric):
     def __init__(
         self,
         name: str,
-        callback: Callable[[LLMResponse, OpenAIService], Union[Awaitable[bool], bool]],
+        callback: Callable[[LLMResponse, Union[LiteLLMService, OpenAIService]], Union[Awaitable[bool], bool]],
     ):
         """
         Create a binary metric with a name and a callback. A binary metric returns either True (1) or False (0).
@@ -35,10 +36,10 @@ class BinaryMetric(Metric):
         self.callback = callback
 
     async def score(
-        self, llm_response: LLMResponse, openai_service: OpenAIService
+        self, llm_response: LLMResponse, llm_service: Union[LiteLLMService, OpenAIService]
     ) -> float:
         if inspect.iscoroutinefunction(self.callback):
-            result = await self.callback(llm_response, openai_service)
+            result = await self.callback(llm_response, llm_service)
         else:
-            result = self.callback(llm_response, openai_service)
+            result = self.callback(llm_response, llm_service)
         return 1.0 if result else 0.0

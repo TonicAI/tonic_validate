@@ -1,7 +1,9 @@
 import logging
+from typing import Union
 from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.metrics.binary_metric import BinaryMetric
 from tonic_validate.services.openai_service import OpenAIService
+from tonic_validate.services.litellm_service import LiteLLMService
 
 logger = logging.getLogger()
 
@@ -23,7 +25,7 @@ class LatencyMetric(BinaryMetric):
 
     # We do async here for consistency even though this method doesn't use async
     async def score(
-        self, llm_response: LLMResponse, openai_service: OpenAIService
+        self, llm_response: LLMResponse, llm_service: Union[LiteLLMService, OpenAIService]
     ) -> float:
         # Check that llm_response.run_time is not None
         if llm_response.run_time is None:

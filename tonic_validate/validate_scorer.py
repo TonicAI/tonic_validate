@@ -19,6 +19,7 @@ from tonic_validate.metrics.augmentation_precision_metric import (
 
 from tonic_validate.metrics.metric import Metric
 from tonic_validate.services.openai_service import OpenAIService
+from tonic_validate.services.litellm_service import LiteLLMService
 import tiktoken
 from tonic_validate.utils.telemetry import Telemetry
 from tqdm.asyncio import tqdm as async_tqdm
@@ -48,7 +49,7 @@ class ValidateScorer:
         quiet: bool = False,
     ):
         """
-        Create a Tonic Validate scorer.
+        Create a Tonic Validate scorer that can work with either OpenAIService or LiteLLMService.
 
         Parameters
         ----------
@@ -70,17 +71,27 @@ class ValidateScorer:
         self.max_parsing_retries = max_parsing_retries
         self.max_llm_retries = max_llm_retries
         self.fail_on_error = fail_on_error
-        logger.setLevel(logging.ERROR if quiet else logging.INFO)
         self.quiet = quiet
         self.telemetry = Telemetry()
+        logger.setLevel(logging.ERROR if quiet else logging.INFO)
+
         try:
             self.encoder = tiktoken.encoding_for_model(model_evaluator)
         except Exception as _:
             logger.info("Defaulting to cl100k_base for measuring token count")
             self.encoder = tiktoken.get_encoding("cl100k_base")
-        self.openai_service = OpenAIService(
-            self.encoder, self.model_evaluator, max_retries=self.max_llm_retries
-        )
+
+        model_name_lower = self.model_evaluator.lower()
+        if model_name_lower.startswith("gemini/") or model_name_lower.startswith(
+            "claude"
+        ):
+            self.llm_service = LiteLLMService(
+                self.encoder, self.model_evaluator, max_retries=self.max_llm_retries
+            )
+        else:
+            self.llm_service = OpenAIService(
+                self.encoder, self.model_evaluator, max_retries=self.max_llm_retries
+            )
 
     @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
     async def _score_item_rundata(
@@ -107,7 +118,7 @@ class ValidateScorer:
                 while tries < self.max_parsing_retries:
                     try:
                         scores[metric.name] = await metric.score(
-                            response, self.openai_service
+                            response, self.llm_service
                         )
                         break
                     except LLMException as e:
@@ -168,7 +179,7 @@ class ValidateScorer:
             start_time = time.time()
         except Exception as _:
             start_time = -1
-        
+
         semaphore = Semaphore(parallelism)
         tasks = [
             self._score_item_rundata(response, semaphore) for response in responses

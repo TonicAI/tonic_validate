@@ -1,7 +1,7 @@
 from collections import OrderedDict
 
 
-class OpenAICache:
+class LLMCache:
     def __init__(self, maxsize=512):
         self.maxsize = maxsize
         self.cache = OrderedDict()

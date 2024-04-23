@@ -1,5 +1,5 @@
 import logging
-from typing import List
+from typing import List, Union
 from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.metrics.augmentation_accuracy_metric import (
     AugmentationAccuracyMetric,
@@ -7,6 +7,7 @@ from tonic_validate.metrics.augmentation_accuracy_metric import (
 from tonic_validate.metrics.metric import Metric
 from tonic_validate.metrics.retrieval_precision_metric import RetrievalPrecisionMetric
 from tonic_validate.services.openai_service import OpenAIService
+from tonic_validate.services.litellm_service import LiteLLMService
 
 logger = logging.getLogger()
 
@@ -23,14 +24,14 @@ class AugmentationPrecisionMetric(Metric):
         self.retrieval_precision = RetrievalPrecisionMetric()
 
     async def score(
-        self, llm_response: LLMResponse, openai_service: OpenAIService
+        self, llm_response: LLMResponse, llm_service: Union[LiteLLMService, OpenAIService]
     ) -> float:
         retrieval_precision_score = await self.retrieval_precision.calculate_metric(
-            llm_response, openai_service
+            llm_response, llm_service
         )
         context_relevant_list = retrieval_precision_score[1]
         augmentation_accuracy_score = await self.augmentation_accuracy.calculate_metric(
-            llm_response, openai_service
+            llm_response, llm_service
         )
         contains_context_list = augmentation_accuracy_score[1]
 

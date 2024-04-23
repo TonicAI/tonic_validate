@@ -1,9 +1,10 @@
 import os
 import requests
-from typing import List, Optional
+from typing import List, Optional, Union
 from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.metrics.binary_metric import BinaryMetric
 from tonic_validate.services.openai_service import OpenAIService
+from tonic_validate.services.litellm_service import LiteLLMService
 
 
 class AnswerContainsPiiMetric(BinaryMetric):
@@ -40,7 +41,7 @@ class AnswerContainsPiiMetric(BinaryMetric):
         super().__init__("answer_contains_pii", self.metric_callback)
 
     def metric_callback(
-        self, llm_response: LLMResponse, openai_service: OpenAIService
+        self, llm_response: LLMResponse, llm_service: Union[LiteLLMService, OpenAIService]
     ) -> bool:
         try:
             response = self.textual.redact(llm_response.llm_answer)

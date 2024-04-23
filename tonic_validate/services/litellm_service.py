@@ -12,12 +12,12 @@ logger = logging.getLogger()
 
 class LiteLLMService:
     def __init__(
-            self,
-            encoder: Encoding,
-            model: str = "gemini/gemini-1.5-pro-latest",
-            starting_wait_time: float = 1.5,
-            max_retries: int = 12,
-            exp_delay_base: int = 2,
+        self,
+        encoder: Encoding,
+        model: str = "gemini/gemini-1.5-pro-latest",
+        starting_wait_time: float = 1.5,
+        max_retries: int = 12,
+        exp_delay_base: int = 2,
     ) -> None:
         """
         The LiteLLMService class is a wrapper around LiteLLM client for async operations using different LLMs.
@@ -48,17 +48,12 @@ class LiteLLMService:
         self.cache = LLMCache()
 
     def check_environment(self, model: str) -> None:
-        if 'gemini' in model:
+        if "gemini" in model:
             if "GEMINI_API_KEY" not in os.environ:
                 raise Exception(
                     "GEMINI_API_KEY must be set in the environment when using Gemini"
                 )
-        if 'palm' in model:
-            if "PALM_API_KEY" not in os.environ:
-                raise Exception(
-                    "PALM_API_KEY must be set in the environment when using Palm"
-                )
-        if 'claude' in model:
+        if "claude" in model:
             if "ANTHROPIC_API_KEY" not in os.environ:
                 raise Exception(
                     "ANTHROPIC_API_KEY must be set in the environment when using Claude"
@@ -85,9 +80,10 @@ class LiteLLMService:
             while num_retries < self.max_retries:
                 try:
                     messages = [
-                        {"role": "system",
-                         "content": "You are a helpful assistant. Respond using markdown.",
-                         },
+                        {
+                            "role": "system",
+                            "content": "You are a helpful assistant. Respond using markdown.",
+                        },
                         {"role": "user", "content": prompt},
                     ]
                     response = await acompletion(
@@ -97,7 +93,9 @@ class LiteLLMService:
                     )
                     response_content = response.choices[0].message.content
                     if response_content is None:
-                        raise Exception("Failed to get a response, message does not exist")
+                        raise Exception(
+                            "Failed to get a response, message does not exist"
+                        )
                     return response_content
                 except Exception as e:
                     logger.warning(f"Unexpected error: {str(e)}")

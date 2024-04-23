@@ -307,13 +307,6 @@ os.environ["GEMINI_API_KEY"] = "put-your-gemini-api-key-here"
 ```
 _Note that to use gemini, your Python version must be 3.9 or higher._
 
-#### Using Palm
-If you already have the `PALM_API_KEY` set in your system's environment variables then you can skip this step. Otherwise, please set the environment variable before proceeding.
-```python
-import os
-os.environ["PALM_API_KEY"] = "put-your-palm-api-key-here"
-```
-
 #### Using Claude
 If you already have the `ANTHROPIC_API_KEY` set in your system's environment variables then you can skip this step. Otherwise, please set the environment variable before proceeding.
 ```python
@@ -341,12 +334,9 @@ scorer = ValidateScorer([
 ], model_evaluator="gpt-3.5-turbo")
 ```
 
-You can also pass in other models like Google Gemini, PaLM, or Claude by setting the `model_evaluator` argument to the model name like so
+You can also pass in other models like Google Gemini or Claude by setting the `model_evaluator` argument to the model name like so
 ```python
 scorer = ValidateScorer(model_evaluator="gemini/gemini-1.5-pro")
-```
-```python
-scorer = ValidateScorer(model_evaluator="palm/chat-bison")
 ```
 ```python
 scorer = ValidateScorer(model_evaluator="claude-3")

@@ -15,10 +15,6 @@ tqdm = "^4.66.2"
 pydantic = "^2.6.4"
 typing-extensions = "^4.10.0"
 litellm = "^1.35.8"
-google-generativeai = [
-    { version = "^0.5.0", markers = "python_version >= '3.9'" },
-    { version = "0.1.0rc1", markers = "python_version >= '3.8' and python_version < '3.9'" }
-]
 jupyter = "^1.0.0"
 
 [tool.poetry.group.dev.dependencies]

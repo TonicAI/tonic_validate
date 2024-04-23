@@ -81,12 +81,15 @@ class ValidateScorer:
             logger.info("Defaulting to cl100k_base for measuring token count")
             self.encoder = tiktoken.get_encoding("cl100k_base")
 
-        if 'gpt' in self.model_evaluator.lower():
-            self.llm_service = OpenAIService(
+        model_name_lower = self.model_evaluator.lower()
+        if model_name_lower.startswith("gemini/") or model_name_lower.startswith(
+            "claude"
+        ):
+            self.llm_service = LiteLLMService(
                 self.encoder, self.model_evaluator, max_retries=self.max_llm_retries
             )
         else:
-            self.llm_service = LiteLLMService(
+            self.llm_service = OpenAIService(
                 self.encoder, self.model_evaluator, max_retries=self.max_llm_retries
             )
 

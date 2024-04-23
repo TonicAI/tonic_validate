@@ -3,7 +3,7 @@ import logging
 import os
 import random
 from litellm import acompletion, ModelResponse, Choices
-from openai import BadRequestError, RateLimitError
+from openai import APIConnectionError, BadRequestError, RateLimitError
 from tiktoken import Encoding
 
 from tonic_validate.classes.exceptions import LLMException, ContextLengthException
@@ -116,6 +116,8 @@ class LiteLLMService:
                 except BadRequestError as e:
                     if e.code == "context_length_exceeded":
                         raise ContextLengthException(e.message)
+                except APIConnectionError as e:
+                    raise LLMException(e.message)
                 except RateLimitError:
                     log_message = (
                         "hit openai.error.RateLimitError and entered retry "

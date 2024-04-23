@@ -55,12 +55,13 @@ class LiteLLMService:
                 raise Exception(
                     "GEMINI_API_KEY must be set in the environment when using Gemini"
                 )
-        if "claude" in model:
+        elif "claude" in model:
             if "ANTHROPIC_API_KEY" not in os.environ:
                 raise Exception(
                     "ANTHROPIC_API_KEY must be set in the environment when using Claude"
                 )
-        raise Exception("Model not supported. Please check the model name.")
+        else:
+            raise Exception("Model not supported. Please check the model name.")
 
     async def get_response(self, prompt: str) -> str:
         """

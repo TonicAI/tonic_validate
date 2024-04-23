@@ -1,10 +1,12 @@
 import asyncio
 import logging
 import os
+import random
 from litellm import acompletion, ModelResponse, Choices
+from openai import BadRequestError, RateLimitError
 from tiktoken import Encoding
 
-from tonic_validate.classes.exceptions import LLMException
+from tonic_validate.classes.exceptions import LLMException, ContextLengthException
 from tonic_validate.utils.llm_cache import LLMCache
 
 logger = logging.getLogger()
@@ -62,12 +64,12 @@ class LiteLLMService:
 
     async def get_response(self, prompt: str) -> str:
         """
-        Retrieves a response from the language model asynchronously.
+        Retrieves a response from the language model
 
         Parameters
         ----------
         prompt: str
-            The prompt to get a response for.
+            The prompt to send to the language model.
 
         Returns
         -------
@@ -79,6 +81,8 @@ class LiteLLMService:
             num_retries = 0
             wait_time = self.starting_wait_time
             while num_retries < self.max_retries:
+                random_value = random.randrange(0, 20) * 0.01
+                wait_time_multiplier = self.exp_delay_base * (1 + random_value)
                 try:
                     messages = [
                         {
@@ -105,17 +109,29 @@ class LiteLLMService:
                     response_content = choice.message.content
                     if response_content is None:
                         raise Exception(
-                            "Failed to get a response, message does not exist"
+                            f"Failed to get message response from {self.model}, message does not exist"
                         )
                     return response_content
-                except Exception as e:
-                    logger.warning(f"Unexpected error: {str(e)}")
+                except BadRequestError as e:
+                    if e.code == "context_length_exceeded":
+                        raise ContextLengthException(e.message)
+                except RateLimitError:
+                    log_message = (
+                        "hit openai.error.RateLimitError and entered retry "
+                        f"logic, num_retries={num_retries}"
+                    )
+                    logger.debug(log_message)
                     await asyncio.sleep(wait_time)
-                    wait_time *= self.exp_delay_base
+                    wait_time *= wait_time_multiplier
+                except Exception as e:
+                    logger.warning(e)
+                    await asyncio.sleep(wait_time)
+                    wait_time *= wait_time_multiplier
                 num_retries += 1
-            raise LLMException("Failed to get completion response, max retries hit")
+            raise LLMException(
+                f"Failed to get completion response from {self.model}, max retires hit"
+            )
 
-        # Creating a string prompt for caching purposes
         cached_response = self.cache.get(prompt)
         if cached_response is not None:
             return cached_response

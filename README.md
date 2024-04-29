@@ -41,6 +41,8 @@
     <br />
     <a href="https://docs.tonic.ai/validate"><strong>Explore the docs »</strong></a>
     <br />
+    <a href="https://www.tonic.ai/textual"><strong>Prepare your unstructured data for RAG »</strong></a>
+    <br />
     <br />
     <a href="https://github.com/TonicAI/tonic_validate/issues">Report Bug</a>
     ·
@@ -86,8 +88,11 @@
 
 Tonic Validate is a framework for the evaluation of LLM outputs, such as Retrieval Augmented Generation (RAG) pipelines. Validate makes it easy to evaluate, track, and monitor your LLM and RAG applications. Validate allows you to evaluate your LLM outputs through the use of our provided metrics which measure everything from answer correctness to LLM hallucination. Additionally, Validate has an optional UI to visualize your evaluation results for easy tracking and monitoring.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+> **Good RAG systems start with good inputs. Are you blocked on pre-processing messy, complex unstructured data into a standardized format for embedding and ingestion into your vector database?** 
+>
+>Tonic Textual is a privacy-focused ETL for LLMs that standardizes unstructured data for AI development and uses proprietary NER models to create metadata tags that enable improved retreival performance via metadata filtering. If you're spending too much time on data preparation, we can help; reach out to us for a [demo](https://www.tonic.ai/product-demo/textual).
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 <!-- Quick Start -->

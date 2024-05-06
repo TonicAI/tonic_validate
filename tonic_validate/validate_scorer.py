@@ -47,6 +47,7 @@ class ValidateScorer:
         max_llm_retries: int = 10,
         fail_on_error: bool = False,
         quiet: bool = False,
+        model_id: str = "",
     ):
         """
         Create a Tonic Validate scorer that can work with either OpenAIService or LiteLLMService.
@@ -82,11 +83,12 @@ class ValidateScorer:
             self.encoder = tiktoken.get_encoding("cl100k_base")
 
         model_name_lower = self.model_evaluator.lower()
-        if model_name_lower.startswith("gemini/") or model_name_lower.startswith(
-            "claude"
-        ):
+        if (model_name_lower.startswith("gemini") or model_name_lower.startswith("claude") or
+                model_name_lower.startswith("command") or model_name_lower.startswith("mistral") or
+                model_name_lower.startswith("together_ai") or model_name_lower.startswith("bedrock") or
+                model_name_lower.startswith("sagemaker")):
             self.llm_service = LiteLLMService(
-                self.encoder, self.model_evaluator, max_retries=self.max_llm_retries
+                self.encoder, self.model_evaluator, max_retries=self.max_llm_retries, model_id=model_id
             )
         else:
             self.llm_service = OpenAIService(

@@ -319,6 +319,36 @@ import os
 os.environ["ANTHROPIC_API_KEY"] = "put-your-anthropic-api-key-here"
 ```
 
+#### Using Mistral
+If you already have the `MISTRAL_API_KEY` set in your system's environment variables then you can skip this step. Otherwise, please set the environment variable before proceeding.
+```python
+import os
+os.environ["MISTRAL_API_KEY"] = "put-your-mistral-api-key-here"
+```
+
+#### Using Cohere
+If you already have the `COHERE_API_KEY` set in your system's environment variables then you can skip this step. Otherwise, please set the environment variable before proceeding.
+```python
+import os
+os.environ["COHERE_API_KEY"] = "put-your-cohere-api-key-here"
+```
+
+#### Using Together AI
+If you already have the `TOGETHERAI_API_KEY` set in your system's environment variables then you can skip this step. Otherwise, please set the environment variable before proceeding.
+```python
+import os
+os.environ["TOGETHERAI_API_KEY"] = "put-your-togetherai-api-key-here"
+```
+
+#### Using AWS Bedrock or AWS Sagemaker
+If you already have the `"AWS_SECRET_ACCESS_KEY`, `AWS_ACCESS_KEY_ID`, and `AWS_REGION_NAME` set in your system's environment variables then you can skip this step. Otherwise, please set the environment variables before proceeding.
+```python
+import os
+os.environ["AWS_ACCESS_KEY_ID"]="put-your-aws-access-key-id-here"
+os.environ["AWS_SECRET_ACCESS_KEY"]="put-your-aws-secret-access-key-here"
+os.environ["AWS_REGION_NAME"]="put-your-aws-region-name-here"
+```
+
 
 #### Setting up the Tonic Validate Scorer
 To use metrics, instantiate an instance of ValidateScorer.
@@ -339,12 +369,24 @@ scorer = ValidateScorer([
 ], model_evaluator="gpt-3.5-turbo")
 ```
 
-You can also pass in other models like Google Gemini or Claude by setting the `model_evaluator` argument to the model name like so
+You can also pass in other models like Google Gemini, Claude, Mistral, Cohere, Together AI, and AWS Bedrock by setting the `model_evaluator` argument to the model name like so
 ```python
 scorer = ValidateScorer(model_evaluator="gemini/gemini-1.5-pro-latest")
 ```
 ```python
 scorer = ValidateScorer(model_evaluator="claude-3")
+```
+```python
+scorer = ValidateScorer(model_evaluator="mistral/mistral-tiny")
+```
+```python
+scorer = ValidateScorer(model_evaluator="command-r")
+```
+```python
+scorer = ValidateScorer(model_evaluator="together_ai/togethercomputer/Llama-2-7B-32K-Instruct")
+```
+```python
+scorer = ValidateScorer(model_evaluator="bedrock/your-bedrock-model")
 ```
 If an error occurs while scoring an item's metric, the score for that metric will be set to `None`. If you instead wish to have Tonic Validate throw an exception when there's an error scoring, then set `fail_on_error` to `True` in the constructor
 
@@ -356,6 +398,12 @@ scorer = ValidateScorer(fail_on_error=True)
 If you are using Azure, you MUST set the `model_evaluator` argument to your deployment name like so
 ```python
 scorer = ValidateScorer(model_evaluator="your-deployment-name")
+```
+
+#### **Important**: Using the scorer on AWS Sagemaker
+If you are using AWS Bedrock, you MUST set the `model_evaluator` argument to your endpoint name and the `model_id` argument to your model name like so
+```python
+scorer = ValidateScorer(model_evaluator="your-endpoint-name", model_id="your-model-name")
 ```
 
 #### Running the Scorer

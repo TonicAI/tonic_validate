@@ -1,13 +1,16 @@
 import os
 import requests
-from typing import List, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.metrics.binary_metric import BinaryMetric
+from tonic_validate.metrics.metric import Metric, MetricRequirement
 from tonic_validate.services.openai_service import OpenAIService
 from tonic_validate.services.litellm_service import LiteLLMService
 
 
 class ContextContainsPiiMetric(BinaryMetric):
+    requirements = {MetricRequirement.LLM_CONTEXT}
+
     def __init__(self, pii_types: List[str], textual_api_key: Optional[str] = None):
         """
         Checks to see if PII is contained in the RAG provided context.  The types of PII looked for are found in the pii_types list.
@@ -40,8 +43,20 @@ class ContextContainsPiiMetric(BinaryMetric):
 
         super().__init__("context_contains_pii", self.metric_callback)
 
+    def serialize_config(self):
+        return {"pii_types": self.pii_types, "textual_api_key": self.textual.api_key}
+
+    @staticmethod
+    def from_config(config: Dict[str, Any]) -> Metric:
+        return ContextContainsPiiMetric(
+            pii_types=config["pii_types"],
+            textual_api_key=config["textual_api_key"],
+        )
+
     def metric_callback(
-        self, llm_response: LLMResponse, llm_service: Union[LiteLLMService, OpenAIService]
+        self,
+        llm_response: LLMResponse,
+        llm_service: Union[LiteLLMService, OpenAIService],
     ) -> bool:
         try:
             response = self.textual.redact("\n".join(llm_response.llm_context_list))

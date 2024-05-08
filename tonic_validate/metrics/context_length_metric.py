@@ -1,8 +1,9 @@
 import logging
-from typing import Optional, Union
+from typing import Any, Dict, Optional, Union
 
 from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.metrics.binary_metric import BinaryMetric
+from tonic_validate.metrics.metric import Metric, MetricRequirement
 from tonic_validate.services.openai_service import OpenAIService
 from tonic_validate.services.litellm_service import LiteLLMService
 
@@ -11,6 +12,8 @@ logger = logging.getLogger()
 
 class ContextLengthMetric(BinaryMetric):
     """Checks that context length is within a certain range."""
+
+    requirements = {MetricRequirement.LLM_CONTEXT}
 
     def __init__(
         self,
@@ -35,8 +38,25 @@ class ContextLengthMetric(BinaryMetric):
         self.min_length = min_length
         self.max_length = max_length
 
+    def serialize_config(self):
+        return {
+            "name": self.name,
+            "min_length": self.min_length,
+            "max_length": self.max_length,
+        }
+
+    @staticmethod
+    def from_config(config: Dict[str, Any]) -> Metric:
+        return ContextLengthMetric(
+            name=config["name"],
+            min_length=config["min_length"],
+            max_length=config["max_length"],
+        )
+
     def metric_callback(
-        self, llm_response: LLMResponse, llm_service: Union[LiteLLMService, OpenAIService]
+        self,
+        llm_response: LLMResponse,
+        llm_service: Union[LiteLLMService, OpenAIService],
     ) -> bool:
         # For all items in the context list, check if the length is within the min and max length
         return all(

@@ -15,6 +15,7 @@ from .hate_speech_content_metric import HateSpeechContentMetric
 from .latency_metric import LatencyMetric
 from .context_contains_pii_metric import ContextContainsPiiMetric
 from .answer_contains_pii_metric import AnswerContainsPiiMetric
+from .metric import Metric
 
 __all__ = [
     "AnswerConsistencyBinaryMetric",
@@ -33,5 +34,6 @@ __all__ = [
     "HateSpeechContentMetric",
     "LatencyMetric",
     "ContextContainsPiiMetric",
-    "AnswerContainsPiiMetric"
+    "AnswerContainsPiiMetric",
+    "Metric",
 ]

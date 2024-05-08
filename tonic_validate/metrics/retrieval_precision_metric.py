@@ -1,10 +1,13 @@
 import logging
-from typing import List, Tuple, Union
+from typing import Any, Dict, List, Tuple, Union
 from tonic_validate.classes.llm_response import LLMResponse
-from tonic_validate.metrics.metric import Metric
+from tonic_validate.metrics.metric import Metric, MetricRequirement
 from tonic_validate.utils.metrics_util import parse_boolean_response
 from tonic_validate.services.openai_service import OpenAIService
-from tonic_validate.utils.llm_calls import context_relevancy_call, context_relevancy_prompt
+from tonic_validate.utils.llm_calls import (
+    context_relevancy_call,
+    context_relevancy_prompt,
+)
 from tonic_validate.services.litellm_service import LiteLLMService
 
 logger = logging.getLogger()
@@ -13,6 +16,7 @@ logger = logging.getLogger()
 class RetrievalPrecisionMetric(Metric):
     name: str = "retrieval_precision"
     prompt: str = context_relevancy_prompt()
+    requirements = {MetricRequirement.QUESTION, MetricRequirement.LLM_CONTEXT}
 
     def __init__(self):
         """
@@ -21,13 +25,24 @@ class RetrievalPrecisionMetric(Metric):
         """
         pass
 
+    def serialize_config(self):
+        return {}
+
+    @staticmethod
+    def from_config(config: Dict[str, Any]) -> Metric:
+        return RetrievalPrecisionMetric()
+
     async def score(
-        self, llm_response: LLMResponse, llm_service: Union[LiteLLMService, OpenAIService]
+        self,
+        llm_response: LLMResponse,
+        llm_service: Union[LiteLLMService, OpenAIService],
     ) -> float:
         return (await self.calculate_metric(llm_response, llm_service))[0]
 
     async def calculate_metric(
-        self, llm_response: LLMResponse, llm_service: Union[LiteLLMService, OpenAIService]
+        self,
+        llm_response: LLMResponse,
+        llm_service: Union[LiteLLMService, OpenAIService],
     ) -> Tuple[float, List[bool]]:
         if len(llm_response.llm_context_list) == 0:
             raise ValueError(

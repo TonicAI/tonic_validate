@@ -1,10 +1,13 @@
 import logging
-from typing import Union
+from typing import Any, Dict, Union
 from tonic_validate.classes.llm_response import LLMResponse
-from tonic_validate.metrics.metric import Metric
+from tonic_validate.metrics.metric import Metric, MetricRequirement
 from tonic_validate.services.openai_service import OpenAIService
 from tonic_validate.services.litellm_service import LiteLLMService
-from tonic_validate.utils.llm_calls import similarity_score_call, similarity_score_prompt
+from tonic_validate.utils.llm_calls import (
+    similarity_score_call,
+    similarity_score_prompt,
+)
 
 logger = logging.getLogger()
 
@@ -12,6 +15,11 @@ logger = logging.getLogger()
 class AnswerSimilarityMetric(Metric):
     name: str = "answer_similarity"
     prompt: str = similarity_score_prompt()
+    requirements = {
+        MetricRequirement.QUESTION,
+        MetricRequirement.REFERENCE_ANSWER,
+        MetricRequirement.LLM_ANSWER,
+    }
 
     def __init__(self) -> None:
         """
@@ -20,8 +28,17 @@ class AnswerSimilarityMetric(Metric):
         """
         pass
 
+    def serialize_config(self):
+        return {}
+
+    @staticmethod
+    def from_config(config: Dict[str, Any]) -> Metric:
+        return AnswerSimilarityMetric()
+
     async def score(
-        self, llm_response: LLMResponse, llm_service: Union[LiteLLMService, OpenAIService]
+        self,
+        llm_response: LLMResponse,
+        llm_service: Union[LiteLLMService, OpenAIService],
     ) -> float:
         # Check that the benchmark item has an answer
         if llm_response.benchmark_item.answer is None:

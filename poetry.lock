@@ -2211,13 +2211,13 @@ files = [
 
 [[package]]
 name = "tonic-textual"
-version = "1.2.1"
+version = "1.4.0"
 description = "Wrappers around the Tonic Textual API"
 optional = false
 python-versions = "<4.0,>=3.7"
 files = [
-    {file = "tonic_textual-1.2.1-py3-none-any.whl", hash = "sha256:9890b7a705da24568aca24bc8fdf9c5cd93970fbd6db94c06bf41f72fcf947df"},
-    {file = "tonic_textual-1.2.1.tar.gz", hash = "sha256:d8daae1738716fc4a1b59decce8b9ac6034de36da805856321a09b0f31dab331"},
+    {file = "tonic_textual-1.4.0-py3-none-any.whl", hash = "sha256:0a7c6ab1b1a9d5917e3edea23a18ae8f6ff107dd6d3c3d73c01efa43e1a0a4d8"},
+    {file = "tonic_textual-1.4.0.tar.gz", hash = "sha256:1d16f502861be379ecdaf73c67efc717ac421b81beaf1fb2591a12a82c406ec7"},
 ]
 
 [package.dependencies]

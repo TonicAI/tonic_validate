@@ -297,10 +297,10 @@ os.environ["OPENAI_API_KEY"] = "put-your-openai-api-key-here"
 If you already have the `OPENAI_API_KEY` set in your system's environment variables then you can skip this step. Otherwise, please set the environment variable before proceeding.
 
 ##### Using Azure
-If you are using Azure, instead of setting the `OPENAI_API_KEY` environment variable, you instead need to set `AZURE_OPENAI_KEY` and `AZURE_OPENAI_ENDPOINT`. `AZURE_OPENAI_ENDPOINT` is the endpoint url for your Azure OpenAI deployment and `AZURE_OPENAI_KEY` is your API key.
+If you are using Azure, instead of setting the `OPENAI_API_KEY` environment variable, you instead need to set `AZURE_OPENAI_API_KEY` and `AZURE_OPENAI_ENDPOINT`. `AZURE_OPENAI_ENDPOINT` is the endpoint url for your Azure OpenAI deployment and `AZURE_OPENAI_API_KEY` is your API key.
 ```python
 import os
-os.environ["AZURE_OPENAI_KEY"] = "put-your-azure-openai-api-key-here"
+os.environ["AZURE_OPENAI_API_KEY"] = "put-your-azure-openai-api-key-here"
 os.environ["AZURE_OPENAI_ENDPOINT"] = "put-your-azure-endpoint-here"
 ```
 

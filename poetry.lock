@@ -2211,13 +2211,13 @@ files = [
 
 [[package]]
 name = "tonic-textual"
-version = "1.2.1"
+version = "2.0.0"
 description = "Wrappers around the Tonic Textual API"
 optional = false
 python-versions = "<4.0,>=3.7"
 files = [
-    {file = "tonic_textual-1.2.1-py3-none-any.whl", hash = "sha256:9890b7a705da24568aca24bc8fdf9c5cd93970fbd6db94c06bf41f72fcf947df"},
-    {file = "tonic_textual-1.2.1.tar.gz", hash = "sha256:d8daae1738716fc4a1b59decce8b9ac6034de36da805856321a09b0f31dab331"},
+    {file = "tonic_textual-2.0.0-py3-none-any.whl", hash = "sha256:b9c47122e9d338995329f11bcd6bf62bb4d142d616b984d370a672a859bf5059"},
+    {file = "tonic_textual-2.0.0.tar.gz", hash = "sha256:532bdee22b928d14038bf456fe673c716c7f9e7f7fc2551aabc73769efaa46c3"},
 ]
 
 [package.dependencies]
@@ -2417,4 +2417,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8.1,<4.0.0"
-content-hash = "40a54f77ae3ae3cbdd6daf97fdffb4ad85c54ecce99a888d690715f7a9fbcab1"
+content-hash = "5794cb26f6b02a0dc25e02cf61b3a45d4ee9d31856ede90e066a2cc5c6af0054"

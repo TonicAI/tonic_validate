@@ -20,6 +20,7 @@ class LiteLLMService:
         starting_wait_time: float = 1.5,
         max_retries: int = 12,
         exp_delay_base: int = 2,
+        model_id: str = "",
     ) -> None:
         """
         The LiteLLMService class is a wrapper around LiteLLM client for async operations using different LLMs.
@@ -48,17 +49,48 @@ class LiteLLMService:
         self.exp_delay_base = exp_delay_base
         self.starting_wait_time = starting_wait_time
         self.cache = LLMCache()
+        self.model_id = model_id
 
     def check_environment(self, model: str) -> None:
-        if "gemini" in model:
+        model_name_lower = model.lower()
+        if model_name_lower.startswith('gemini'):
             if "GEMINI_API_KEY" not in os.environ:
                 raise Exception(
                     "GEMINI_API_KEY must be set in the environment when using Gemini"
                 )
-        elif "claude" in model:
+        elif model_name_lower.startswith('bedrock'):
+            if ("AWS_SECRET_ACCESS_KEY" not in os.environ or "AWS_ACCESS_KEY_ID" not in os.environ or "AWS_REGION_NAME"
+                    not in os.environ):
+                raise Exception(
+                    "AWS_SECRET_ACCESS_KEY and AWS_ACCESS_KEY_ID and AWS_REGION_NAME must be set in the environment "
+                    "when using bedrock models."
+                )
+        elif model_name_lower.startswith('sagemaker'):
+            if ("AWS_SECRET_ACCESS_KEY" not in os.environ or "AWS_ACCESS_KEY_ID" not in os.environ or "AWS_REGION_NAME"
+                    not in os.environ):
+                raise Exception(
+                    "AWS_SECRET_ACCESS_KEY and AWS_ACCESS_KEY_ID and AWS_REGION_NAME must be set in the environment "
+                    "when using sagemaker models."
+                )
+        elif model_name_lower.startswith('claude'):
             if "ANTHROPIC_API_KEY" not in os.environ:
                 raise Exception(
                     "ANTHROPIC_API_KEY must be set in the environment when using Claude"
+                )
+        elif model_name_lower.startswith('command'):
+            if "COHERE_API_KEY" not in os.environ:
+                raise Exception(
+                    "COHERE_API_KEY must be set in the environment when using command models"
+                )
+        elif model_name_lower.startswith('mistral'):
+            if "MISTRAL_API_KEY" not in os.environ:
+                raise Exception(
+                    "MISTRAL_API_KEY must be set in the environment when using mistral models"
+                )
+        elif model_name_lower.startswith('together_ai'):
+            if "TOGETHERAI_API_KEY" not in os.environ:
+                raise Exception(
+                    "TOGETHERAI_API_KEY must be set in the environment when using together AI"
                 )
         else:
             raise Exception("Model not supported. Please check the model name.")
@@ -92,11 +124,19 @@ class LiteLLMService:
                         },
                         {"role": "user", "content": prompt},
                     ]
-                    response = await acompletion(
-                        model=self.model,
-                        messages=messages,
-                        temperature=0.0,
-                    )
+                    if self.model_id != "":
+                        response = await acompletion(
+                            model=self.model,
+                            model_id=self.model_id,
+                            messages=messages,
+                            temperature=0.0,
+                        )
+                    else:
+                        response = await acompletion(
+                            model=self.model,
+                            messages=messages,
+                            temperature=0.0,
+                        )
                     # Check that type is ModelResponse
                     if not isinstance(response, ModelResponse):
                         raise Exception(

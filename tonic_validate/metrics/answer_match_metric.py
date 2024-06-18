@@ -1,8 +1,9 @@
 import logging
 
-from typing import Union
+from typing import Any, Dict, Union
 from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.metrics.binary_metric import BinaryMetric
+from tonic_validate.metrics.metric import Metric, MetricRequirement
 from tonic_validate.services.openai_service import OpenAIService
 from tonic_validate.services.litellm_service import LiteLLMService
 
@@ -10,6 +11,8 @@ logger = logging.getLogger()
 
 
 class AnswerMatchMetric(BinaryMetric):
+    requirements = {MetricRequirement.LLM_ANSWER}
+
     def __init__(self, name: str, answer: str, case_sensitive: bool = False):
         """
         Create a metric that checks if the answer matches a given string.
@@ -28,8 +31,25 @@ class AnswerMatchMetric(BinaryMetric):
         self.answer = answer
         self.case_sensitive = case_sensitive
 
+    def serialize_config(self):
+        return {
+            "name": self.name,
+            "answer": self.answer,
+            "case_sensitive": self.case_sensitive,
+        }
+
+    @staticmethod
+    def from_config(config: Dict[str, Any]) -> Metric:
+        return AnswerMatchMetric(
+            name=config["name"],
+            answer=config["answer"],
+            case_sensitive=config["case_sensitive"],
+        )
+
     def metric_callback(
-        self, llm_response: LLMResponse, llm_service: Union[LiteLLMService, OpenAIService]
+        self,
+        llm_response: LLMResponse,
+        llm_service: Union[LiteLLMService, OpenAIService],
     ) -> bool:
         if self.case_sensitive:
             return self.answer == llm_response.llm_answer

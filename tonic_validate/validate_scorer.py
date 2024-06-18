@@ -2,7 +2,7 @@ from asyncio import Semaphore
 import asyncio
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
-from typing import Awaitable, Callable, DefaultDict, List, Dict, Union
+from typing import Any, Awaitable, Callable, DefaultDict, List, Dict, Type, Union
 
 from pydantic import ConfigDict, TypeAdapter, validate_call
 from tonic_validate.classes.benchmark import Benchmark, BenchmarkItem
@@ -11,13 +11,7 @@ from tonic_validate.classes.exceptions import LLMException
 
 from tonic_validate.classes.llm_response import CallbackLLMResponse, LLMResponse
 from tonic_validate.classes.run import Run, RunData
-from tonic_validate.metrics.answer_consistency_metric import AnswerConsistencyMetric
-from tonic_validate.metrics.answer_similarity_metric import AnswerSimilarityMetric
-from tonic_validate.metrics.augmentation_precision_metric import (
-    AugmentationPrecisionMetric,
-)
-
-from tonic_validate.metrics.metric import Metric
+import tonic_validate.metrics as tonic_metrics
 from tonic_validate.services.openai_service import OpenAIService
 from tonic_validate.services.litellm_service import LiteLLMService
 import tiktoken
@@ -29,6 +23,17 @@ import time
 logger = logging.getLogger()
 CallbackValidator = TypeAdapter(CallbackLLMResponse)
 
+# Gets a list of all the metric names
+metric_dict: Dict[str, Type[tonic_metrics.Metric]] = {}
+for metric in tonic_metrics.__all__:
+    cls = getattr(tonic_metrics, metric)
+    if not issubclass(cls, tonic_metrics.Metric):
+        continue
+    try:
+        metric_dict[cls.__name__] = cls
+    except AttributeError:
+        print(f"The Metric {metric} does not have a '__name__' attribute.")
+
 
 class ValidateScorer:
     DEFAULT_PARALLELISM_CALLBACK = 1
@@ -37,10 +42,10 @@ class ValidateScorer:
     @validate_call(config=ConfigDict(arbitrary_types_allowed=True))
     def __init__(
         self,
-        metrics: List[Metric] = [
-            AnswerSimilarityMetric(),
-            AugmentationPrecisionMetric(),
-            AnswerConsistencyMetric(),
+        metrics: List[tonic_metrics.Metric] = [
+            tonic_metrics.AnswerSimilarityMetric(),
+            tonic_metrics.AugmentationPrecisionMetric(),
+            tonic_metrics.AnswerConsistencyMetric(),
         ],
         model_evaluator: str = "gpt-4-turbo-preview",
         max_parsing_retries: int = 3,
@@ -368,3 +373,12 @@ class ValidateScorer:
             )
 
         return self.score_responses(responses, scoring_parallelism)
+
+    @staticmethod
+    def metric_config_to_list(config: Dict[str, Dict[str, Any]]):
+        metrics: List[tonic_metrics.Metric] = []
+        for metric in config:
+            if metric not in metric_dict:
+                raise Exception(f"Metric {metric} not found.")
+            metrics.append(metric_dict[metric].from_config(config[metric]))
+        return metrics

@@ -1,7 +1,7 @@
 import logging
-from typing import Union
+from typing import Any, Dict, Union
 from tonic_validate.classes.llm_response import LLMResponse
-from tonic_validate.metrics.metric import Metric
+from tonic_validate.metrics.metric import Metric, MetricRequirement
 from tonic_validate.utils.metrics_util import (
     parse_boolean_response,
     parse_bullet_list_response,
@@ -27,6 +27,7 @@ class AnswerConsistencyMetric(Metric):
         f"{statement_derived_from_context_prompt(statement='EXAMPLE STATEMENT', context_list=[])}\n"
         "-------------------\n"
     )
+    requirements = {MetricRequirement.LLM_ANSWER, MetricRequirement.LLM_CONTEXT}
 
     def __init__(self):
         """
@@ -35,8 +36,17 @@ class AnswerConsistencyMetric(Metric):
         """
         pass
 
+    def serialize_config(self):
+        return {}
+
+    @staticmethod
+    def from_config(config: Dict[str, Any]) -> Metric:
+        return AnswerConsistencyMetric()
+
     async def score(
-        self, llm_response: LLMResponse, llm_service: Union[LiteLLMService, OpenAIService]
+        self,
+        llm_response: LLMResponse,
+        llm_service: Union[LiteLLMService, OpenAIService],
     ) -> float:
         main_points_response = await main_points_call(
             llm_response.llm_answer, llm_service

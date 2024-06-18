@@ -1,5 +1,5 @@
 import logging
-from typing import List, Union
+from typing import Any, Dict, List, Union
 from tonic_validate.classes.llm_response import LLMResponse
 from tonic_validate.metrics.augmentation_accuracy_metric import (
     AugmentationAccuracyMetric,
@@ -14,6 +14,9 @@ logger = logging.getLogger()
 
 class AugmentationPrecisionMetric(Metric):
     name: str = "augmentation_precision"
+    requirements = AugmentationAccuracyMetric.requirements.union(
+        RetrievalPrecisionMetric.requirements
+    )
 
     def __init__(self) -> None:
         """
@@ -23,8 +26,17 @@ class AugmentationPrecisionMetric(Metric):
         self.augmentation_accuracy = AugmentationAccuracyMetric()
         self.retrieval_precision = RetrievalPrecisionMetric()
 
+    def serialize_config(self):
+        return {}
+
+    @staticmethod
+    def from_config(config: Dict[str, Any]) -> Metric:
+        return AugmentationPrecisionMetric()
+
     async def score(
-        self, llm_response: LLMResponse, llm_service: Union[LiteLLMService, OpenAIService]
+        self,
+        llm_response: LLMResponse,
+        llm_service: Union[LiteLLMService, OpenAIService],
     ) -> float:
         retrieval_precision_score = await self.retrieval_precision.calculate_metric(
             llm_response, llm_service

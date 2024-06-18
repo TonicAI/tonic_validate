@@ -46,6 +46,9 @@ class OpenAIService:
             self.client = AsyncAzureOpenAI(api_version="2023-12-01-preview")
         elif "OPENAI_API_KEY" in os.environ:
             self.client = AsyncOpenAI()
+        elif "OPENROUTR_API_KEY" in os.environ:
+            self.client = AsyncOpenAI(base_url="https://openrouter.ai/api/v1",
+                                      api_key=os.environ["OPENROUTR_API_KEY"])
         else:
             raise Exception(
                 "OPENAI_API_KEY or AZURE_OPENAI_API_KEY must be set in the environment"

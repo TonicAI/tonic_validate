@@ -16,7 +16,7 @@ pydantic = "^2.6.4"
 typing-extensions = "^4.10.0"
 litellm = "^1.35.8"
 google-generativeai = { version = "^0.5.2", python = ">=3.9" }
-aioboto3 = "^12.4.0"
+aioboto3 = ">=12.4,<14.0"
 
 [tool.poetry.group.dev.dependencies]
 sphinx = "^7.0.0"

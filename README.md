@@ -23,7 +23,6 @@
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 [![Email][email-shield]][email-url]
-[![Schedule a meeting][meeting-shield]][meeting-url]
 
 
 
@@ -41,7 +40,7 @@
     <br />
     <a href="https://docs.tonic.ai/validate"><strong>Explore the docs »</strong></a>
     <br />
-    <a href="https://www.tonic.ai/textual"><strong>Prepare your unstructured data for RAG »</strong></a>
+    <a href="https://www.tonic.ai/textual?utm_campaign=Validate Referral&utm_source=Validate Referral"><strong>Enhance your data for RAG »</strong></a>
     <br />
     <br />
     <a href="https://github.com/TonicAI/tonic_validate/issues">Report Bug</a>
@@ -88,9 +87,13 @@
 
 Tonic Validate is a framework for the evaluation of LLM outputs, such as Retrieval Augmented Generation (RAG) pipelines. Validate makes it easy to evaluate, track, and monitor your LLM and RAG applications. Validate allows you to evaluate your LLM outputs through the use of our provided metrics which measure everything from answer correctness to LLM hallucination. Additionally, Validate has an optional UI to visualize your evaluation results for easy tracking and monitoring.
 
-> **Good RAG systems start with good inputs. Are you blocked on pre-processing messy, complex unstructured data into a standardized format for embedding and ingestion into your vector database?** 
->
->Tonic Textual is a privacy-focused ETL for LLMs that standardizes unstructured data for AI development and uses proprietary NER models to create metadata tags that enable improved retreival performance via metadata filtering. If you're spending too much time on data preparation, we can help; reach out to us for a [demo](https://www.tonic.ai/product-demo/textual).
+
+## Preparing Data for RAG
+The foundation of a high-performing RAG systems is quality, secure data. High-quality data ensures that the information retrieved and generated is accurate, relevant, and reliable, which enhances the system's overall performance and user trust. Security, on the other hand, protects this valuable data from breaches, ensuring that sensitive information remains confidential and tamper-proof. Together, they form the bedrock of a robust RAG system, facilitating efficient, trustworthy retrieval and generation.
+
+We are excited to introduce Tonic Textual, a powerful companion to Tonic Validate that can help improve your RAG system's performance. We created Tonic Textual to simplify and augment the data pre-processing for RAG systems. In just a few minutes, you can build automated unstructured data pipelines that extract text from unstructured data, detect and de-identify sensitive information, and transform the data into a format optimized for RAG systems. We also enrich your data with document metadata and contextual entity tags to build semantic entity graphs that ground your RAG system in truth, preventing hallucinations and improving the overall quality of the generated outputs.
+
+You can learn more and try the tool completely free [here](<https://www.tonic.ai/textual?utm_campaign=Validate Referral&utm_source=Validate Referral>). We'd love to hear what you think!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -607,5 +610,3 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [linkedin-url]: https://www.linkedin.com/company/tonicfakedata
 [email-shield]: https://img.shields.io/badge/Email%20Us-validate%40tonic.ai-blue?style=for-the-badge
 [email-url]: mailto:validate@tonic.ai
-[meeting-shield]: https://img.shields.io/badge/Want%20to%20talk%3F-Schedule%20a%20meeting-red?style=for-the-badge
-[meeting-url]: https://www.getclockwise.com/c/adam-tonic-ai/adam-tonic-30-minute-meeting

@@ -588,8 +588,6 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 ## Contact
 [![LinkedIn][linkedin-shield]][linkedin-url]
 [![Email][email-shield]][email-url]
-[![Schedule a meeting][meeting-shield]][meeting-url]
-
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

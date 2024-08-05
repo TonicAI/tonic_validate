@@ -21,7 +21,7 @@ aioboto3 = "^12.4.0"
 [tool.poetry.group.dev.dependencies]
 sphinx = "^7.0.0"
 sphinx-rtd-theme = ">=1.2,<3.0"
-ruff = ">=0.1.15,<0.5.0"
+ruff = ">=0.1.15,<0.6.0"
 tonic-textual = ">=1.0.5,<3.0.0"
 pytest = "^8.1.1"
 pytest-asyncio = "^0.23.6"

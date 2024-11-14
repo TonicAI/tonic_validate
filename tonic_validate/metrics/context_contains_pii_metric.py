@@ -26,7 +26,7 @@ class ContextContainsPiiMetric(BinaryMetric):
 
         """
         try:
-            from tonic_textual.api import TonicTextual  # type: ignore
+            from tonic_textual.redact_api import TonicTextual  # type: ignore
         except ImportError:
             raise ImportError(
                 "You must install tonic-textual to use the ContextContainsPiiMetric. You can install it via pip: pip install tonic-textual"

@@ -15,3 +15,5 @@ dmypy.json
 
 .env
 *.pkl
+
+.ruff_cache/

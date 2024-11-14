@@ -53,41 +53,47 @@ class LiteLLMService:
 
     def check_environment(self, model: str) -> None:
         model_name_lower = model.lower()
-        if model_name_lower.startswith('gemini'):
+        if model_name_lower.startswith("gemini"):
             if "GEMINI_API_KEY" not in os.environ:
                 raise Exception(
                     "GEMINI_API_KEY must be set in the environment when using Gemini"
                 )
-        elif model_name_lower.startswith('bedrock'):
-            if ("AWS_SECRET_ACCESS_KEY" not in os.environ or "AWS_ACCESS_KEY_ID" not in os.environ or "AWS_REGION_NAME"
-                    not in os.environ):
+        elif model_name_lower.startswith("bedrock"):
+            if (
+                "AWS_SECRET_ACCESS_KEY" not in os.environ
+                or "AWS_ACCESS_KEY_ID" not in os.environ
+                or "AWS_REGION_NAME" not in os.environ
+            ):
                 raise Exception(
                     "AWS_SECRET_ACCESS_KEY and AWS_ACCESS_KEY_ID and AWS_REGION_NAME must be set in the environment "
                     "when using bedrock models."
                 )
-        elif model_name_lower.startswith('sagemaker'):
-            if ("AWS_SECRET_ACCESS_KEY" not in os.environ or "AWS_ACCESS_KEY_ID" not in os.environ or "AWS_REGION_NAME"
-                    not in os.environ):
+        elif model_name_lower.startswith("sagemaker"):
+            if (
+                "AWS_SECRET_ACCESS_KEY" not in os.environ
+                or "AWS_ACCESS_KEY_ID" not in os.environ
+                or "AWS_REGION_NAME" not in os.environ
+            ):
                 raise Exception(
                     "AWS_SECRET_ACCESS_KEY and AWS_ACCESS_KEY_ID and AWS_REGION_NAME must be set in the environment "
                     "when using sagemaker models."
                 )
-        elif model_name_lower.startswith('claude'):
+        elif model_name_lower.startswith("claude"):
             if "ANTHROPIC_API_KEY" not in os.environ:
                 raise Exception(
                     "ANTHROPIC_API_KEY must be set in the environment when using Claude"
                 )
-        elif model_name_lower.startswith('command'):
+        elif model_name_lower.startswith("command"):
             if "COHERE_API_KEY" not in os.environ:
                 raise Exception(
                     "COHERE_API_KEY must be set in the environment when using command models"
                 )
-        elif model_name_lower.startswith('mistral'):
+        elif model_name_lower.startswith("mistral"):
             if "MISTRAL_API_KEY" not in os.environ:
                 raise Exception(
                     "MISTRAL_API_KEY must be set in the environment when using mistral models"
                 )
-        elif model_name_lower.startswith('together_ai'):
+        elif model_name_lower.startswith("together_ai"):
             if "TOGETHERAI_API_KEY" not in os.environ:
                 raise Exception(
                     "TOGETHERAI_API_KEY must be set in the environment when using together AI"

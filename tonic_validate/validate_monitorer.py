@@ -5,7 +5,6 @@ import logging
 
 from tonic_validate.config import Config
 from tonic_validate.metrics import (
-    AnswerSimilarityMetric,
     RetrievalPrecisionMetric,
     AugmentationPrecisionMetric,
     AnswerConsistencyMetric,

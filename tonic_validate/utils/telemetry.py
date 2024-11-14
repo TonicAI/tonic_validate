@@ -1,11 +1,13 @@
 import json
 import os
+import platform
 from typing import List, Optional
 import uuid
 from tonic_validate.classes.user_info import UserInfo
 from tonic_validate.config import Config
 from tonic_validate.utils.http_client import HttpClient
 from appdirs import user_data_dir
+import requests
 
 APP_DIR_NAME = "tonic-validate"
 
@@ -21,6 +23,8 @@ env_vars = ["GITHUB_ACTIONS", "GITLAB_CI", "TF_BUILD", "CI", "JENKINS_URL"]
 
 
 class Telemetry:
+    __has_called_scarf = False
+
     def __init__(self, api_key: Optional[str] = None):
         """
         Used to log telemetry data to the Tonic Validate server
@@ -32,6 +36,34 @@ class Telemetry:
         """
         self.config = Config()
         self.http_client = HttpClient(self.config.TONIC_VALIDATE_TELEMETRY_URL, api_key)
+
+        if not Telemetry.__has_called_scarf:
+            self.scarf_analytics()
+            Telemetry.__has_called_scarf = True
+
+    def scarf_analytics(self):
+        try:
+            if self.config.TONIC_VALIDATE_DO_NOT_TRACK:
+                return
+            try:
+                from importlib.metadata import version
+
+                sdk_version = version("tonic-validate")
+            except Exception:
+                sdk_version = "unknown"
+
+            requests.get(
+                "https://tonic.gateway.scarf.sh/tonic-validate?version="
+                + sdk_version
+                + "&platform="
+                + platform.system()
+                + "&python="
+                + platform.python_version()
+                + "&arch="
+                + platform.machine(),
+            )
+        except Exception:
+            pass
 
     def get_user(self) -> UserInfo:
         """
@@ -77,16 +109,17 @@ class Telemetry:
         metrics: List[str]
             The metrics that were used to evaluate the run
         run_time: float
-            The time taken to evaluate the run            
+            The time taken to evaluate the run
         """
         if self.config.TONIC_VALIDATE_DO_NOT_TRACK:
             return
         try:
             from importlib.metadata import version
-            sdk_version = version('tonic-validate')
+
+            sdk_version = version("tonic-validate")
         except Exception:
             sdk_version = "unknown"
-        
+
         user_id = self.get_user()["user_id"]
         self.http_client.http_post(
             "/runs",
@@ -98,7 +131,7 @@ class Telemetry:
                 "sdk_version": sdk_version,
                 "is_ci": self.__is_ci(),
                 "validate_gh_action": self.config.TONIC_VALIDATE_GITHUB_ACTION,
-                "backend": "validate"
+                "backend": "validate",
             },
             timeout=5,
         )
@@ -122,7 +155,7 @@ class Telemetry:
                 "num_of_questions": num_of_questions,
                 "is_ci": self.__is_ci(),
                 "validate_gh_action": self.config.TONIC_VALIDATE_GITHUB_ACTION,
-                "backend": "validate"
+                "backend": "validate",
             },
             timeout=5,
         )

@@ -1,5 +1,6 @@
 import json
 import os
+import platform
 from typing import List, Optional
 import uuid
 from tonic_validate.classes.user_info import UserInfo
@@ -21,6 +22,9 @@ env_vars = ["GITHUB_ACTIONS", "GITLAB_CI", "TF_BUILD", "CI", "JENKINS_URL"]
 
 
 class Telemetry:
+
+    __has_called_scarf = False
+
     def __init__(self, api_key: Optional[str] = None):
         """
         Used to log telemetry data to the Tonic Validate server
@@ -32,6 +36,33 @@ class Telemetry:
         """
         self.config = Config()
         self.http_client = HttpClient(self.config.TONIC_VALIDATE_TELEMETRY_URL, api_key)
+
+        if not Telemetry.__has_called_scarf:
+            self.scarf_analytics()
+            Telemetry.__has_called_scarf = True
+
+    def scarf_analytics(self):
+        try:
+            if self.config.TONIC_VALIDATE_DO_NOT_TRACK:
+                return
+            try:
+                from importlib.metadata import version
+                sdk_version = version('tonic-validate')
+            except Exception:
+                sdk_version = "unknown"
+
+            self.http_client.get(
+                "https://CUSTOMER_ENDPOINT.scarf.sh/tonic-validate?version="
+                + sdk_version
+                + "&platform="
+                + platform.system()
+                + "&python"
+                + platform.python_version()
+                + "&arch="
+                + platform.machine(),
+            )
+        except Exception:
+            pass
 
     def get_user(self) -> UserInfo:
         """

@@ -515,7 +515,7 @@ You can also view the results of an individual run in the UI as well.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Telemetry
-Tonic Validate collects minimal telemetry to help us figure out what users want and how they're using the product. We do not use any existing telemetry framework and instead created our own privacy focused setup. Only the following information is tracked
+Tonic Validate collects minimal telemetry to help us figure out what users want and how they're using the product. Only the following information is tracked regarding usage of the product.  (Additional information is collected below, see details).
 
 * What metrics were used for a run
 * Number of questions in a run
@@ -525,10 +525,11 @@ Tonic Validate collects minimal telemetry to help us figure out what users want 
 
 We do **NOT** track things such as the contents of the questions / answers, your scores, or any other sensitive information. For detecting CI/CD, we only check for common environment variables in different CI/CD environments. We do not log the values of these environment variables.
 
-We also generate a random UUID to help us figure out how many users are using the product. This UUID is linked to your Validate account only to help track who is using the SDK and UI at once and to get user counts. If you want to see how we implemented telemetry, you can do so in the `tonic_validate/utils/telemetry.py` file
+We also generate a random UUID to help us figure out how many users are using the product. This UUID is linked to your Validate account only to help track who is using the SDK and UI at once and to get user counts. 
 
-If you wish to opt out of telemetry, you only need to set the `TONIC_VALIDATE_DO_NOT_TRACK` environment variable to `True`.
+We also collect information on version of python being used and characteristics of the machine (e.g. calls to `platform.system()` and `platform.machine()`).  This information is sent to Scarf which helps us better understand our open-source community.
 
+If you wish to opt out of telemetry, you only need to set the `TONIC_VALIDATE_DO_NOT_TRACK` environment variable to `True`. If you want to see how we implemented telemetry, you can do so in the `tonic_validate/utils/telemetry.py` file.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

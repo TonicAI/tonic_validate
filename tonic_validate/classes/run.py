@@ -66,8 +66,8 @@ class Run:
 
     overall_scores: Dict[str, float]
     run_data: List[RunData]
-    llm_evaluator: Optional[str]
-    id: Optional[UUID]
+    llm_evaluator: Optional[str] = None
+    id: Optional[UUID] = None
 
     def to_df(self):
         """

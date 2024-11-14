@@ -18,7 +18,7 @@ litellm = "^1.35.8"
 google-generativeai = { version = "^0.5.2", python = ">=3.9" }
 aioboto3 = "^12.4.0"
 
-[tool.poetry.group.dev.dependencies]
+[tool.poetry.group.validate_dev.dependencies]
 sphinx = "^7.0.0"
 sphinx-rtd-theme = ">=1.2,<3.0"
 ruff = ">=0.1.15,<0.5.0"

@@ -7,6 +7,7 @@ from tonic_validate.classes.user_info import UserInfo
 from tonic_validate.config import Config
 from tonic_validate.utils.http_client import HttpClient
 from appdirs import user_data_dir
+import requests
 
 APP_DIR_NAME = "tonic-validate"
 
@@ -51,17 +52,17 @@ class Telemetry:
             except Exception:
                 sdk_version = "unknown"
 
-            self.http_client.get(
-                "https://CUSTOMER_ENDPOINT.scarf.sh/tonic-validate?version="
+            requests.get(
+                "https://tonic.gateway.scarf.sh/tonic-validate?version="
                 + sdk_version
                 + "&platform="
                 + platform.system()
-                + "&python"
+                + "&python="
                 + platform.python_version()
                 + "&arch="
                 + platform.machine(),
             )
-        except Exception:
+        except Exception:            
             pass
 
     def get_user(self) -> UserInfo:

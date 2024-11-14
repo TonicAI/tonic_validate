@@ -8,7 +8,10 @@ logger = logging.getLogger()
 
 
 async def similarity_score_call(
-    question: str, reference_answer: str, llm_answer: str, llm_service: Union[LiteLLMService, OpenAIService]
+    question: str,
+    reference_answer: str,
+    llm_answer: str,
+    llm_service: Union[LiteLLMService, OpenAIService],
 ) -> str:
     """Sends prompt for answer similarity score to OpenAI API, and returns response.
 
@@ -81,7 +84,9 @@ def similarity_score_prompt():
 
 
 async def answer_consistent_with_context_call(
-    answer: str, context_list: List[str], llm_service: Union[LiteLLMService, OpenAIService]
+    answer: str,
+    context_list: List[str],
+    llm_service: Union[LiteLLMService, OpenAIService],
 ) -> str:
     """Sends prompt for answer consistency binary score and returns response.
 
@@ -281,7 +286,9 @@ def answer_contains_context_prompt():
     return main_message
 
 
-async def main_points_call(answer: str, llm_service: Union[LiteLLMService, OpenAIService]) -> str:
+async def main_points_call(
+    answer: str, llm_service: Union[LiteLLMService, OpenAIService]
+) -> str:
     """Sends prompt for main points in answer to Open AI API and returns response.
 
     Parameters
@@ -296,9 +303,7 @@ async def main_points_call(answer: str, llm_service: Union[LiteLLMService, OpenA
     str
         Response from OpenAI API.
     """
-    logger.debug(
-        f"Asking {llm_service.model} for bullet list of main points in answer"
-    )
+    logger.debug(f"Asking {llm_service.model} for bullet list of main points in answer")
     main_message = main_points_prompt()
     main_message += f"\nANSWER: {answer}"
 
@@ -340,7 +345,9 @@ def main_points_prompt():
 
 
 async def statement_derived_from_context_call(
-    statement: str, context_list: List[str], llm_service: Union[LiteLLMService, OpenAIService]
+    statement: str,
+    context_list: List[str],
+    llm_service: Union[LiteLLMService, OpenAIService],
 ) -> str:
     """Sends prompt for whether statement is derived from context and returns response.
 
@@ -480,7 +487,9 @@ def contains_duplicate_info_prompt():
     return main_message
 
 
-async def contains_hate_speech(statement: str, llm_service: Union[LiteLLMService, OpenAIService]) -> str:
+async def contains_hate_speech(
+    statement: str, llm_service: Union[LiteLLMService, OpenAIService]
+) -> str:
     """Sends prompt for whether statement contains hate speech and returns response.
 
     Parameters
@@ -495,9 +504,7 @@ async def contains_hate_speech(statement: str, llm_service: Union[LiteLLMService
     str
         Response from OpenAI API.
     """
-    logger.debug(
-        f"Asking {llm_service.model} whether statement contains hate speech"
-    )
+    logger.debug(f"Asking {llm_service.model} whether statement contains hate speech")
     main_message = contains_hate_speech_prompt()
     main_message += f"\n\nSTATEMENT:\n{statement}\nEND OF STATEMENT"
 

@@ -23,7 +23,6 @@ env_vars = ["GITHUB_ACTIONS", "GITLAB_CI", "TF_BUILD", "CI", "JENKINS_URL"]
 
 
 class Telemetry:
-
     __has_called_scarf = False
 
     def __init__(self, api_key: Optional[str] = None):
@@ -48,7 +47,8 @@ class Telemetry:
                 return
             try:
                 from importlib.metadata import version
-                sdk_version = version('tonic-validate')
+
+                sdk_version = version("tonic-validate")
             except Exception:
                 sdk_version = "unknown"
 
@@ -62,7 +62,7 @@ class Telemetry:
                 + "&arch="
                 + platform.machine(),
             )
-        except Exception:            
+        except Exception:
             pass
 
     def get_user(self) -> UserInfo:
@@ -109,16 +109,17 @@ class Telemetry:
         metrics: List[str]
             The metrics that were used to evaluate the run
         run_time: float
-            The time taken to evaluate the run            
+            The time taken to evaluate the run
         """
         if self.config.TONIC_VALIDATE_DO_NOT_TRACK:
             return
         try:
             from importlib.metadata import version
-            sdk_version = version('tonic-validate')
+
+            sdk_version = version("tonic-validate")
         except Exception:
             sdk_version = "unknown"
-        
+
         user_id = self.get_user()["user_id"]
         self.http_client.http_post(
             "/runs",
@@ -130,7 +131,7 @@ class Telemetry:
                 "sdk_version": sdk_version,
                 "is_ci": self.__is_ci(),
                 "validate_gh_action": self.config.TONIC_VALIDATE_GITHUB_ACTION,
-                "backend": "validate"
+                "backend": "validate",
             },
             timeout=5,
         )
@@ -154,7 +155,7 @@ class Telemetry:
                 "num_of_questions": num_of_questions,
                 "is_ci": self.__is_ci(),
                 "validate_gh_action": self.config.TONIC_VALIDATE_GITHUB_ACTION,
-                "backend": "validate"
+                "backend": "validate",
             },
             timeout=5,
         )

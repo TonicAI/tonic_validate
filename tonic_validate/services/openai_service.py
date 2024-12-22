@@ -44,6 +44,11 @@ class OpenAIService:
                     "AZURE_OPENAI_ENDPOINT must be set in the environment when using AzureOpenAI"
                 )
             self.client = AsyncAzureOpenAI(api_version="2023-12-01-preview")
+        elif "LITELLM_API_KEY" in os.environ:
+            self.client = AsyncOpenAI(
+                base_url="https://litellm.ml.scaleinternal.com/",
+                api_key=os.environ["LITELLM_API_KEY"],
+            )
         elif "OPENAI_API_KEY" in os.environ:
             self.client = AsyncOpenAI()
         elif "OPENROUTR_API_KEY" in os.environ:

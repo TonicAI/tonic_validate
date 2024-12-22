@@ -58,7 +58,7 @@ class OpenAIService:
             )
         else:
             raise Exception(
-                "OPENAI_API_KEY or AZURE_OPENAI_API_KEY must be set in the environment"
+                "LITELLM_API_KEY or OPENAI_API_KEY or AZURE_OPENAI_API_KEY must be set in the environment"
             )
         self.model = model
         self.encoder = encoder

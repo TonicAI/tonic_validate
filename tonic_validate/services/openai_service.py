@@ -46,7 +46,7 @@ class OpenAIService:
             self.client = AsyncAzureOpenAI(api_version="2023-12-01-preview")
         elif "LITELLM_API_KEY" in os.environ:
             self.client = AsyncOpenAI(
-                base_url="https://litellm.ml.scaleinternal.com/",
+                base_url=os.environ["LITELLM_BASE_URL"],
                 api_key=os.environ["LITELLM_API_KEY"],
             )
         elif "OPENAI_API_KEY" in os.environ:

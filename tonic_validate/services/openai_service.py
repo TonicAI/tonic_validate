@@ -46,7 +46,7 @@ class OpenAIService:
             self.client = AsyncAzureOpenAI(api_version="2023-12-01-preview")
         elif "OPENAI_API_KEY" in os.environ and "OPENAI_API_BASE" in os.environ:
             self.client = AsyncOpenAI(
-                api_base=os.environ["OPENAI_BASE_URL"],
+                api_base=os.environ["OPENAI_API_BASE"],
                 api_key=os.environ["OPENAI_API_KEY"],
             )
         elif "OPENAI_API_KEY" in os.environ:

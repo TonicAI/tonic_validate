@@ -453,9 +453,7 @@ run = scorer.score_responses(responses)
 
 
 ### Viewing the Results
-There are two ways to view the results of a run.
 
-#### Option 1: Print Out the Results
 You can manually print out the results via python like so
 ```python
 print("Overall Scores")
@@ -487,32 +485,6 @@ LLM Context:  ['Paris is the capital of France.']
 Scores:  {'answer_consistency': 1.0, 'augmentation_accuracy': 1.0}
 ------
 ```
-#### Option 2: Use the Tonic Validate UI (Recommended, Free to Use)
-You can easily view your run results by uploading them to our **free to use UI**. The main advantage of this method is the Tonic Validate UI provides graphing for your results along with additional visualization features. To sign up for the UI, go to [here](https://validate.tonic.ai/).
-
-Once you sign up for the UI, you will go through an onboarding to create an API Key and Project.
-
-<picture>
-  <img src="https://raw.githubusercontent.com/TonicAI/tonic_validate/main/readme_images/TonicValidate-Onboarding.png" width="800">
-</picture>
-
-Copy both the API Key and Project ID from the onboarding and insert it into the following code
-```
-from tonic_validate import ValidateApi
-validate_api = ValidateApi("your-api-key")
-validate_api.upload_run("your-project-id", run)
-```
-This will upload your run to the Tonic Validate UI where you can view the results. On the home page (as seen below) you can view the change in scores across runs over time.  
-<picture>
-  <img src="https://raw.githubusercontent.com/TonicAI/tonic_validate/main/readme_images/TonicValidate-Graph.png" width="800">
-</picture>
-
-You can also view the results of an individual run in the UI as well.  
-<picture>
-  <img src="https://raw.githubusercontent.com/TonicAI/tonic_validate/main/readme_images/TonicValidate-Run.png" width="800">
-</picture>
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Telemetry
 Tonic Validate collects minimal telemetry to help us figure out what users want and how they're using the product. Only the following information is tracked regarding usage of the product.  (Additional information is collected below, see details).

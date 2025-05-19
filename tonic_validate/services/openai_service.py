@@ -44,6 +44,11 @@ class OpenAIService:
                     "AZURE_OPENAI_ENDPOINT must be set in the environment when using AzureOpenAI"
                 )
             self.client = AsyncAzureOpenAI(api_version="2023-12-01-preview")
+        elif "OPENAI_API_KEY" in os.environ and "OPENAI_API_BASE" in os.environ:
+            self.client = AsyncOpenAI(
+                base_url=os.environ["OPENAI_API_BASE"],
+                api_key=os.environ["OPENAI_API_KEY"],
+            )
         elif "OPENAI_API_KEY" in os.environ:
             self.client = AsyncOpenAI()
         elif "OPENROUTR_API_KEY" in os.environ:
@@ -53,7 +58,7 @@ class OpenAIService:
             )
         else:
             raise Exception(
-                "OPENAI_API_KEY or AZURE_OPENAI_API_KEY must be set in the environment"
+                "LITELLM_API_KEY or OPENAI_API_KEY or AZURE_OPENAI_API_KEY must be set in the environment"
             )
         self.model = model
         self.encoder = encoder
